@@ -14,8 +14,8 @@ defmodule BackendWeb.Router do
   end
 
   scope "/", BackendWeb do
-    pipe_through :browser # Use the default browser stack
-
+    # pipe_through :browser # Use the default browser stack
+    pipe_through :api
     get "/", PageController, :index
   end
 

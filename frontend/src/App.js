@@ -25,13 +25,11 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-         <div>
+         <div className="users">
            {this.state.data.map(user => { //[array.map iterates over each element in the array and calls an anonymous function passing each element as a parameter
              return <div key={user.id}> id: {user.id}, name: {user.name}</div> //for each element in the array we return this html div element with user id and name
            })}
          </div>
-        </p>
       </div>
     );
   }

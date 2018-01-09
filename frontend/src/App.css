@@ -18,10 +18,16 @@
   font-size: 1.5em;
 }
 
+/*
 .App-intro {
   font-size: large;
 }
+*/
 
+.users {
+  background-color: #222222;
+  color: #59c3e0;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

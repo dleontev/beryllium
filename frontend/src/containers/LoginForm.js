@@ -7,70 +7,47 @@ class LoginForm extends React.Component {
     super();
     this.state = {
       password: '',
-      email: ''
+      email: '',
+      success: "NIL"
     };
   }
 
-  handleEmail(event) {
-    this.setState({ email: event.target.value })
+  handleSubmit(e){
+    e.preventDefault();
+    axios({
+      method:'post',
+      url:'http://localhost:4000/api/users/validate/',
+      data: {
+        user: {
+          email: this.state.email,
+          password: this.state.password
+        }
+      }
+    })
+      .then(function(response) {
+      console.log(response);
+    });
   }
-  
-  handlePassword(event) {
-    this.setState({ password: event.target.value })
+  handleEmail(e){
+    this.setState({
+      email: e.target.value
+    });
+    console.log(this.state.email);
   }
-  
-  componentWillMount() {
-    axios.get('http://localhost:4000/api/users')
-      .then(response => {
-        this.setState({ users: response.data.data });
-		console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  handlePassword(e){
+    this.setState({
+      password: e.target.value
+    });
+    console.log(this.state.password);
   }
-  
-  handleSubmit (event) {
-
-  }
-
   render() {
-	 return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <div className="field">
-          <label className="label">Email</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              value = {this.state.email}
-              onChange = {this.handleEmail.bind(this)}
-            />
-          </div>
-        </div>
-	
-        <div className="field">
-          <label className="label">Password</label>
-          <div className="control">
-            <input
-              className="input"
-              type="text"
-              value = {this.state.password}
-              onChange = {this.handlePassword.bind(this)}
-            />
-          </div>
-        </div>
-
-        <button
-          type="submit"
-          value="Submit"
-          className="button is-primary"
-        >
-        Submit
-        </button>
-
-      </form>
-	)
+    return (
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          Email<input type="text" name="email" onChange={this.handleEmail.bind(this)}/>
+          Password<input type="text" name="password" onChange={this.handlePassword.bind(this)}/>
+          <button type="submit"> Submit </button>
+        </form>
+    )
   }
 }
 

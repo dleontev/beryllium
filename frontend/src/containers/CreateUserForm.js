@@ -46,10 +46,10 @@ class Form extends React.Component {
       url: 'http://localhost:4000/api/users',
       data: {
         users: {
-		  email: this.state.email,
+          email: this.state.email,
           first_name: this.state.first_name,
           middle_name: this.state.middle_name,
-		  last_name: this.state.last_name,
+          last_name: this.state.last_name,
           time_zone: this.state.time_zone,
           password: this.state.password,
         }

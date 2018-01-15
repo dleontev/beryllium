@@ -21,10 +21,17 @@ defmodule BackendWeb.UserController do
       |> render("show.json", user: user)
     end
   end
-
+  @doc"""
   def show(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
+  end
+  """
+
+
+  def show(conn, %{"user" => %{"email" => email, "password" => password}}) do
+    user = %{email: email, password: password}
+    render(conn, "validate.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

@@ -9,6 +9,7 @@ use Mix.Config
 config :backend,
   ecto_repos: [Backend.Repo]
 
+config :phoenix, :filter_parameters, []
 # Configures the endpoint
 config :backend, BackendWeb.Endpoint,
   url: [host: "localhost"],

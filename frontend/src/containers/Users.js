@@ -13,7 +13,6 @@ class Users extends React.Component {
     axios.get('http://localhost:4000/api/users')
       .then(response => {
         this.setState({ users: response.data.data });
-		console.log(response);
       })
       .catch(error => {
         console.log(error);
@@ -24,7 +23,7 @@ class Users extends React.Component {
 	 
     const users = this.state.users.map((user, index) =>
       <UserCard
-	    key = { index }
+	      key = { index }
         first_name = { user.first_name }
         email = { user.email }
       />
@@ -32,17 +31,16 @@ class Users extends React.Component {
 
     return (
       <div>
-        <div className="is-primary is-large"
+        <div className="button is-primary"
           style = {{
             position: "absolute",
             top: "10px",
             right: "10px",
             padding: "10px 15px",
-            background: "#00D1B2"
           }}
         >
-          <Link to="/create" style = {{ color: "white" }} >
-          Create User
+          <Link to="/users/create" style = {{ color: "white" }} >
+            Create User
           </Link>
         </div>
 		{users}

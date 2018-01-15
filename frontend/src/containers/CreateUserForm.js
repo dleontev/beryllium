@@ -84,7 +84,7 @@ class Form extends React.Component {
           </div>
         </div>
 
-		<div className="field">
+		    <div className="field">
           <label className="label">Middle_Name</label>
           <div className="control">
             <input
@@ -108,7 +108,7 @@ class Form extends React.Component {
           </div>
         </div>
 
-		<div className="field">
+		    <div className="field">
           <label className="label">Time Zone</label>
           <div className="control">
             <input

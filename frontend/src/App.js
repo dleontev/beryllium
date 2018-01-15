@@ -11,17 +11,12 @@ class App extends Component {
       <Router>
         <div>
           <Route exact path="/" component={LoginForm}/>
-		  <Route path="/users" component={Users}/>
-          <Route path="/createuser" component={CreateUserForm}/>
+		      <Route exact path="/users" component={Users}/>
+          <Route exact path="/users/create" component={CreateUserForm}/>
         </div>
       </Router>
     )
   }
 }
-
-ReactDOM.render(
-  <App/>,
-  document.getElementById("root")
-)
 
 export default App;

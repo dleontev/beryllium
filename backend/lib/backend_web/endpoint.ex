@@ -37,7 +37,7 @@ defmodule BackendWeb.Endpoint do
     signing_salt: "GJCmCh8C"
 
 
-  plug CORSPlug, origin: ["http://localhost:8080"]
+  plug CORSPlug, origin: ["http://localhost:3000"]
 
   plug BackendWeb.Router
 

@@ -1,7 +1,6 @@
 import React from "react";
 import UserCardExtended from "../presentationals/UserCardExtended";
 import axios from "axios";
-import { Link, Router } from "react-router-dom";
 
 class Profile extends React.Component {
   constructor() {
@@ -26,14 +25,19 @@ class Profile extends React.Component {
 
     return (
       <div>
-        <button className="button is-link">Edit Profile</button>
-        <UserCardExtended
-          id={user.id}
-          first_name={user.first_name}
-          last_name={user.last_name}
-          middle_name={user.middle_name}
-          email={user.email}
-        />
+        <div class="level-right">
+          <button className="button is-link">Edit Profile</button>
+        </div>
+        <br />
+        <div className="box">
+          <UserCardExtended
+            id={user.id}
+            first_name={user.first_name}
+            last_name={user.last_name}
+            middle_name={user.middle_name}
+            email={user.email}
+          />
+        </div>
       </div>
     );
   }

@@ -5,45 +5,45 @@ class CreateUser extends React.Component {
   constructor() {
     super();
     this.state = {
-      first_name: '',
-      middle_name: '',
-      last_name: '',
-      time_zone: '',
-      password: '',
-      email: ''
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      time_zone: "",
+      password: "",
+      email: ""
     };
   }
 
   handleEmail(event) {
-    this.setState({ email: event.target.value })
+    this.setState({ email: event.target.value });
   }
 
   handleFirstName(event) {
-    this.setState({ first_name: event.target.value })
+    this.setState({ first_name: event.target.value });
   }
 
   handleMiddleName(event) {
-    this.setState({ middle_name: event.target.value })
+    this.setState({ middle_name: event.target.value });
   }
 
   handleLastName(event) {
-    this.setState({ last_name: event.target.value })
+    this.setState({ last_name: event.target.value });
   }
 
   handleTimeZone(event) {
-    this.setState({ time_zone: event.target.value })
+    this.setState({ time_zone: event.target.value });
   }
 
   handlePassword(event) {
-    this.setState({ password: event.target.value })
+    this.setState({ password: event.target.value });
   }
 
   handleSubmit(event) {
     event.preventDefault();
     axios({
-      method: 'POST',
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      url: 'http://localhost:4000/api/users',
+      url: "http://localhost:4000/api/users",
       data: {
         users: {
           email: this.state.email,
@@ -51,7 +51,7 @@ class CreateUser extends React.Component {
           middle_name: this.state.middle_name,
           last_name: this.state.last_name,
           time_zone: this.state.time_zone,
-          password: this.state.password,
+          password: this.state.password
         }
       }
     });
@@ -59,7 +59,7 @@ class CreateUser extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="box">
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="field">
             <label className="label">Email</label>
@@ -133,18 +133,13 @@ class CreateUser extends React.Component {
             </div>
           </div>
 
-          <button
-            type="submit"
-            value="Submit"
-            className="button is-link"
-          >
+          <button type="submit" value="Submit" className="button is-link">
             Submit
-        </button>
-
+          </button>
         </form>
       </div>
-    )
+    );
   }
 }
 
-export default CreateUser
+export default CreateUser;

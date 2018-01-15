@@ -28,17 +28,32 @@ class Users extends React.Component {
         first_name={user.first_name}
         last_name={user.last_name}
         middle_name={user.middle_name}
+        time_zone={user.time_zone}
         email={user.email}
       />
     ));
 
     return (
       <div>
-        <Link to="/register">
-          <button className="button is-link">Create User</button>
-        </Link> 
-        <br/><br/>
-        {users}
+        <div class="level-right">
+          <Link to="/register">
+            <button className="button is-link">Create User</button>
+          </Link>
+        </div>
+        <br />
+        <div className="box">
+          <table class="table is-fullwidth is-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Timezone</th>
+                <th>Id</th>
+              </tr>
+            </thead>
+            <tbody>{users}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

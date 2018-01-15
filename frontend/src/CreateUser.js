@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class CreateUser extends Component{
     render(){
         return(
-            <form action="http://localhost:4000/api/users/" method="POST">
+            <form action="/api/users/" method="POST">
                 email <input type="text" name="email"/> <br/>
                 First Name<input type="text" name="first_name"/> <br/>
                 Middle Name <input type="text" name="middle_name"/> <br/>

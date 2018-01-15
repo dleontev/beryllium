@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import CreateUser from "./CreateUser";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Users from './containers/Users';
+import Form from './containers/Form';
+
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <CreateUser></CreateUser>
-      </div>
-    );
+      <Router>
+        <div>
+          <Route exact path="/" component={Users}/>
+          <Route path="/create" component={Form}/>
+        </div>
+      </Router>
+    )
   }
 }
+
+ReactDOM.render(
+  <App/>,
+  document.getElementById("root")
+)
 
 export default App;

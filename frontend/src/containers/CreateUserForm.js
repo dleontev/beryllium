@@ -39,8 +39,6 @@ class Form extends React.Component {
   }
 
   handleSubmit (event) {
-	  
-	console.log("HANDLESUBMIT EXECUTED");
     event.preventDefault();
     axios({
       method: 'POST',

@@ -1,7 +1,7 @@
 import React from "react";
-import UserCard from '../presentationals/UserCard';
+import UserCard from "../presentationals/UserCard";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 class Users extends React.Component {
   constructor() {
@@ -10,10 +10,10 @@ class Users extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:4000/api/users')
+    axios
+      .get("http://localhost:4000/api/users")
       .then(response => {
         this.setState({ users: response.data.data });
-		console.log(response);
       })
       .catch(error => {
         console.log(error);
@@ -21,34 +21,42 @@ class Users extends React.Component {
   }
 
   render() {
-	 
-    const users = this.state.users.map((user, index) =>
+    const users = this.state.users.map((user, index) => (
       <UserCard
-	    key = { index }
-        first_name = { user.first_name }
-        email = { user.email }
+        key={index}
+        id={user.id}
+        first_name={user.first_name}
+        last_name={user.last_name}
+        middle_name={user.middle_name}
+        time_zone={user.time_zone}
+        email={user.email}
       />
-    );
+    ));
 
     return (
       <div>
-        <div className="is-primary is-large"
-          style = {{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            padding: "10px 15px",
-            background: "#00D1B2"
-          }}
-        >
-          <Link to="/create" style = {{ color: "white" }} >
-          Create User
+        <div class="level-right">
+          <Link to="/register">
+            <button className="button is-link">Create User</button>
           </Link>
         </div>
-		{users}
+        <br />
+        <div className="box">
+          <table class="table is-fullwidth is-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Timezone</th>
+                <th>Id</th>
+              </tr>
+            </thead>
+            <tbody>{users}</tbody>
+          </table>
+        </div>
       </div>
-    )
+    );
   }
 }
 
-export default Users
+export default Users;

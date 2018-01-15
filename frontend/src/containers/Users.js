@@ -1,7 +1,7 @@
 import React from "react";
-import UserCard from '../presentationals/UserCard';
+import UserCard from "../presentationals/UserCard";
 import axios from "axios";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 class Users extends React.Component {
   constructor() {
@@ -10,7 +10,8 @@ class Users extends React.Component {
   }
 
   componentWillMount() {
-    axios.get('http://localhost:4000/api/users')
+    axios
+      .get("http://localhost:4000/api/users")
       .then(response => {
         this.setState({ users: response.data.data });
       })
@@ -20,33 +21,27 @@ class Users extends React.Component {
   }
 
   render() {
-	 
-    const users = this.state.users.map((user, index) =>
+    const users = this.state.users.map((user, index) => (
       <UserCard
-	      key = { index }
-        first_name = { user.first_name }
-        email = { user.email }
+        key={index}
+        id={user.id}
+        first_name={user.first_name}
+        last_name={user.last_name}
+        middle_name={user.middle_name}
+        email={user.email}
       />
-    );
+    ));
 
     return (
       <div>
-        <div className="button is-primary"
-          style = {{
-            position: "absolute",
-            top: "10px",
-            right: "10px",
-            padding: "10px 15px",
-          }}
-        >
-          <Link to="/users/create" style = {{ color: "white" }} >
-            Create User
-          </Link>
-        </div>
-		{users}
+        <Link to="/register">
+          <button className="button is-link">Create User</button>
+        </Link> 
+        <br/><br/>
+        {users}
       </div>
-    )
+    );
   }
 }
 
-export default Users
+export default Users;

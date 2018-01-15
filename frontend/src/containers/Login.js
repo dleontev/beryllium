@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 
-class LoginForm extends React.Component {
+class Login extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -14,64 +14,66 @@ class LoginForm extends React.Component {
   handleEmail(event) {
     this.setState({ email: event.target.value })
   }
-  
+
   handlePassword(event) {
     this.setState({ password: event.target.value })
   }
-  
-  componentWillMount() {
-    axios.get('http://localhost:4000/api/users')
+
+  handleSubmit(event) {
+    axios.get('http://localhost:4000/api/users/')
       .then(response => {
-        this.setState({ users: response.data.data });
-		console.log(response);
+        this.setState({ user: response.data.data });
+        console.log(response);
       })
       .catch(error => {
         console.log(error);
       });
   }
-  
-  handleSubmit (event) {
-
-  }
 
   render() {
-	 return (
+    return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <div className="field">
           <label className="label">Email</label>
-          <div className="control">
+          <div class="control has-icons-left">
             <input
               className="input"
               type="text"
-              value = {this.state.email}
-              onChange = {this.handleEmail.bind(this)}
+              value={this.state.email}
+              onChange={this.handleEmail.bind(this)}
             />
+            <span class="icon is-small is-left">
+              <i class="fa fa-envelope-o" aria-hidden="true"></i>
+            </span>
           </div>
         </div>
-	
+
         <div className="field">
           <label className="label">Password</label>
-          <div className="control">
+          <div class="control has-icons-left">
             <input
               className="input"
               type="text"
-              value = {this.state.password}
-              onChange = {this.handlePassword.bind(this)}
+              value={this.state.password}
+              onChange={this.handlePassword.bind(this)}
             />
+            <span class="icon is-small is-left">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
           </div>
         </div>
 
         <button
           type="submit"
           value="Submit"
-          className="button is-primary"
+          className="button is-link"
         >
-        Submit
+          Login
         </button>
 
       </form>
-	)
+    )
   }
 }
 
-export default LoginForm
+export default Login

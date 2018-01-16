@@ -40,7 +40,7 @@ class Header extends React.Component {
                   </Link>
                   <Link to="/users" className="navbar-item">
                     <span className="icon">
-                      <i class="fa fa-address-card-o" aria-hidden="true" />
+                      <i className="fa fa-address-card-o" aria-hidden="true" />
                     </span>
                     <span>Users</span>
                   </Link>

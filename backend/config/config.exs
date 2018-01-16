@@ -16,7 +16,7 @@ config :backend, BackendWeb.Endpoint,
   secret_key_base: "oEuIfvInPXWh8FlHkBx4D3cckr4GJWTpuMC5DXATjx2m4rOwSE0pNKOYO+9t9gMK",
   render_errors: [view: BackendWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: Backend.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -26,3 +26,11 @@ config :logger, :console,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
+
+# Configures Guardian
+config :guardian, Guardian,
+  issuer: "Backend",
+  ttl: {30, :days},
+  verify_issuer: true,
+  serializer: Backend.GuardianSerializer,
+  secret_key: "ZZIDKx7JZI1H0e5ZKv4rynC6ZR3QJgCJ+zv2utbb4couDzeFotU1GAKv46WmkICR"

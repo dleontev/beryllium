@@ -14,3 +14,9 @@ body {
   white-space: nowrap;
   float: left;
 }
+
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
+}

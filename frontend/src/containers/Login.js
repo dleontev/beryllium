@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      password: "",
+      entered_password: "",
       email: ""
     };
   }
@@ -15,24 +16,29 @@ class Login extends React.Component {
   }
 
   handlePassword(event) {
-    this.setState({ password: event.target.value });
+    this.setState({ entered_password: event.target.value });
   }
 
   handleSubmit(event) {
-    axios
-      .get("http://localhost:4000/api/users/")
-      .then(response => {
-        this.setState({ user: response.data.data });
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    event.preventDefault();
+    axios({
+      method: "post",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      url: "http://localhost:4000/api/sessions",
+      data: {
+        email: this.state.email,
+        entered_password: this.state.entered_password
+      }
+    }).then(response => {
+      console.log(response);
+    });
   }
 
   render() {
     return (
-      <div class="box">
+      <div className="box">
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="field">
             <label className="label">Email</label>
@@ -55,7 +61,7 @@ class Login extends React.Component {
               <input
                 className="input"
                 type="text"
-                value={this.state.password}
+                value={this.state.entered_password}
                 onChange={this.handlePassword.bind(this)}
               />
               <span class="icon is-small is-left">
@@ -63,10 +69,13 @@ class Login extends React.Component {
               </span>
             </div>
           </div>
-
           <button type="submit" value="Submit" className="button is-link">
             Login
           </button>
+          <div class="divider" />
+          <Link to="/register">
+            <button className="button is-primary">Sign Up</button>
+          </Link>
         </form>
       </div>
     );

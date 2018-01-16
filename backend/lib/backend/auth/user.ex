@@ -12,6 +12,7 @@ defmodule Backend.Auth.User do
     field :last_name, :string
     field :time_zone, :integer
     field :password, :string
+	  field :entered_password, :string, virtual: true
     #timestamps()
   end
 
@@ -20,5 +21,6 @@ defmodule Backend.Auth.User do
     user
     |> cast(attrs, [:id, :email, :first_name, :middle_name, :last_name, :time_zone, :password])
     |> validate_required([:id, :email, :first_name, :last_name, :password])
+	  |> validate_format(:email, ~r/@/)
   end
 end

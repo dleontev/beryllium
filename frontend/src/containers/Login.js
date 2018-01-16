@@ -66,7 +66,7 @@ class Login extends React.Component {
           </button>
           <div className="divider" />
           <Link to="/register">
-            <button className="button is-primary">Sign Up</button>
+            <button className="button is-primary">Register</button>
           </Link>
         </form>
       </div>

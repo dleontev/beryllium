@@ -35,11 +35,6 @@ class Users extends React.Component {
 
     return (
       <div>
-        <div class="level-right">
-          <Link to="/register">
-            <button className="button is-link">Create User</button>
-          </Link>
-        </div>
         <br />
         <div className="box">
           <table class="table is-fullwidth is-striped">

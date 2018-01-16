@@ -36,7 +36,7 @@ defmodule Backend.Auth do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-
+   
   @doc """
   Creates a user.
 
@@ -55,10 +55,13 @@ defmodule Backend.Auth do
     |> Repo.insert()
   end
 
-
+  @doc """
+  Hash a password.
+  """
   def hash_password(password) do
     Comeonin.Bcrypt.hashpwsalt(password)
   end
+  
   @doc """
   Updates a user.
 

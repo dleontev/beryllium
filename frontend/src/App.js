@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import Users from './containers/Users';
-import LoginForm from './containers/LoginForm';
-import CreateUserForm from './containers/CreateUserForm';
-=======
 import React, { Component } from "react";
 //import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -17,18 +10,12 @@ import Dashboard from "./containers/Dashboard";
 import Groups from "./containers/Groups";
 import Inbox from "./containers/Inbox";
 import Courses from "./containers/Courses";
->>>>>>> 181022910e57d5bc6f566adfb4d445958fd57d01
 
 class App extends Component {
   render() {
     return (
       <Router>
         <div>
-<<<<<<< HEAD
-          <Route exact path="/" component={LoginForm}/>
-		      <Route path="/users" component={Users}/>
-          <Route path="/createuser" component={CreateUserForm}/>
-=======
           <Header />
           <div>
             <section className="section">
@@ -44,15 +31,10 @@ class App extends Component {
               </div>
             </section>
           </div>
->>>>>>> 181022910e57d5bc6f566adfb4d445958fd57d01
         </div>
       </Router>
     );
   }
 }
 
-<<<<<<< HEAD
 export default App;
-=======
-export default App;
->>>>>>> 181022910e57d5bc6f566adfb4d445958fd57d01

@@ -1,6 +1,6 @@
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import api from "../api/Api";
 
 class Login extends React.Component {
   constructor() {
@@ -21,18 +21,10 @@ class Login extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios({
-      method: "post",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      url: "http://localhost:4000/api/sessions",
-      data: {
-        email: this.state.email,
-        entered_password: this.state.entered_password
-      }
-    }).then(response => {
-      console.log(response);
+
+    api.post(`/sessions/`, {
+      email: this.state.email,
+      entered_password: this.state.entered_password
     });
   }
 
@@ -42,37 +34,37 @@ class Login extends React.Component {
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="field">
             <label className="label">Email</label>
-            <div class="control has-icons-left">
+            <div className="control has-icons-left">
               <input
                 className="input"
                 type="text"
                 value={this.state.email}
                 onChange={this.handleEmail.bind(this)}
               />
-              <span class="icon is-small is-left">
-                <i class="fa fa-envelope-o" aria-hidden="true" />
+              <span className="icon is-small is-left">
+                <i className="fa fa-envelope-o" aria-hidden="true" />
               </span>
             </div>
           </div>
 
           <div className="field">
             <label className="label">Password</label>
-            <div class="control has-icons-left">
+            <div className="control has-icons-left">
               <input
                 className="input"
                 type="text"
                 value={this.state.entered_password}
                 onChange={this.handlePassword.bind(this)}
               />
-              <span class="icon is-small is-left">
-                <i class="fa fa-lock" aria-hidden="true" />
+              <span className="icon is-small is-left">
+                <i className="fa fa-lock" aria-hidden="true" />
               </span>
             </div>
           </div>
           <button type="submit" value="Submit" className="button is-link">
             Login
           </button>
-          <div class="divider" />
+          <div className="divider" />
           <Link to="/register">
             <button className="button is-primary">Sign Up</button>
           </Link>
@@ -83,3 +75,17 @@ class Login extends React.Component {
 }
 
 export default Login;
+
+// axios({
+//   method: "post",
+//   headers: {
+//     "Content-Type": "application/json"
+//   },
+//   url: "http://localhost:4000/api/sessions",
+//   data: {
+//     email: this.state.email,
+//     entered_password: this.state.entered_password
+//   }
+// }).then(response => {
+//   console.log(response);
+// });

@@ -1,6 +1,6 @@
 import React from "react";
-import UserCardExtended from "../presentationals/UserCardExtended";
-import axios from "axios";
+import UserCardExtended from "../components/UserCardExtended";
+import api from "../api/Api";
 
 class Profile extends React.Component {
   constructor() {
@@ -9,15 +9,9 @@ class Profile extends React.Component {
   }
 
   componentWillMount() {
-    axios
-      .get("http://localhost:4000/api/users/" + this.props.match.params.id)
-      .then(response => {
-        this.setState({ user: response.data.data });
-        console.log(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    api.get("/users/" + this.props.match.params.id).then(response => {
+      this.setState({ user: response.data.data });
+    });
   }
 
   render() {
@@ -25,7 +19,7 @@ class Profile extends React.Component {
 
     return (
       <div>
-        <div class="level-right">
+        <div className="level-right">
           <button className="button is-link">Edit Profile</button>
         </div>
         <br />

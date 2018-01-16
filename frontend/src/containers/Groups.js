@@ -1,17 +1,13 @@
 import React from "react";
-import axios from "axios";
 
 class Groups extends React.Component {
   constructor() {
     super();
+    this.state = {};
   }
 
   render() {
-    return (
-      <div>
-          Groups placeholder.
-      </div>
-    );
+    return <div>Groups placeholder.</div>;
   }
 }
 

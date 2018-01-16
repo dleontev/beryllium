@@ -1,12 +1,12 @@
 import React from "react";
-import logo from "../img/blank-profile.png";
+import logo from "../images/blank-profile.png";
 
 class UserCard extends React.Component {
   render() {
     return (
       <section className="section">
-        <figure class="image is-128x128">
-          <img src={logo} className="profile-image" alt="Change profile"/>
+        <figure className="image is-128x128">
+          <img src={logo} className="profile-image" alt="Change profile" />
         </figure>
         <br />
         <div className="container">

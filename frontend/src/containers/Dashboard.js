@@ -1,17 +1,13 @@
 import React from "react";
-import axios from "axios";
 
 class Dashboard extends React.Component {
   constructor() {
     super();
+    this.state = {};
   }
 
   render() {
-    return (
-      <div>
-          Dashboard placeholder.
-      </div>
-    );
+    return <div>Dashboard placeholder.</div>;
   }
 }
 

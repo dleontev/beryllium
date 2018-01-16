@@ -1,7 +1,6 @@
 import React from "react";
-import UserCard from "../presentationals/UserCard";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import UserCard from "../components/UserCard";
+import api from "../api/Api";
 
 class Users extends React.Component {
   constructor() {
@@ -10,14 +9,9 @@ class Users extends React.Component {
   }
 
   componentWillMount() {
-    axios
-      .get("http://localhost:4000/api/users")
-      .then(response => {
-        this.setState({ users: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    api.get(`/users/`).then(response => {
+      this.setState({ users: response.data.data });
+    });
   }
 
   render() {
@@ -37,7 +31,7 @@ class Users extends React.Component {
       <div>
         <br />
         <div className="box">
-          <table class="table is-fullwidth is-striped">
+          <table className="table is-fullwidth is-striped">
             <thead>
               <tr>
                 <th>Name</th>

@@ -15,6 +15,8 @@ import NotFound from "./NotFound";
 
 class App extends Component {
   render() {
+    require('dotenv').config();
+
     return (
       <Router>
         <div>
@@ -23,7 +25,8 @@ class App extends Component {
             <section className="section">
               <div className="container">
                 <Switch>
-                  <Route exact path="/" component={Login} />
+                  <Route exact path="/" component={Dashboard} />
+                  <Route exact path="/login" component={Login} />
                   <Route exact path="/users/" component={Users} />
                   <Route path="/users/:id" component={Profile} />
                   <Route exact path="/register" component={Register} />
@@ -43,3 +46,4 @@ class App extends Component {
 }
 
 export default App;
+

@@ -22,10 +22,14 @@ class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    api.post(`/sessions/`, {
-      email: this.state.email,
-      entered_password: this.state.entered_password
-    });
+    api
+      .post(`/sessions/`, {
+        email: this.state.email,
+        entered_password: this.state.entered_password
+      })
+      .then(response => {
+        localStorage.setItem("token", response.data.meta.token);
+      });
   }
 
   render() {

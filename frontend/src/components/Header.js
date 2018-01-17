@@ -66,7 +66,7 @@ class Header extends React.Component {
           <div className="container">
             <h1 className="title">
               <Link to="/">
-                <div class="logo-border">Be</div>ryllium
+                <div className="logo-border">Be</div>ryllium
               </Link>
             </h1>
             <h2 className="subtitle">A learning management system.</h2>

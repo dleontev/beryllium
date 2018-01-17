@@ -15,7 +15,7 @@ defmodule BackendWeb.SessionsController do
       :error ->
         conn
         |> put_status(:unauthorized)
-		|> send_resp(200, "LOGIN_FAILED")
+		    |> send_resp(200, "LOGIN_FAILED")
     end
   end
 

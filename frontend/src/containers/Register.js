@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import api from "../api/Api";
 
 class CreateUser extends React.Component {
   constructor() {
@@ -40,20 +40,14 @@ class CreateUser extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    axios({
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      url: "http://localhost:4000/api/users",
-      data: {
-        users: {
-          email: this.state.email,
-          first_name: this.state.first_name,
-          middle_name: this.state.middle_name,
-          last_name: this.state.last_name,
-          time_zone: this.state.time_zone,
-          password: this.state.password
-        }
-      }
+
+    api.post(`/users/`, {
+      email: this.state.email,
+      first_name: this.state.first_name,
+      middle_name: this.state.middle_name,
+      last_name: this.state.last_name,
+      time_zone: this.state.time_zone,
+      password: this.state.password
     });
   }
 

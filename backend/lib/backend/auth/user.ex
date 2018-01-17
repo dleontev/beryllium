@@ -22,7 +22,6 @@ defmodule Backend.Auth.User do
     |> cast(attrs, [:id, :email, :first_name, :middle_name, :last_name, :time_zone, :password])
     |> validate_required([:id, :email, :first_name, :last_name, :password])
 	  |> validate_format(:email, ~r/@/)
-    |> unique_constraint(:email)
-    |> unique_constraint(:id)
+    |> unique_constraint(:email, :id)
   end
 end

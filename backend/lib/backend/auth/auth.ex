@@ -36,13 +36,7 @@ defmodule Backend.Auth do
 
   """
   def get_user!(id), do: Repo.get!(User, id)
-<<<<<<< HEAD
-
-
-  def get_user_by_email(email), do: Repo.get!(User,email)
-=======
    
->>>>>>> c9d39d6b0f65f4cd64794888f78e04e6e2410eb6
   @doc """
   Creates a user.
 

@@ -5,8 +5,13 @@ defmodule Backend.Auth do
 
   import Ecto.Query, warn: false
   alias Backend.Repo
-
   alias Backend.Auth.User
+  alias Backend.Auth.Enrollment
+  alias Backend.Auth.Group
+  alias Backend.Auth.Groupset
+  alias Backend.Auth.Role
+  alias Backend.Auth.School
+  alias Backend.Auth.Section
 
   @doc """
   Returns the list of users.

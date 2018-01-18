@@ -7,7 +7,6 @@ defmodule Backend.Auth.Enrollment do
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "enrollments" do
     field :userid, :binary_id
-    field :courseid, :binary_id
     field :sectionid, :binary_id
     field :roleid, :binary_id
   end

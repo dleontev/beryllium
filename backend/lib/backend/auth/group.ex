@@ -6,7 +6,7 @@ defmodule Backend.Auth.Group do
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "groups" do
     field :name, :string
-    field groupsetid, :binary_id
+    field :groupsetid, :binary_id
   end
 
   @doc false

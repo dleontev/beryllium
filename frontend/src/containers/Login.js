@@ -8,7 +8,6 @@ class Login extends React.Component {
     this.state = {
       entered_password: "",
       email: "",
-      signed_in: false
     };
   }
 
@@ -32,9 +31,8 @@ class Login extends React.Component {
         localStorage.setItem("token", response.data.meta.token);
 
         ///////////////// FOR TESTING ONLY /////////////////////
-        this.props.history.push('/account');
+        this.props.history.push("/account");
         ////////////////////////////////////////////////////////
-        
       });
   }
 
@@ -58,7 +56,7 @@ class Login extends React.Component {
                   value={this.state.email}
                   onChange={this.handleEmail.bind(this)}
                 />
-                <span className="icon is-small is-left">
+                <span className="icon is-medium is-left">
                   <i className="fa fa-envelope-o" aria-hidden="true" />
                 </span>
               </div>
@@ -73,7 +71,7 @@ class Login extends React.Component {
                   value={this.state.entered_password}
                   onChange={this.handlePassword.bind(this)}
                 />
-                <span className="icon is-small is-left">
+                <span className="icon is-medium is-left">
                   <i className="fa fa-lock" aria-hidden="true" />
                 </span>
               </div>

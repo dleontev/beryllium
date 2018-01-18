@@ -787,7 +787,7 @@ defmodule Backend.Auth do
   end
 
   @doc """
-  Returns a combine courses query.
+  Returns a combined courses query.
   """
   def list_courses(conn, user_id) do
     query = from u in User,

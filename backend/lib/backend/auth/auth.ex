@@ -125,8 +125,22 @@ defmodule Backend.Auth do
       [%Course{}, ...]
 
   """
-  def list_courses do
-    Repo.all(Course)
+  def list_courses(conn) do
+    %{id: id, email: email, first_name: first_name, middle_name: middle_name, 
+    last_name: last_name, password: password, time_zone: time_zone} = Guardian.Plug.current_resource(conn)
+    query = from u in User,
+        join: e in Enrollment, on: u.id == e.userid,
+        join: s in Section, on: e.sectionid == s.id,
+        join: c in Course, on: s.courseid == c.id,
+        select: {map(s, [:id, :name]), map(c, [:start_date, :end_date])}
+    result = Repo.all(query)
+    result = Enum.each(result, fn(x) -> Enum.each(x, fn(y) -> extract_course_info(y) end) end)
+  end
+
+
+  defp extract_course_info(result) do
+    {%{id: id, name: name}, %{start_date: start_date, end_date: end_date}} = result
+    %{id: id, name: name, start_date: start_date, end_date: end_date}
   end
 
   @doc """

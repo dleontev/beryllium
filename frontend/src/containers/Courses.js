@@ -29,7 +29,6 @@ class Courses extends React.Component {
       return (
         <CourseCard
           key = {index}
-          id = {course.id}
           name = {course.name}
           start_date = {course.start_date}
           end_date = {course.end_date}

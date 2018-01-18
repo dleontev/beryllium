@@ -10,7 +10,6 @@ defmodule Backend.Auth.User do
     field :first_name, :string
     field :middle_name, :string
     field :last_name, :string
-    field :time_zone, :integer
     field :password, :string
 	  field :entered_password, :string, virtual: true
     #timestamps()

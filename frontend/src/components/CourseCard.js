@@ -7,7 +7,7 @@ class CourseCard extends React.Component {
       <tr>
         <td>
           <Link to={"/courses/" + this.props.id}>
-            {this.props.name}{" "}
+            {this.props.id}{" "}
           </Link>
         </td>
         <td>{this.props.start_date}</td>

@@ -22,7 +22,6 @@ class Users extends React.Component {
         first_name={user.first_name}
         last_name={user.last_name}
         middle_name={user.middle_name}
-        time_zone={user.time_zone}
         email={user.email}
       />
     ));
@@ -36,7 +35,6 @@ class Users extends React.Component {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Timezone</th>
                 <th>Id</th>
               </tr>
             </thead>

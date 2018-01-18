@@ -22,14 +22,15 @@ defmodule BackendWeb.UserController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, _params) do
+    %{id: id} = Guardian.Plug.current_resource(conn)
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
   end
 
-  def show(conn, %{"user" => %{"email" => email, "password" => password}}) do
-    user = %{email: email, password: password}
-    render(conn, "validate.json", user: user)
+  def show(conn, %{"id" => id}) do
+    user = Auth.get_user!(id)
+    render(conn, "show.json", user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

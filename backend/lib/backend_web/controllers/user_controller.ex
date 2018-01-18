@@ -12,8 +12,8 @@ defmodule BackendWeb.UserController do
   end
 
   def create(conn, %{"users" => %{"email" => email, "first_name" => first_name,
-  "middle_name" => middle_name, "last_name" => last_name, "time_zone" => time_zone, "password" => password}}) do
-    user_params = %{id: Ecto.UUID.generate(), email: email, first_name: first_name, middle_name: middle_name, last_name: last_name, time_zone: time_zone, password: Auth.hash_password(password)}
+  "middle_name" => middle_name, "last_name" => last_name, "password" => password}}) do
+    user_params = %{id: Ecto.UUID.generate(), email: email, first_name: first_name, middle_name: middle_name, last_name: last_name, password: Auth.hash_password(password)}
     with {:ok, %User{} = user} <- Auth.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -21,13 +21,11 @@ defmodule BackendWeb.UserController do
       |> render("show.json", user: user)
     end
   end
-  @doc"""
+
   def show(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
   end
-  """
-
 
   def show(conn, %{"user" => %{"email" => email, "password" => password}}) do
     user = %{email: email, password: password}

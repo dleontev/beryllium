@@ -30,10 +30,6 @@ class CreateUser extends React.Component {
     this.setState({ last_name: event.target.value });
   }
 
-  handleTimeZone(event) {
-    this.setState({ time_zone: event.target.value });
-  }
-
   handlePassword(event) {
     this.setState({ password: event.target.value });
   }
@@ -104,18 +100,6 @@ class CreateUser extends React.Component {
           </div>
 
           <div className="field">
-            <label className="label">Time Zone</label>
-            <div className="control">
-              <input
-                className="input"
-                type="text"
-                value={this.state.time_zone}
-                onChange={this.handleTimeZone.bind(this)}
-              />
-            </div>
-          </div>
-
-          <div className="field">
             <label className="label">Password</label>
             <div className="control">
               <input
@@ -126,6 +110,23 @@ class CreateUser extends React.Component {
               />
             </div>
           </div>
+
+{/*
+          <div className="file">
+            <label className="label">
+            <div className="control">
+              <input className="file-input" type="file" name="profile" />
+              <span className="file-cta">
+                <span className="file-icon">
+                  <i className="fa fa-upload" />
+                </span>
+                <span className="file-label">Choose a file…</span>
+              </span>
+            </div>
+            </label>
+          </div>
+*/}
+          <br />
 
           <button type="submit" value="Submit" className="button is-link">
             Submit

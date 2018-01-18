@@ -12,7 +12,6 @@ class UserCard extends React.Component {
           </Link>
         </td>
         <td>{this.props.email}</td>
-        <td>{this.props.time_zone}</td>
         <td>{this.props.id}</td>
       </tr>
     );

@@ -1,7 +1,6 @@
 import React from "react";
 import api from "../api/Api";
 import CourseCard from "../components/CourseCard";
-import axios from "axios";
 
 class Courses extends React.Component {
   constructor() {
@@ -11,17 +10,10 @@ class Courses extends React.Component {
     };
   }
 
-
   componentWillMount(){
-    var config = {
-      headers: {
-        "Authorization": "Bearer "+ localStorage.getItem('token')
-      }
-    }
-    axios.get("http://localhost:4000/api/courses", config).then(response => {
-      console.log(response);
-      this.setState({courses: response.data.data});
-    });
+    api.get(`/courses/`).then(response => {
+      this.setState({ courses: response.data.data });
+    });    
   }
 
   render() {
@@ -43,9 +35,11 @@ class Courses extends React.Component {
           <table className="table is-fullwidth is-striped">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Course</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Enrolled as</th>
+                <th>Published</th>
               </tr>
             </thead>
             <tbody>{courses}</tbody>

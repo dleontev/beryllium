@@ -466,4 +466,120 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_section(section)
     end
   end
+
+  describe "courselists" do
+    alias Backend.Auth.CourseList
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def course_list_fixture(attrs \\ %{}) do
+      {:ok, course_list} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_course_list()
+
+      course_list
+    end
+
+    test "list_courselists/0 returns all courselists" do
+      course_list = course_list_fixture()
+      assert Auth.list_courselists() == [course_list]
+    end
+
+    test "get_course_list!/1 returns the course_list with given id" do
+      course_list = course_list_fixture()
+      assert Auth.get_course_list!(course_list.id) == course_list
+    end
+
+    test "create_course_list/1 with valid data creates a course_list" do
+      assert {:ok, %CourseList{} = course_list} = Auth.create_course_list(@valid_attrs)
+    end
+
+    test "create_course_list/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_course_list(@invalid_attrs)
+    end
+
+    test "update_course_list/2 with valid data updates the course_list" do
+      course_list = course_list_fixture()
+      assert {:ok, course_list} = Auth.update_course_list(course_list, @update_attrs)
+      assert %CourseList{} = course_list
+    end
+
+    test "update_course_list/2 with invalid data returns error changeset" do
+      course_list = course_list_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_course_list(course_list, @invalid_attrs)
+      assert course_list == Auth.get_course_list!(course_list.id)
+    end
+
+    test "delete_course_list/1 deletes the course_list" do
+      course_list = course_list_fixture()
+      assert {:ok, %CourseList{}} = Auth.delete_course_list(course_list)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_course_list!(course_list.id) end
+    end
+
+    test "change_course_list/1 returns a course_list changeset" do
+      course_list = course_list_fixture()
+      assert %Ecto.Changeset{} = Auth.change_course_list(course_list)
+    end
+  end
+
+  describe "course_list_view" do
+    alias Backend.Auth.CourseList
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def course_list_fixture(attrs \\ %{}) do
+      {:ok, course_list} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_course_list()
+
+      course_list
+    end
+
+    test "list_course_list_view/0 returns all course_list_view" do
+      course_list = course_list_fixture()
+      assert Auth.list_course_list_view() == [course_list]
+    end
+
+    test "get_course_list!/1 returns the course_list with given id" do
+      course_list = course_list_fixture()
+      assert Auth.get_course_list!(course_list.id) == course_list
+    end
+
+    test "create_course_list/1 with valid data creates a course_list" do
+      assert {:ok, %CourseList{} = course_list} = Auth.create_course_list(@valid_attrs)
+    end
+
+    test "create_course_list/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_course_list(@invalid_attrs)
+    end
+
+    test "update_course_list/2 with valid data updates the course_list" do
+      course_list = course_list_fixture()
+      assert {:ok, course_list} = Auth.update_course_list(course_list, @update_attrs)
+      assert %CourseList{} = course_list
+    end
+
+    test "update_course_list/2 with invalid data returns error changeset" do
+      course_list = course_list_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_course_list(course_list, @invalid_attrs)
+      assert course_list == Auth.get_course_list!(course_list.id)
+    end
+
+    test "delete_course_list/1 deletes the course_list" do
+      course_list = course_list_fixture()
+      assert {:ok, %CourseList{}} = Auth.delete_course_list(course_list)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_course_list!(course_list.id) end
+    end
+
+    test "change_course_list/1 returns a course_list changeset" do
+      course_list = course_list_fixture()
+      assert %Ecto.Changeset{} = Auth.change_course_list(course_list)
+    end
+  end
 end

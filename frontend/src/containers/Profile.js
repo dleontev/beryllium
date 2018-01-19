@@ -1,5 +1,5 @@
 import React from "react";
-import UserCardExtended from "../components/UserCardExtended";
+import UserProfileCard from "../components/UserProfileCard";
 import api from "../api/Api";
 
 class Profile extends React.Component {
@@ -19,12 +19,8 @@ class Profile extends React.Component {
 
     return (
       <div>
-        <div className="level-right">
-          <button className="button is-link">Edit Profile</button>
-        </div>
-        <br />
         <div className="box">
-          <UserCardExtended
+          <UserProfileCard
             id={user.id}
             first_name={user.first_name}
             last_name={user.last_name}

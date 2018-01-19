@@ -1,5 +1,5 @@
 import React from "react";
-import UserCard from "../components/UserCard";
+import UserTableCard from "../components/UserTableCard";
 import api from "../api/Api";
 
 class Users extends React.Component {
@@ -9,14 +9,14 @@ class Users extends React.Component {
   }
 
   componentWillMount() {
-    api.get(`/users/`).then(response => {
+    api.get('/users/').then(response => {
       this.setState({ users: response.data.data });
     });
   }
 
   render() {
     const users = this.state.users.map((user, index) => (
-      <UserCard
+      <UserTableCard
         key={index}
         id={user.id}
         first_name={user.first_name}
@@ -33,9 +33,9 @@ class Users extends React.Component {
           <table className="table is-fullwidth is-striped">
             <thead>
               <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Id</th>
               </tr>
             </thead>
             <tbody>{users}</tbody>

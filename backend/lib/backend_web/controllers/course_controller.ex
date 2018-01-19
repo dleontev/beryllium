@@ -7,8 +7,12 @@ defmodule BackendWeb.CourseController do
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do
+<<<<<<< HEAD
     #IO.puts(to_string(Guardian.Plug.current_resource(conn)))
     courses = Auth.list_courses(conn)
+=======
+    courses = Auth.list_courses()
+>>>>>>> adf92ec1877655751274bb92e05beea2e2c0fa7a
     render(conn, "index.json", courses: courses)
   end
 
@@ -24,6 +28,12 @@ defmodule BackendWeb.CourseController do
   def show(conn, %{"id" => id}) do
     course = Auth.get_course!(id)
     render(conn, "show.json", course: course)
+  end
+
+  def show_all(conn, _params) do
+    %{id: id} = Guardian.Plug.current_resource(conn)
+    courses = Auth.list_courses(conn, id)
+    render(conn, "show_all.json", courses: courses)
   end
 
   def update(conn, %{"id" => id, "course" => course_params}) do

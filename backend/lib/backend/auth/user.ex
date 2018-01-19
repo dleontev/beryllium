@@ -18,7 +18,7 @@ defmodule Backend.Auth.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:id, :email, :first_name, :middle_name, :last_name, :time_zone, :password])
+    |> cast(attrs, [:id, :email, :first_name, :middle_name, :last_name, :password])
     |> validate_required([:id, :email, :first_name, :last_name, :password])
 	  |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email, :id)

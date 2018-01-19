@@ -797,4 +797,24 @@ defmodule Backend.Auth do
   def change_section(%Section{} = section) do
     Section.changeset(section, %{})
   end
+
+  @doc """
+  Returns a combined courses query.
+  """
+  def list_courses(conn, user_id) do
+    query = from u in User,
+        join: e in Enrollment, on: u.id == e.userid and u.id == ^user_id,
+        join: s in Section, on: e.sectionid == s.id,
+        join: c in Course, on: s.courseid == c.id,
+        join: r in Role, on: e.roleid == r.id,
+        select: {map(s, [:name]), map(c, [:id, :code, :name, :start_date, :end_date, :visible]), map(r, [:name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_course_info(x) | acc] end)
+  end
+
+  @doc """
+  Remaps the results of a combined query into a single map.
+  """
+  defp extract_course_info({%{name: section_name}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date, visible: visible,}, %{name: role_name}}) do
+    %{section_name: section_name, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, visible: visible, role_name: role_name}
+  end
 end

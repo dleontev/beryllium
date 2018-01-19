@@ -15,9 +15,6 @@ defmodule BackendWeb.CourseView do
   end
 
   def render("course.json", %{course: course}) do
-<<<<<<< HEAD
-    %{id: course.id, code: course.code, start_date: course.start_date, end_date: course.end_date}
-=======
     %{id: course.id, name: course.name, code: course.code}
   end
 
@@ -25,6 +22,5 @@ defmodule BackendWeb.CourseView do
     %{id: course.id, course_code: course.course_code, course_name: course.course_name, 
     section_name: course.section_name, start_date: course.start_date, 
     end_date: course.end_date, visible: course.visible, role_name: course.role_name }
->>>>>>> adf92ec1877655751274bb92e05beea2e2c0fa7a
   end
 end

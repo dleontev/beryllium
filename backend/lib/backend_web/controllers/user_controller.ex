@@ -28,10 +28,12 @@ defmodule BackendWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
+@doc"""
   def show(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
   end
+  """
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Auth.get_user!(id)

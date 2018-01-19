@@ -11,6 +11,6 @@ defmodule BackendWeb.CourseView do
   end
 
   def render("course.json", %{course: course}) do
-    %{id: course.id}
+    %{id: course.id, code: course.code, start_date: course.start_date, end_date: course.end_date}
   end
 end

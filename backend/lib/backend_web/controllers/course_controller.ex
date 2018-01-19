@@ -7,12 +7,8 @@ defmodule BackendWeb.CourseController do
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do
-<<<<<<< HEAD
     #IO.puts(to_string(Guardian.Plug.current_resource(conn)))
     courses = Auth.list_courses(conn)
-=======
-    courses = Auth.list_courses()
->>>>>>> adf92ec1877655751274bb92e05beea2e2c0fa7a
     render(conn, "index.json", courses: courses)
   end
 

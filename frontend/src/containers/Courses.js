@@ -19,13 +19,6 @@ class Courses extends React.Component {
   render() {
     const courses = this.state.courses.map((course, index) => {
       return (
-<<<<<<< HEAD
-        <CourseCard
-          key = {index}
-          name = {course.name}
-          start_date = {course.start_date}
-          end_date = {course.end_date}
-=======
         <CourseTableCard
           key={index}
           id={course.id}
@@ -36,7 +29,6 @@ class Courses extends React.Component {
           end_date={new Date(course.end_date).toLocaleDateString()}
           start_date={new Date(course.start_date).toLocaleDateString()}
           visible={course.visible ? "Yes" : "No"}
->>>>>>> adf92ec1877655751274bb92e05beea2e2c0fa7a
         />
       );
     });

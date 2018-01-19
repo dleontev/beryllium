@@ -67,38 +67,31 @@ class Header extends React.Component {
     }
 
     return (
-      <section className="hero is-link">
-        <div className="hero-head">
-          <nav className="navbar">
-            <div className="container">
-              <div className="navbar-brand">
-                <span
-                  className="navbar-burger burger"
-                  data-target="navbarMenuHeroB"
-                >
-                  <span />
-                  <span />
-                  <span />
+      <section class="hero is-link is-small">
+        <div class="hero-head">
+          <nav class="navbar">
+            <div class="container">
+              <div class="navbar-brand">
+                <a class="navbar-item">
+                  <h1 className="is-size-4">
+                    <Link to="/">
+                      <div className="logo-border">Be</div>ryllium
+                    </Link>
+                  </h1>
+                </a>
+                <span class="navbar-burger burger" data-target="navbarMenuHeroA">
+                  <span></span>
+                  <span></span>
+                  <span></span>
                 </span>
               </div>
-              <div id="navbarMenuHeroB" className="navbar-menu">
+              <div id="navbarMenuHeroA" class="navbar-menu">
                 {headerMenu}
               </div>
             </div>
           </nav>
         </div>
-
-        <div className="hero-body">
-          <div className="container">
-            <h1 className="title">
-              <Link to="/">
-                <div className="logo-border">Be</div>ryllium
-              </Link>
-            </h1>
-            <h2 className="subtitle">A learning management system.</h2>
-          </div>
-        </div>
-      </section>
+    </section>
     );
   }
 }

@@ -31,12 +31,20 @@ class Dashboard extends React.Component {
 
     return (
       <div className="container is-fluid">
-        <nav class="level">
-          <div class="level-left">
+        <nav className="level">
+          <div className="level-left">
             <p className="title is-5">Dashboard</p>
           </div>
+          <div className="level-right">
+            <p className="title is-5">Recent</p>
+          </div>
         </nav>
-        <div class="tile is-ancestor">{tiles}</div>
+        
+        <div className="tile is-ancestor is-vertical">
+          {tiles}
+        </div>
+
+        {/*<div className="tile is-ancestor">{tiles}</div>*/}
       </div>
     );
   }

@@ -5,9 +5,9 @@ class CourseTableCard extends React.Component {
   render() {
     return (
       <tr>
-        <td style={{ "text-align": "left" }}>
-          <Link to={"/courses/" + this.props.id}>
-            {this.props.course_code} {this.props.section_name}
+        <td style={{ textAlign: "left" }}>
+          <Link to={"/courses/" + this.props.section_id}>
+            {this.props.course_code}
             {": "}
             {this.props.course_name}
           </Link>

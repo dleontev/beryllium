@@ -111,23 +111,6 @@ class CreateUser extends React.Component {
             </div>
           </div>
 
-{/*
-          <div className="file">
-            <label className="label">
-            <div className="control">
-              <input className="file-input" type="file" name="profile" />
-              <span className="file-cta">
-                <span className="file-icon">
-                  <i className="fa fa-upload" />
-                </span>
-                <span className="file-label">Choose a file…</span>
-              </span>
-            </div>
-            </label>
-          </div>
-*/}
-          <br />
-
           <button type="submit" value="Submit" className="button is-link">
             Submit
           </button>

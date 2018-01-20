@@ -582,4 +582,178 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_course_list(course_list)
     end
   end
+
+  describe "announcements" do
+    alias Backend.Auth.Announcement
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def announcement_fixture(attrs \\ %{}) do
+      {:ok, announcement} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_announcement()
+
+      announcement
+    end
+
+    test "list_announcements/0 returns all announcements" do
+      announcement = announcement_fixture()
+      assert Auth.list_announcements() == [announcement]
+    end
+
+    test "get_announcement!/1 returns the announcement with given id" do
+      announcement = announcement_fixture()
+      assert Auth.get_announcement!(announcement.id) == announcement
+    end
+
+    test "create_announcement/1 with valid data creates a announcement" do
+      assert {:ok, %Announcement{} = announcement} = Auth.create_announcement(@valid_attrs)
+    end
+
+    test "create_announcement/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_announcement(@invalid_attrs)
+    end
+
+    test "update_announcement/2 with valid data updates the announcement" do
+      announcement = announcement_fixture()
+      assert {:ok, announcement} = Auth.update_announcement(announcement, @update_attrs)
+      assert %Announcement{} = announcement
+    end
+
+    test "update_announcement/2 with invalid data returns error changeset" do
+      announcement = announcement_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_announcement(announcement, @invalid_attrs)
+      assert announcement == Auth.get_announcement!(announcement.id)
+    end
+
+    test "delete_announcement/1 deletes the announcement" do
+      announcement = announcement_fixture()
+      assert {:ok, %Announcement{}} = Auth.delete_announcement(announcement)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_announcement!(announcement.id) end
+    end
+
+    test "change_announcement/1 returns a announcement changeset" do
+      announcement = announcement_fixture()
+      assert %Ecto.Changeset{} = Auth.change_announcement(announcement)
+    end
+  end
+
+  describe "posts" do
+    alias Backend.Auth.Post
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def post_fixture(attrs \\ %{}) do
+      {:ok, post} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_post()
+
+      post
+    end
+
+    test "list_posts/0 returns all posts" do
+      post = post_fixture()
+      assert Auth.list_posts() == [post]
+    end
+
+    test "get_post!/1 returns the post with given id" do
+      post = post_fixture()
+      assert Auth.get_post!(post.id) == post
+    end
+
+    test "create_post/1 with valid data creates a post" do
+      assert {:ok, %Post{} = post} = Auth.create_post(@valid_attrs)
+    end
+
+    test "create_post/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_post(@invalid_attrs)
+    end
+
+    test "update_post/2 with valid data updates the post" do
+      post = post_fixture()
+      assert {:ok, post} = Auth.update_post(post, @update_attrs)
+      assert %Post{} = post
+    end
+
+    test "update_post/2 with invalid data returns error changeset" do
+      post = post_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_post(post, @invalid_attrs)
+      assert post == Auth.get_post!(post.id)
+    end
+
+    test "delete_post/1 deletes the post" do
+      post = post_fixture()
+      assert {:ok, %Post{}} = Auth.delete_post(post)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_post!(post.id) end
+    end
+
+    test "change_post/1 returns a post changeset" do
+      post = post_fixture()
+      assert %Ecto.Changeset{} = Auth.change_post(post)
+    end
+  end
+
+  describe "membership" do
+    alias Backend.Auth.Memberships
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def memberships_fixture(attrs \\ %{}) do
+      {:ok, memberships} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_memberships()
+
+      memberships
+    end
+
+    test "list_membership/0 returns all membership" do
+      memberships = memberships_fixture()
+      assert Auth.list_membership() == [memberships]
+    end
+
+    test "get_memberships!/1 returns the memberships with given id" do
+      memberships = memberships_fixture()
+      assert Auth.get_memberships!(memberships.id) == memberships
+    end
+
+    test "create_memberships/1 with valid data creates a memberships" do
+      assert {:ok, %Memberships{} = memberships} = Auth.create_memberships(@valid_attrs)
+    end
+
+    test "create_memberships/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_memberships(@invalid_attrs)
+    end
+
+    test "update_memberships/2 with valid data updates the memberships" do
+      memberships = memberships_fixture()
+      assert {:ok, memberships} = Auth.update_memberships(memberships, @update_attrs)
+      assert %Memberships{} = memberships
+    end
+
+    test "update_memberships/2 with invalid data returns error changeset" do
+      memberships = memberships_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_memberships(memberships, @invalid_attrs)
+      assert memberships == Auth.get_memberships!(memberships.id)
+    end
+
+    test "delete_memberships/1 deletes the memberships" do
+      memberships = memberships_fixture()
+      assert {:ok, %Memberships{}} = Auth.delete_memberships(memberships)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_memberships!(memberships.id) end
+    end
+
+    test "change_memberships/1 returns a memberships changeset" do
+      memberships = memberships_fixture()
+      assert %Ecto.Changeset{} = Auth.change_memberships(memberships)
+    end
+  end
 end

@@ -228,7 +228,7 @@ pre code {
 
 table td,
 table th {
-  text-align: center;
+  text-align: left;
   vertical-align: center;
 }
 
@@ -4877,7 +4877,7 @@ a.box:active {
 .table thead th {
   border-width: 0 0 2px;
   color: #363636;
-  text-align: center;
+  text-align: left;
 }
 
 .table tfoot td,
@@ -10701,7 +10701,7 @@ label.panel-block:hover {
 }
 
 .section {
-  padding: 3rem 1.5rem;
+  padding: 1.5rem 2rem;
 }
 
 @media screen and (min-width: 1024px) {

@@ -11,7 +11,7 @@ class Courses extends React.Component {
   }
 
   componentWillMount() {
-    api.get(`/course_list/`).then(response => {
+    api.get(`/courses/user/all`).then(response => {
       this.setState({ courses: response.data.data });
     });
   }
@@ -25,6 +25,7 @@ class Courses extends React.Component {
           course_name={course.course_name}
           course_code={course.course_code}
           section_name={course.section_name}
+          section_id={course.section_id}
           role_name={course.role_name}
           end_date={new Date(course.end_date).toLocaleDateString()}
           start_date={new Date(course.start_date).toLocaleDateString()}
@@ -35,16 +36,16 @@ class Courses extends React.Component {
 
     return (
       <div>
-        <nav class="level">
-          <div class="level-left">
-            <p className="title is-5">All Courses</p>
+        <nav className="level">
+          <div className="level-left">
+            <p className="title is-5">Your Courses</p>
           </div>
         </nav>
         <div className="box">
           <table className="table is-fullwidth is-striped">
             <thead>
               <tr>
-                <th style={{ "text-align": "left" }}>Name</th>
+                <th style={{ textAlign: "left" }}>Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Enrolled as</th>

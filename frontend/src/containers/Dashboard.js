@@ -11,7 +11,7 @@ class Dashboard extends React.Component {
   }
 
   componentWillMount() {
-    api.get(`/course_list/`).then(response => {
+    api.get(`/courses/user/all`).then(response => {
       this.setState({ courses: response.data.data });
     });
   }
@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
     });
 
     return (
-      <div className="container is-fluid">
+      <div>
         <nav className="level">
           <div className="level-left">
             <p className="title is-5">Dashboard</p>
@@ -39,12 +39,7 @@ class Dashboard extends React.Component {
             <p className="title is-5">Recent</p>
           </div>
         </nav>
-        
-        <div className="tile is-ancestor is-vertical">
-          {tiles}
-        </div>
-
-        {/*<div className="tile is-ancestor">{tiles}</div>*/}
+        <div className="tile is-ancestor is-vertical">{tiles}</div>
       </div>
     );
   }

@@ -28,12 +28,15 @@ defmodule BackendWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-@doc"""
-  def show(conn, %{"id" => id}) do
-    user = Auth.get_user!(id)
-    render(conn, "show.json", user: user)
+  def show_by_course(conn, %{"section_id" => section_id}) do
+    users = Auth.list_users_by_section(section_id)
+    render(conn, "index_by_course.json", users: users)
   end
-  """
+
+  def show_by_group(conn, %{"group_id" => group_id}) do
+    users = Auth.list_users_by_group(group_id)
+    render(conn, "index.json", users: users)
+  end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Auth.get_user!(id)

@@ -25,6 +25,12 @@ defmodule BackendWeb.GroupController do
     render(conn, "show.json", group: group)
   end
 
+  def show_all(conn, _params) do
+    %{id: id} = Guardian.Plug.current_resource(conn)
+    groups = Auth.list_groups(id)
+    render(conn, "show_all.json", groups: groups)
+  end
+
   def update(conn, %{"id" => id, "group" => group_params}) do
     group = Auth.get_group!(id)
 

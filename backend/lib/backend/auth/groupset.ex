@@ -5,7 +5,7 @@ defmodule Backend.Auth.Groupset do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "groupsets" do
-    field :courseid, :binary_id
+    field :sectionid, :binary_id
     field :name, :string
   end
 

@@ -7,7 +7,7 @@ class Login extends React.Component {
     super();
     this.state = {
       entered_password: "",
-      email: "",
+      email: ""
     };
   }
 
@@ -76,13 +76,24 @@ class Login extends React.Component {
                 </span>
               </div>
             </div>
-            <button type="submit" value="Submit" className="button is-link">
-              Login
-            </button>
-            <div className="divider" />
-            <Link to="/register">
-              <button className="button is-primary">Register</button>
-            </Link>
+            <div className="level-right">
+              <div className="field is-grouped">
+                <div className="control">
+                  <Link to="/register">
+                    <button className="button is-primary">Register</button>
+                  </Link>
+                </div>
+                <div className="control">
+                  <button
+                    type="submit"
+                    value="Submit"
+                    className="button is-link"
+                  >
+                    Login
+                  </button>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

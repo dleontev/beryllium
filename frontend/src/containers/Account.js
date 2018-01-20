@@ -13,14 +13,14 @@ class Profile extends React.Component {
       this.setState({ user: response.data.data });
     });
 
-    api.get("/course_list").then(response => {
+    api.get("/courses/user/all").then(response => {
       this.setState({ courses: response.data.data });
     });
   }
 
   render() {
     return (
-      <div className="container" style={{ width: "50%" }}>
+      <div className="container">
         <div className="level-right">
           <button className="button is-link">Edit Profile</button>
         </div>

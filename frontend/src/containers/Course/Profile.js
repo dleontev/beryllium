@@ -1,6 +1,6 @@
 import React from "react";
-import UserProfileCard from "../components/UserProfileCard";
-import api from "../api/Api";
+import UserProfileCard from "../../components/UserProfileCard";
+import api from "../../api/Api";
 
 class Profile extends React.Component {
   constructor() {
@@ -9,7 +9,7 @@ class Profile extends React.Component {
   }
 
   componentWillMount() {
-    api.get("/users/" + this.props.match.params.id).then(response => {
+    api.get("/users/" + this.props.match.params.user_id).then(response => {
       this.setState({ user: response.data.data });
     });
   }

@@ -11,6 +11,7 @@ class UserProfileCard extends React.Component {
         role_name={course.role_name}
         course_name={course.course_name}
         section_name={course.section_name}
+        section_id={course.section_id}
         course_code={course.course_code}
       />
     ));

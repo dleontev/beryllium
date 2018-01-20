@@ -69,6 +69,7 @@ defmodule Backend.Auth do
     Repo.all(
         from u in User,
         join: m in Membership, on: m.userid == u.id and m.groupid == ^group_id,
+        order_by: [asc: u.last_name, asc: u.first_name, ],
         select: [:id, :first_name, :last_name, :middle_name, :email])
   end
 

@@ -1,22 +1,38 @@
 import React from "react";
+import api from "../../api/Api";
 import { Link } from "react-router-dom";
+import AnnouncementCard from "../../components/AnnouncementCard";
 
 class Announcements extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { announcements: [] };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    api
+      .get("/announcements/sections/" + this.props.match.params.id)
+      .then(response => {
+        this.setState({ announcements: response.data.data });
+      });
+  }
 
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
-    var announcements = null;
+    var announcements = this.state.announcements.map((announcement, index) => (
+      <AnnouncementCard
+        key={index}
+        id={announcement.id}
+        title={announcement.title}
+        author={announcement.first_name + " " + announcement.last_name}
+        inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
+        updated_at={new Date(announcement.updated_at).toLocaleDateString()}
+        content={announcement.content}
+      />
+    ));
 
-    if (announcements == null) {
+    if (announcements.length === 0) {
       announcements = "No announcements found.";
     }
-    ////////////////////////////////////////////////////////
 
     return (
       <div>
@@ -35,7 +51,7 @@ class Announcements extends React.Component {
           </div>
         </nav>
 
-        <div>{announcements}</div>
+        <div className="section">{announcements}</div>
       </div>
     );
   }

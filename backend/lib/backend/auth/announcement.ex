@@ -8,7 +8,6 @@ defmodule Backend.Auth.Announcement do
     field :sectionid, :binary_id
     field :postid, :binary_id
     field :title, :string
-    timestamps()
   end
 
   @doc false

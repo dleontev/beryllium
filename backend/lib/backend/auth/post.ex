@@ -7,8 +7,8 @@ defmodule Backend.Auth.Post do
   schema "posts" do
     field :userid, :binary_id
     field :parentid, :binary_id
-    field :posted_at, :utc_datetime
     field :content, :string
+    timestamps()
   end
 
   @doc false

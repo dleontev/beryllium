@@ -17,6 +17,7 @@ defmodule Backend.Auth do
   alias Backend.Auth.Group
   alias Backend.Auth.Groupset
   alias Backend.Auth.Membership
+  alias Backend.Auth.Post
 
   @doc """
   Returns the list of users.
@@ -46,6 +47,7 @@ defmodule Backend.Auth do
         join: s in Section, on: e.sectionid == s.id and s.id == ^section_id,
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
+        order_by: [desc: u.last_name, desc: u.first_name, ],         
         select: {map(s, [:name]), map(u, [:first_name, :last_name, :middle_name]), map(c, [:code]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_user_info(x) | acc] end)  
   end
@@ -367,6 +369,7 @@ defmodule Backend.Auth do
         join: m in Membership, on: m.groupid == g.id and m.userid == ^user_id,
         join: s in Section, on: s.id == gs.sectionid,
         join: c in Course, on: s.courseid == c.id,
+        order_by: [desc: c.name, desc: g.name], 
         select: {map(g, [:id, :name]), map(c, [:name, :code]), map(s, [:id])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_group_info(x) | acc] end)  
   end
@@ -848,6 +851,7 @@ defmodule Backend.Auth do
         join: s in Section, on: e.sectionid == s.id,
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
+        order_by: [desc: c.code],        
         select: {map(s, [:name, :id]), map(c, [:id, :code, :name, :start_date, :end_date, :visible]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_course_info(x) | acc] end)
   end
@@ -869,6 +873,23 @@ defmodule Backend.Auth do
   """
   def list_announcements do
     Repo.all(Announcement)
+  end
+
+  @doc """
+  Returns the announcements for the given sections.
+  """
+  def list_announcements(section_id) do
+    query = from a in Announcement,
+        join: p in Post, on: a.postid == p.id,
+        join: u in User, on: u.id == p.userid,
+        order_by: p.inserted_at,
+        where: a.sectionid == ^section_id,
+        select: {map(a, [:title, :id]), map(p, [:content, :inserted_at, :updated_at]), map(u, [:first_name, :last_name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_announcement_info(x) | acc] end)
+  end
+
+  defp extract_announcement_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
+    %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, first_name: first_name, last_name: last_name}
   end
 
   @doc """
@@ -951,8 +972,6 @@ defmodule Backend.Auth do
   def change_announcement(%Announcement{} = announcement) do
     Announcement.changeset(announcement, %{})
   end
-
-  alias Backend.Auth.Post
 
   @doc """
   Returns the list of posts.

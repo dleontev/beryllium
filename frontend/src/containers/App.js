@@ -20,6 +20,14 @@ import Account from "./Account";
 import NotFound from "./NotFound";
 
 class App extends Component {
+  /*//////////// INCOMPLETE AUTHENTICATION CHECK /////*/
+  checkAuthentication() {
+    if (localStorage.getItem("token") === null) return <Redirect to="/login" />;
+
+    return;
+  }
+  /*/////////////////////////////////////////////////*/
+
   render() {
     return (
       <Router>
@@ -30,14 +38,13 @@ class App extends Component {
               <Route exact path="/" component={Login} />
 
               <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
 
               {/*//////////// INCOMPLETE AUTHENTICATION CHECK /////*/}
-              {(localStorage.getItem("token") === null) ?
-                  <Redirect to="/login" /> : ""}
+              {this.checkAuthentication()}
               {/*/////////////////////////////////////////////////*/}
 
               <Route exact path="/account" component={Account} />
-              <Route exact path="/register" component={Register} />
 
               <Route exact path="/courses" component={Courses} />
               <Route path="/courses/:id" component={Course} />

@@ -7,7 +7,8 @@ class Login extends React.Component {
     super();
     this.state = {
       entered_password: "",
-      email: ""
+      email: "",
+      loggedin: false
     };
   }
 
@@ -34,29 +35,42 @@ class Login extends React.Component {
           typeof response.data.meta !== "undefined"
         ) {
           localStorage.setItem("token", response.data.meta.token);
-          this.props.history.push("/account");
+          this.forceUpdate();
         }
         ////////////////////////////////////////////////////////
       });
   }
 
   render() {
-    ///////////////// INCOMPLETE AUTHENTICATION ////////////    
+    ///////////////// INCOMPLETE AUTHENTICATION ////////////
     if (localStorage.getItem("token") !== null) {
       return <Redirect to="/account" />;
     }
     ////////////////////////////////////////////////////////
 
     return (
-      <div className="container" style={{ width: "40%" }}>
-        <div className="box">
+      <div className="container">
+        <div
+          className="box"
+          style={{
+            maxWidth: "500px",
+            padding: "3rem 4rem",
+            margin: "2rem auto"
+          }}
+        >
+          <h2
+            className="subtitle"
+            style={{ marginBottom: "2rem", textAlign: "center" }}
+          >
+            Login to Beryllium
+          </h2>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="field">
-              <label className="label">Email</label>
               <div className="control has-icons-left">
                 <input
                   className="input"
                   type="text"
+                  placeholder="Email"
                   value={this.state.email}
                   onChange={this.handleEmail.bind(this)}
                 />
@@ -67,11 +81,11 @@ class Login extends React.Component {
             </div>
 
             <div className="field">
-              <label className="label">Password</label>
               <div className="control has-icons-left">
                 <input
                   className="input"
                   type="password"
+                  placeholder="Password"
                   value={this.state.entered_password}
                   onChange={this.handlePassword.bind(this)}
                 />
@@ -80,22 +94,24 @@ class Login extends React.Component {
                 </span>
               </div>
             </div>
-            <div className="level-right">
-              <div className="field is-grouped">
-                <div className="control">
-                  <Link to="/register">
-                    <button className="button is-primary">Register</button>
-                  </Link>
-                </div>
-                <div className="control">
-                  <button
-                    type="submit"
-                    value="Submit"
-                    className="button is-link"
-                  >
-                    Login
+
+            <div className="levels">
+              <div className="control">
+                <button
+                  type="submit"
+                  value="Submit"
+                  className="button is-link  is-fullwidth"
+                >
+                  Login
+                </button>
+              </div>
+              <hr style={{ margin: "1rem 0" }} />
+              <div className="control">
+                <Link to="/register">
+                  <button className="button i is-fullwidth">
+                    Create a new account
                   </button>
-                </div>
+                </Link>
               </div>
             </div>
           </form>

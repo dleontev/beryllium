@@ -4,6 +4,7 @@ defmodule Backend.Auth do
   """
 
   import Ecto.Query, warn: false
+  
   alias Backend.Repo
   alias Backend.Auth.User
   alias Backend.Auth.Enrollment

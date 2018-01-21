@@ -4,6 +4,8 @@ defmodule BackendWeb.CourseController do
   alias Backend.Auth
   alias Backend.Auth.Course
 
+  plug Guardian.Plug.EnsureAuthenticated, [handler: BackendWeb.SessionController]
+
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do

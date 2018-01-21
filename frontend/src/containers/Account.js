@@ -63,7 +63,7 @@ class Profile extends React.Component {
   ///////////////// INCOMPLETE SIGNOUT ////////////
   handleLogout(event) {
     event.preventDefault();
-    
+
     api.delete("/sessions").then(() => {
       localStorage.removeItem("token");
       this.props.history.push("/login");
@@ -73,7 +73,12 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div
+        className="container"
+        style={{
+          maxWidth: "800px"
+        }}
+      >
         <div className="level-right">
           <div className="field is-grouped">
             <div className="control">

@@ -33,11 +33,7 @@ class Profile extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <div className="box">{this.getUserCard()}</div>
-      </div>
-    );
+    return <div className="box">{this.getUserCard()}</div>;
   }
 }
 

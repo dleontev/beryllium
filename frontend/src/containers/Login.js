@@ -49,73 +49,71 @@ class Login extends React.Component {
     ////////////////////////////////////////////////////////
 
     return (
-      <div className="container">
-        <div
-          className="box"
-          style={{
-            maxWidth: "500px",
-            padding: "3rem 4rem",
-            margin: "2rem auto"
-          }}
+      <div
+        className="box"
+        style={{
+          maxWidth: "500px",
+          padding: "3rem 4rem",
+          margin: "2rem auto"
+        }}
+      >
+        <h2
+          className="subtitle"
+          style={{ marginBottom: "2rem", textAlign: "center" }}
         >
-          <h2
-            className="subtitle"
-            style={{ marginBottom: "2rem", textAlign: "center" }}
-          >
-            Login to Beryllium
-          </h2>
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className="field">
-              <div className="control has-icons-left">
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={this.handleEmail.bind(this)}
-                />
-                <span className="icon is-medium is-left">
-                  <i className="fa fa-envelope-o" aria-hidden="true" />
-                </span>
-              </div>
+          Login to Beryllium
+        </h2>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div className="field">
+            <div className="control has-icons-left">
+              <input
+                className="input"
+                type="text"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={this.handleEmail.bind(this)}
+              />
+              <span className="icon is-medium is-left">
+                <i className="fa fa-envelope-o" aria-hidden="true" />
+              </span>
             </div>
+          </div>
 
-            <div className="field">
-              <div className="control has-icons-left">
-                <input
-                  className="input"
-                  type="password"
-                  placeholder="Password"
-                  value={this.state.entered_password}
-                  onChange={this.handlePassword.bind(this)}
-                />
-                <span className="icon is-medium is-left">
-                  <i className="fa fa-lock" aria-hidden="true" />
-                </span>
-              </div>
+          <div className="field">
+            <div className="control has-icons-left">
+              <input
+                className="input"
+                type="password"
+                placeholder="Password"
+                value={this.state.entered_password}
+                onChange={this.handlePassword.bind(this)}
+              />
+              <span className="icon is-medium is-left">
+                <i className="fa fa-lock" aria-hidden="true" />
+              </span>
             </div>
+          </div>
 
-            <div className="levels">
-              <div className="control">
-                <button
-                  type="submit"
-                  value="Submit"
-                  className="button is-link  is-fullwidth"
-                >
-                  Login
+          <div className="levels">
+            <div className="control">
+              <button
+                type="submit"
+                value="Submit"
+                className="button is-link  is-fullwidth"
+              >
+                Login
+              </button>
+            </div>
+            <hr style={{ margin: "1rem 0" }} />
+            <div className="control">
+              <Link to="/register">
+                <button className="button i is-fullwidth">
+                  Create a new account
                 </button>
-              </div>
-              <hr style={{ margin: "1rem 0" }} />
-              <div className="control">
-                <Link to="/register">
-                  <button className="button i is-fullwidth">
-                    Create a new account
-                  </button>
-                </Link>
-              </div>
+              </Link>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
     );
   }

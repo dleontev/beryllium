@@ -20,14 +20,6 @@ import Account from "./Account";
 import NotFound from "./NotFound";
 
 class App extends Component {
-  /*//////////// INCOMPLETE AUTHENTICATION CHECK /////*/
-  checkAuthentication() {
-    if (localStorage.getItem("token") === null) return <Redirect to="/login" />;
-
-    return;
-  }
-  /*/////////////////////////////////////////////////*/
-
   render() {
     return (
       <Router>
@@ -40,18 +32,14 @@ class App extends Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
 
-              {/*//////////// INCOMPLETE AUTHENTICATION CHECK /////*/}
-              {this.checkAuthentication()}
-              {/*/////////////////////////////////////////////////*/}
+              <PrivateRoute exact path="/account" component={Account} />
 
-              <Route exact path="/account" component={Account} />
+              <PrivateRoute exact path="/courses" component={Courses} />
+              <PrivateRoute path="/courses/:id" component={Course} />
 
-              <Route exact path="/courses" component={Courses} />
-              <Route path="/courses/:id" component={Course} />
-
-              <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/inbox" component={Inbox} />
-              <Route exact path="/groups" component={Groups} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/inbox" component={Inbox} />
+              <PrivateRoute exact path="/groups" component={Groups} />
 
               <Route component={NotFound} />
             </Switch>
@@ -62,5 +50,25 @@ class App extends Component {
     );
   }
 }
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      ////////////////////// FAKE AUTH CHECK////////////////////
+      localStorage.getItem("token") !== null ? (
+     //////////////////////////////////////////////////////////
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
 
 export default App;

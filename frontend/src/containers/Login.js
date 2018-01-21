@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import api from "../api/Api";
 
 class Login extends React.Component {
@@ -8,7 +8,7 @@ class Login extends React.Component {
     this.state = {
       entered_password: "",
       email: "",
-      loggedin: false
+      redirectToReferrer: false
     };
   }
 
@@ -35,13 +35,19 @@ class Login extends React.Component {
           typeof response.data.meta !== "undefined"
         ) {
           localStorage.setItem("token", response.data.meta.token);
-          this.props.history.push("/account");
+          this.setState({ redirectToReferrer: true });
         }
         ////////////////////////////////////////////////////////
       });
   }
 
   render() {
+    const { from } = this.props.location.state || { from: { pathname: "/" } };
+
+    if (this.state.redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
+
     return (
       <div
         className="box"

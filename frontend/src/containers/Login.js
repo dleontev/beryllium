@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import api from "../api/Api";
 
 class Login extends React.Component {
@@ -35,19 +35,13 @@ class Login extends React.Component {
           typeof response.data.meta !== "undefined"
         ) {
           localStorage.setItem("token", response.data.meta.token);
-          this.forceUpdate();
+          this.props.history.push("/account");
         }
         ////////////////////////////////////////////////////////
       });
   }
 
   render() {
-    ///////////////// INCOMPLETE AUTHENTICATION ////////////
-    if (localStorage.getItem("token") !== null) {
-      return <Redirect to="/account" />;
-    }
-    ////////////////////////////////////////////////////////
-
     return (
       <div
         className="box"

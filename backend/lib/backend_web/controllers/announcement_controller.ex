@@ -4,8 +4,6 @@ defmodule BackendWeb.AnnouncementController do
   alias Backend.Auth
   alias Backend.Auth.Announcement
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: BackendWeb.SessionController]
-
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do

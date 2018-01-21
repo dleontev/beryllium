@@ -1,4 +1,4 @@
-defmodule BackendWeb.SessionsView do
+defmodule BackendWeb.SessionView do
   use BackendWeb, :view
 
   def render("show.json", %{user: user, jwt: jwt}) do

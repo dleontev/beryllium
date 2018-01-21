@@ -7,8 +7,25 @@ defmodule BackendWeb.Router do
 	  plug Guardian.Plug.LoadResource
   end
 
+  pipeline :ensure_authed_access do
+    plug(Guardian.Plug.EnsureAuthenticated, %{handler: BackendWeb.SessionController})
+  end
+
   scope "/api", BackendWeb do
     pipe_through :api
+
+    post "/users", UserController, :create
+    get "/users/sections/:section_id/", UserController, :show_by_course
+    get "/users/groups/:group_id/", UserController, :show_by_group
+    get "/account/", UserController, :show
+
+	  post "/sessions", SessionController, :create
+	  delete "/sessions", SessionController, :delete
+    post "/sessions/refresh", SessionController, :refresh
+  end
+
+  scope "/api", BackendWeb do
+    pipe_through([:api, :ensure_authed_access])
 
     resources "/router", UserController, except: [:edit]
     resources "/courses", CourseController, except: [:edit]
@@ -26,15 +43,6 @@ defmodule BackendWeb.Router do
     get "/courses/user/all", CourseController, :show_all
 
     get "/groups/user/all", GroupController, :show_all
-
-    get "/users/sections/:section_id/", UserController, :show_by_course
-    get "/users/groups/:group_id/", UserController, :show_by_group
-    get "/account/", UserController, :show
-
-    post "/users", UserController, :create
-
-	  post "/sessions", SessionsController, :create
-	  delete "/sessions", SessionsController, :delete
-    post "/sessions/refresh", SessionController, :refresh
   end
+  
 end

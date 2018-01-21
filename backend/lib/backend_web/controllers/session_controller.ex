@@ -1,8 +1,10 @@
-defmodule BackendWeb.SessionsController do
+defmodule BackendWeb.SessionController do
   use BackendWeb, :controller
   
   alias Backend.Auth.User
   
+  plug Guardian.Plug.EnsureAuthenticated, [handler: BackendWeb.SessionController] when action in [:refresh, :delete]
+
   def create(conn, %{"email" => email, "entered_password" => entered_password}) do
     case authenticate(%{"email" => email, "entered_password" => entered_password}) do
       {:ok, user} ->
@@ -31,7 +33,7 @@ defmodule BackendWeb.SessionsController do
   def unauthenticated(conn, _params) do
     conn
     |> put_status(:forbidden)
-    |> render(BackendWeb.SessionsView, "forbidden.json", error: "Not Authenticated")
+    |> render(BackendWeb.SessionView, "forbidden.json", error: "Not Authenticated")
   end
 
   def refresh(conn, _params) do

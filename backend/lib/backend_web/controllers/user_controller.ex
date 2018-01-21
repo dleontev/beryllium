@@ -6,8 +6,6 @@ defmodule BackendWeb.UserController do
 
   action_fallback BackendWeb.FallbackController
 
-  plug Guardian.Plug.EnsureAuthenticated, [handler: BackendWeb.SessionController] when action in [:show_by_course, :show_by_group, :update, :index, :show, :delete]
-
   def index(conn, _params) do
     users = Auth.list_users()
     render(conn, "index.json", users: users)

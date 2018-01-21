@@ -60,14 +60,16 @@ class Profile extends React.Component {
     );
   }
 
+  ///////////////// INCOMPLETE SIGNOUT ////////////
   handleLogout(event) {
     event.preventDefault();
-
+    
     api.delete("/sessions").then(() => {
       localStorage.removeItem("token");
       this.props.history.push("/login");
     });
   }
+  ////////////////////////////////////////////////
 
   render() {
     return (

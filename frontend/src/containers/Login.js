@@ -28,8 +28,11 @@ class Login extends React.Component {
         entered_password: this.state.entered_password
       })
       .then(response => {
-        ///////////////// FAKE AUTHENTICATION ///////////////////
-        if (typeof response !== "undefined" && typeof response.data.meta !== "undefined") {
+        ///////////////// INCOMPLETE AUTHENTICATION ////////////
+        if (
+          typeof response !== "undefined" &&
+          typeof response.data.meta !== "undefined"
+        ) {
           localStorage.setItem("token", response.data.meta.token);
           this.props.history.push("/account");
         }
@@ -38,7 +41,7 @@ class Login extends React.Component {
   }
 
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
+    ///////////////// INCOMPLETE AUTHENTICATION ////////////    
     if (localStorage.getItem("token") !== null) {
       return <Redirect to="/account" />;
     }

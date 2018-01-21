@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
@@ -25,6 +30,11 @@ class App extends Component {
               <Route exact path="/" component={Login} />
 
               <Route exact path="/login" component={Login} />
+
+              {/*//////////// INCOMPLETE AUTHENTICATION CHECK /////*/}
+              {(localStorage.getItem("token") === null) ?
+                  <Redirect to="/login" /> : ""}
+              {/*/////////////////////////////////////////////////*/}
 
               <Route exact path="/account" component={Account} />
               <Route exact path="/register" component={Register} />

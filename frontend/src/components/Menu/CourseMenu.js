@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 class CourseMenu extends React.Component {
   render() {
@@ -7,37 +7,76 @@ class CourseMenu extends React.Component {
       <aside className="menu">
         <ul className="menu-list">
           <li>
-            <Link to={"/courses/" + this.props.id + "/"}>Home</Link>
+            <NavLink
+              exact to={"/courses/" + this.props.id + "/"}
+              activeClassName="is-active"
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/announcements"}>
+            <NavLink
+              to={"/courses/" + this.props.id + "/announcements"}
+              activeClassName="is-active"
+            >
               Announcements
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/discussions"}>
+            <NavLink
+              to={"/courses/" + this.props.id + "/discussions"}
+              activeClassName="is-active"
+            >
               Discussions
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/assignments"}>
+            <NavLink
+              to={"/courses/" + this.props.id + "/assignments"}
+              activeClassName="is-active"
+            >
               Assignments
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/pages"}>Pages</Link>
+            <NavLink
+              to={"/courses/" + this.props.id + "/pages"}
+              activeClassName="is-active"
+            >
+              Pages
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/files"}>Files</Link>
+            <NavLink
+              to={"/courses/" + this.props.id + "/files"}
+              activeClassName="is-active"
+            >
+              Files
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/users"}>People</Link>
+            <NavLink
+              to={"/courses/" + this.props.id + "/users"}
+              activeClassName="is-active"
+            >
+              People
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/groups"}>Groups</Link>
+            <NavLink
+              to={"/courses/" + this.props.id + "/groups"}
+              activeClassName="is-active"
+            >
+              Groups
+            </NavLink>
           </li>
           <li>
-            <Link to={"/courses/" + this.props.id + "/settings"}>Settings</Link>
+            <NavLink
+              to={"/courses/" + this.props.id + "/settings"}
+              activeClassName="is-active"
+            >
+              Settings
+            </NavLink>
           </li>
         </ul>
       </aside>

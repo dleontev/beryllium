@@ -42,11 +42,13 @@ class Login extends React.Component {
   }
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
+    const { from } = this.props.location.state || { from: { pathname: "/account" } };
 
-    if (this.state.redirectToReferrer) {
+    ///////////////// INCOMPLETE AUTH CHECK ///////////////////////////////
+    if (this.state.redirectToReferrer || localStorage.getItem('token')) {
       return <Redirect to={from} />;
     }
+    ///////////////////////////////////////////////////////////////////////
 
     return (
       <div

@@ -28,6 +28,12 @@ defmodule BackendWeb.SessionsController do
     end
   end
 
+  def unauthenticated(conn, _params) do
+    conn
+    |> put_status(:forbidden)
+    |> render(BackendWeb.SessionsView, "forbidden.json", error: "Not Authenticated")
+  end
+
   def refresh(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
     jwt = Guardian.Plug.current_token(conn)

@@ -3,7 +3,6 @@ defmodule Backend.Auth.Course do
   import Ecto.Changeset
   alias Backend.Auth.Course
 
-
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "courses" do
     field :name, :string, null: false
@@ -11,7 +10,6 @@ defmodule Backend.Auth.Course do
     field :code, :string, null: false
     field :start_date, :utc_datetime
     field :end_date, :utc_datetime
-    field :visible, :boolean, null: false
   end
 
   @doc false
@@ -19,5 +17,6 @@ defmodule Backend.Auth.Course do
     course
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

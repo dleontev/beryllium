@@ -14,5 +14,6 @@ defmodule Backend.Auth.School do
     school
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

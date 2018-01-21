@@ -15,12 +15,12 @@ defmodule BackendWeb.SessionsController do
       :error ->
         conn
         |> put_status(:unauthorized)
-		    |> send_resp(200, "LOGIN_FAILED")
+		    |> render("error.json")
     end
   end
 
   defp authenticate(%{"email" => email, "entered_password" => entered_password}) do
-    user = Backend.Repo.get_by!(User, email: email)
+    user = Backend.Repo.get_by!(User, email: String.downcase(email))
 
     case check_password(user, entered_password) do
       true -> {:ok, user}
@@ -28,10 +28,30 @@ defmodule BackendWeb.SessionsController do
     end
   end
 
+  def refresh(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    jwt = Guardian.Plug.current_token(conn)
+    {:ok, claims} = Guardian.Plug.claims(conn)
+
+    case Guardian.refresh!(jwt, claims, %{ttl: {7, :days}}) do
+      {:ok, new_jwt, _new_claims} ->
+        conn
+        |> put_status(:ok)
+        |> render("show.json", user: user, jwt: new_jwt)
+      {:error, _reason} ->
+        conn
+        |> put_status(:unauthorized)
+        |> render("forbidden.json", error: "Not authenticated")
+    end
+  end  
+
   defp check_password(nil, _), do: Comeonin.Bcrypt.dummy_checkpw()
   
   defp check_password(user, entered_password) do
-    Comeonin.Bcrypt.checkpw(entered_password, user.password)
+    case user do
+      nil -> Comeonin.Bcrypt.dummy_checkpw()
+      _ -> Comeonin.Bcrypt.checkpw(entered_password, user.password)
+    end
   end
 
   def delete(conn, _params) do
@@ -40,6 +60,7 @@ defmodule BackendWeb.SessionsController do
 
     conn
     |> put_status(:ok)
+    |> render("delete.json")    
   end
 
 end

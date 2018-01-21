@@ -38,9 +38,7 @@ class Group extends React.Component {
       <UserListCard
         key={index}
         id={user.id}
-        first_name={user.first_name}
-        last_name={user.last_name}
-        middle_name={user.middle_name}
+        name={user.first_name + " " + user.middle_name + " " + user.last_name}
       />
     ));
   }

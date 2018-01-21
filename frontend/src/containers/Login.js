@@ -28,12 +28,12 @@ class Login extends React.Component {
         entered_password: this.state.entered_password
       })
       .then(response => {
-        if (typeof response.data.meta !== "undefined") {
-          ///////////////// FAKE AUTHENTICATION ///////////////////
+        ///////////////// FAKE AUTHENTICATION ///////////////////
+        if (typeof response !== "undefined" && typeof response.data.meta !== "undefined") {
           localStorage.setItem("token", response.data.meta.token);
           this.props.history.push("/account");
-          ////////////////////////////////////////////////////////
         }
+        ////////////////////////////////////////////////////////
       });
   }
 

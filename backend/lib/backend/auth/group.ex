@@ -14,5 +14,6 @@ defmodule Backend.Auth.Group do
     group
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

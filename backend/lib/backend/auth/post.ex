@@ -16,5 +16,6 @@ defmodule Backend.Auth.Post do
     post
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

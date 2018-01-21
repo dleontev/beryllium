@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import api from "../api/Api";
 import GroupTableCard from "../components/GroupTableCard";
 
@@ -40,9 +41,14 @@ class Groups extends React.Component {
         <GroupTableCard
           key={index}
           group_id={group.group_id}
-          group_name={group.group_name}
-          course_code={group.course_code}
-          course_name={group.course_name}
+          group_link={
+            <Link
+              to={"/courses/" + group.section_id + "/groups/" + group.group_id}
+            >
+              {group.group_name}
+            </Link>
+          }
+          course_name={group.course_code + ": " + group.course_name}
           section_id={group.section_id}
         />
       );

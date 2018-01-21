@@ -2,14 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 class MainMenu extends React.Component {
-  /////////////////// FAKE SIGNOUT fOR TESTING ONLY //////////
-  handleSignout(event) {
-    event.preventDefault();
-    localStorage.removeItem("token");
-    this.props.history.push("/login");
-  }
-  ////////////////////////////////////////////////////////////
-
   render() {
     return (
       <div className="navbar-end">
@@ -43,17 +35,6 @@ class MainMenu extends React.Component {
           </span>
           <span>Inbox</span>
         </Link>
-
-        {/*/////////////////// FOR TESTING ONLY ///////////////////////*/}
-        <span className="navbar-item" onClick={this.handleSignout.bind(this)}>
-          <a className="button is-info">
-            <span className="icon">
-              <i className="fa fa-sign-out" />
-            </span>
-            <span>Sign Out</span>
-          </a>
-        </span>
-        {/*////////////////////////////////////////////////////////////*/}
       </div>
     );
   }

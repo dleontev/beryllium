@@ -853,12 +853,12 @@ defmodule Backend.Auth do
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
         order_by: [desc: c.code],        
-        select: {map(s, [:name, :id]), map(c, [:id, :code, :name, :start_date, :end_date, :visible]), map(r, [:name])}
+        select: {map(s, [:name, :id, :published]), map(c, [:id, :code, :name, :start_date, :end_date]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_course_info(x) | acc] end)
   end
 
-  defp extract_course_info({%{name: section_name, id: section_id}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date, visible: visible,}, %{name: role_name}}) do
-    %{section_name: section_name, section_id: section_id, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, visible: visible, role_name: role_name}
+  defp extract_course_info({%{name: section_name, id: section_id, published: published}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date}, %{name: role_name}}) do
+    %{section_name: section_name, section_id: section_id, published: published, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, role_name: role_name}
   end
 
   alias Backend.Auth.Announcement

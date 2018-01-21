@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../api/Api";
+import { Link } from "react-router-dom";
 import CourseTableCard from "../components/CourseTableCard";
 
 class Courses extends React.Component {
@@ -45,14 +46,20 @@ class Courses extends React.Component {
         <CourseTableCard
           key={index}
           id={course.id}
-          course_name={course.course_name}
-          course_code={course.course_code}
-          section_name={course.section_name}
-          section_id={course.section_id}
+          course_title={course.course_code + ": " + course.course_name}
+          course_link={
+            course.published ? (
+              <Link to={"/courses/" + course.section_id}>
+                {course.course_code + ": " + course.course_name}
+              </Link>
+            ) : (
+              course.course_code + ": " + course.course_name
+            )
+          }
           role_name={course.role_name}
           end_date={new Date(course.end_date).toLocaleDateString()}
           start_date={new Date(course.start_date).toLocaleDateString()}
-          visible={course.visible ? "Yes" : "No"}
+          published={course.published ? "Yes" : "No"}
         />
       );
     });

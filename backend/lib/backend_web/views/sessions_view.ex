@@ -3,21 +3,27 @@ defmodule BackendWeb.SessionsView do
 
   def render("show.json", %{user: user, jwt: jwt}) do
     %{
-      data: user_data_json(user),
-      meta: meta_json(jwt)
+      data: render_one(user, BackendWeb.UserView, "user.json"),
+      meta: %{token: jwt}
     }
   end
   
+  def render("error.json", _) do
+    %{error: "Invalid email or password"}
+  end
+
+  def render("forbidden.json", %{error: error}) do
+    %{error: error}
+  end
+
+  def render("delete.json", _) do
+    %{ok: true}
+  end
+
   def user_data_json(user) do
     %{
       id: user.id,
       email: user.email
-    }
-  end
-
-  def meta_json(jwt) do
-    %{
-      token: jwt
     }
   end
 

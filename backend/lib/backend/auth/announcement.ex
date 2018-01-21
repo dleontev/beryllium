@@ -15,5 +15,6 @@ defmodule Backend.Auth.Announcement do
     announcement
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

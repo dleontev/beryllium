@@ -33,7 +33,8 @@ defmodule BackendWeb.Router do
 
     post "/users", UserController, :create
 
-	  post "/sessions", SessionsController, :create # login
-	  delete "/sessions", SessionsController, :delete # log out
+	  post "/sessions", SessionsController, :create
+	  delete "/sessions", SessionsController, :delete
+    post "/sessions/refresh", SessionController, :refresh
   end
 end

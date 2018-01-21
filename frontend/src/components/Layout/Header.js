@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import MainMenu from "../Menu/MainMenu";
 
 class Header extends React.Component {

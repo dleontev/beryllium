@@ -39,9 +39,7 @@ class Users extends React.Component {
     return this.state.users.map((user, index) => (
       <UserTableCard
         key={index}
-        first_name={user.first_name}
-        last_name={user.last_name}
-        middle_name={user.middle_name}
+        name={user.first_name + " " + user.middle_name + " " + user.last_name}
         course_code={user.course_code}
         section_name={user.section_name}
         role_name={user.role_name}

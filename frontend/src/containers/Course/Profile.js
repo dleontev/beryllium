@@ -10,24 +10,32 @@ class Profile extends React.Component {
 
   componentWillMount() {
     api.get("/users/" + this.props.match.params.user_id).then(response => {
-      this.setState({ user: response.data.data });
+      if (typeof response !== "undefined") {
+        this.setState({ user: response.data.data });
+      }
     });
   }
 
-  render() {
-    const user = this.state.user;
+  getUserCard() {
+    if (this.state.user.length === 0) {
+      return "No data found.";
+    }
 
     return (
+      <UserProfileCard
+        id={this.stateuser.id}
+        first_name={this.stateuser.first_name}
+        last_name={this.stateuser.last_name}
+        middle_name={this.stateuser.middle_name}
+        email={this.stateuser.email}
+      />
+    );
+  }
+
+  render() {
+    return (
       <div>
-        <div className="box">
-          <UserProfileCard
-            id={user.id}
-            first_name={user.first_name}
-            last_name={user.last_name}
-            middle_name={user.middle_name}
-            email={user.email}
-          />
-        </div>
+        <div className="box">{this.getUserCard()}</div>
       </div>
     );
   }

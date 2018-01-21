@@ -13,12 +13,18 @@ class Announcements extends React.Component {
     api
       .get("/announcements/sections/" + this.props.match.params.id)
       .then(response => {
-        this.setState({ announcements: response.data.data });
+        if (typeof response !== "undefined") {
+          this.setState({ announcements: response.data.data });
+        }
       });
   }
 
-  render() {
-    var announcements = this.state.announcements.map((announcement, index) => (
+  getAnnouncements() {
+    if (this.state.announcements.length === 0) {
+      return "No announcements found.";
+    }
+
+    return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
         key={index}
         id={announcement.id}
@@ -29,11 +35,9 @@ class Announcements extends React.Component {
         content={announcement.content}
       />
     ));
+  }
 
-    if (announcements.length === 0) {
-      announcements = "No announcements found.";
-    }
-
+  render() {
     return (
       <div>
         <nav className="navbar is-transparent">
@@ -51,7 +55,7 @@ class Announcements extends React.Component {
           </div>
         </nav>
 
-        <div className="section">{announcements}</div>
+        <div><br/>{this.getAnnouncements()}</div>
       </div>
     );
   }

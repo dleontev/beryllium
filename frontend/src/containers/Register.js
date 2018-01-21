@@ -42,7 +42,6 @@ class CreateUser extends React.Component {
       first_name: this.state.first_name,
       middle_name: this.state.middle_name,
       last_name: this.state.last_name,
-      time_zone: this.state.time_zone,
       password: this.state.password
     });
   }

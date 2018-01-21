@@ -5,9 +5,9 @@ defmodule Backend.Auth.Announcement do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "announcements" do
-    field :sectionid, :binary_id
-    field :postid, :binary_id
-    field :title, :string
+    field :sectionid, :binary_id, null: false
+    field :postid, :binary_id, null: false
+    field :title, :string, null: false
   end
 
   @doc false

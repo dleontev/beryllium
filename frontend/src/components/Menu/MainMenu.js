@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 class MainMenu extends React.Component {
-  /////////////////// FOR TESTING ONLY ////////////////////////
+  /////////////////// FAKE SIGNOUT fOR TESTING ONLY //////////
   handleSignout(event) {
     event.preventDefault();
     localStorage.removeItem("token");
+    this.props.history.push("/login");
   }
   ////////////////////////////////////////////////////////////
 

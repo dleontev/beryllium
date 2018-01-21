@@ -4,17 +4,15 @@ import { Link } from "react-router-dom";
 import MainMenu from "../Menu/MainMenu";
 
 class Header extends React.Component {
-  render() {
-    var headerMenu;
-
-    /////////////////// FOR TESTING ONLY ////////////////////////
-    if (localStorage.getItem("token") !== null) {
-      /////////////////////////////////////////////////////////////
-      headerMenu = <MainMenu />;
-    } else {
-      headerMenu = null;
+  getMainMenu() {
+    if (localStorage.getItem("token") === null) {
+      return null;
     }
 
+    return <MainMenu />;
+  }
+
+  render() {
     return (
       <nav className="navbar is-link">
         <div className="navbar-brand">
@@ -34,7 +32,7 @@ class Header extends React.Component {
             <span />
           </div>
         </div>
-        <div className="navbar-menu">{headerMenu}</div>
+        <div className="navbar-menu">{this.getMainMenu()}</div>
       </nav>
     );
   }

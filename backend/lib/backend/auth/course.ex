@@ -6,12 +6,12 @@ defmodule Backend.Auth.Course do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "courses" do
-    field :name, :string
-    field :schoolid, :binary_id
-    field :code, :string
+    field :name, :string, null: false
+    field :schoolid, :binary_id, null: false
+    field :code, :string, null: false
     field :start_date, :utc_datetime
     field :end_date, :utc_datetime
-    field :visible, :boolean
+    field :visible, :boolean, null: false
   end
 
   @doc false

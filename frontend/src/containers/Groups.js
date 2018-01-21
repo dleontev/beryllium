@@ -10,12 +10,32 @@ class Groups extends React.Component {
 
   componentWillMount() {
     api.get(`/groups/user/all`).then(response => {
-      this.setState({ groups: response.data.data });
+      if (typeof response !== "undefined") {
+        this.setState({ groups: response.data.data });
+      }
     });
   }
 
-  render() {
-    const groups = this.state.groups.map((group, index) => {
+  getUserGroupsTable() {
+    if (this.state.groups.length === 0) {
+      return "No groups found.";
+    }
+
+    return (
+      <table className="table is-fullwidth is-striped">
+        <thead>
+          <tr>
+            <th>Group</th>
+            <th>Course</th>
+          </tr>
+        </thead>
+        <tbody>{this.getUserGroups()}</tbody>
+      </table>
+    );
+  }
+
+  getUserGroups() {
+    return this.state.groups.map((group, index) => {
       return (
         <GroupTableCard
           key={index}
@@ -27,7 +47,9 @@ class Groups extends React.Component {
         />
       );
     });
+  }
 
+  render() {
     return (
       <div>
         <nav className="level">
@@ -35,17 +57,7 @@ class Groups extends React.Component {
             <p className="title is-5">Your Groups</p>
           </div>
         </nav>
-        <div className="box">
-          <table className="table is-fullwidth is-striped">
-            <thead>
-              <tr>
-                <th>Group</th>
-                <th>Course</th>
-              </tr>
-            </thead>
-            <tbody>{groups}</tbody>
-          </table>
-        </div>
+        <div className="box">{this.getUserGroupsTable()}</div>
       </div>
     );
   }

@@ -5,8 +5,8 @@ defmodule Backend.Auth.Section do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "sections" do
-    field :name, :string
-    field :courseid, :binary_id
+    field :name, :string, null: false
+    field :courseid, :binary_id, null: false
   end
 
   @doc false

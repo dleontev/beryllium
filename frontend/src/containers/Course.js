@@ -1,12 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import api from "../api/Api";
 
+// Small components.
 import CourseMenu from "../components/Menu/CourseMenu";
 import AddPost from "../components/Form/AddPost";
 import AddAssignment from "../components/Form/AddAssignment";
 import AddPage from "../components/Form/AddPage";
 
+// Main containers.
 import Profile from "./Course/Profile";
 import CourseHome from "./Course/CourseHome";
 import Announcements from "./Course/Announcements";
@@ -30,8 +32,26 @@ class Dashboard extends React.Component {
     api
       .get("/courses/sections/" + this.props.match.params.id)
       .then(response => {
-        this.setState({ course: response.data.data });
+        if (typeof response !== "undefined") {
+          this.setState({ course: response.data.data });
+        }
       });
+  }
+
+  getCourseTitle() {
+    if (this.state.course === null || this.state.course.length === 0) {
+      return "undefined";
+    }
+
+    return this.state.course.code + ": " + this.state.course.name;
+  }
+
+  getCourseId() {
+    if (this.state.course === null || this.state.course.length === 0) {
+      return "undefined";
+    }
+
+    return this.props.match.params.id;
   }
 
   render() {
@@ -39,15 +59,13 @@ class Dashboard extends React.Component {
       <div>
         <nav className="level">
           <div className="level-left">
-            <p className="title is-5">
-              {this.state.course.code}: {this.state.course.name}
-            </p>
+            <p className="title is-5">{this.getCourseTitle()}</p>
           </div>
         </nav>
         <div className="columns">
           <div className="column is-narrow">
             <div className="box" style={{ width: "200px" }}>
-              <CourseMenu id={this.props.match.params.id} />
+              <CourseMenu id={this.getCourseId()} />
             </div>
           </div>
           <div className="column">

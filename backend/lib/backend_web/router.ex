@@ -31,6 +31,8 @@ defmodule BackendWeb.Router do
     get "/users/groups/:group_id/", UserController, :show_by_group
     get "/account/", UserController, :show
 
+    post "/users", UserController, :create
+
 	  post "/sessions", SessionsController, :create # login
 	  delete "/sessions", SessionsController, :delete # log out
   end

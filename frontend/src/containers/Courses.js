@@ -12,12 +12,35 @@ class Courses extends React.Component {
 
   componentWillMount() {
     api.get(`/courses/user/all`).then(response => {
-      this.setState({ courses: response.data.data });
+      if (typeof response !== "undefined") {
+        this.setState({ courses: response.data.data });
+      }
     });
   }
 
-  render() {
-    const courses = this.state.courses.map((course, index) => {
+  getCourseTable() {
+    if (this.state.courses.length === 0) {
+      return "No enrollments found.";
+    }
+
+    return (
+      <table className="table is-fullwidth is-striped">
+        <thead>
+          <tr>
+            <th style={{ textAlign: "left" }}>Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Enrolled as</th>
+            <th>Published</th>
+          </tr>
+        </thead>
+        <tbody>{this.getUserCourses()}</tbody>
+      </table>
+    );
+  }
+
+  getUserCourses() {
+    return this.state.courses.map((course, index) => {
       return (
         <CourseTableCard
           key={index}
@@ -33,7 +56,9 @@ class Courses extends React.Component {
         />
       );
     });
+  }
 
+  render() {
     return (
       <div>
         <nav className="level">
@@ -41,20 +66,7 @@ class Courses extends React.Component {
             <p className="title is-5">Your Courses</p>
           </div>
         </nav>
-        <div className="box">
-          <table className="table is-fullwidth is-striped">
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left" }}>Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Enrolled as</th>
-                <th>Published</th>
-              </tr>
-            </thead>
-            <tbody>{courses}</tbody>
-          </table>
-        </div>
+        <div className="box">{this.getCourseTable()}</div>
       </div>
     );
   }

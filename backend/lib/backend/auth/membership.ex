@@ -4,8 +4,8 @@ defmodule Backend.Auth.Membership do
   alias Backend.Auth.Membership
 
   schema "memberships" do
-    field :userid, :binary_id
-    field :groupid, :binary_id
+    field :userid, :binary_id, null: false
+    field :groupid, :binary_id, null: false
   end
 
   @doc false

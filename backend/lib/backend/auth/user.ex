@@ -6,11 +6,11 @@ defmodule Backend.Auth.User do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "users" do
-    field :email, :string
-    field :first_name, :string
+    field :email, :string, null: false
+    field :first_name, :string, null: false
     field :middle_name, :string
-    field :last_name, :string
-    field :password, :string
+    field :last_name, :string, null: false
+    field :password, :string, null: false
 	  field :entered_password, :string, virtual: true
     #timestamps()
   end
@@ -21,6 +21,7 @@ defmodule Backend.Auth.User do
     |> cast(attrs, [:id, :email, :first_name, :middle_name, :last_name, :password])
     |> validate_required([:id, :email, :first_name, :last_name, :password])
 	  |> validate_format(:email, ~r/@/)
-    |> unique_constraint(:email, :id)
+    |> unique_constraint(:email)
+    |> unique_constraint(:id)
   end
 end

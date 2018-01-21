@@ -5,9 +5,9 @@ defmodule Backend.Auth.Post do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "posts" do
-    field :userid, :binary_id
+    field :userid, :binary_id, null: false
     field :parentid, :binary_id
-    field :content, :string
+    field :content, :string, null: false
     timestamps()
   end
 

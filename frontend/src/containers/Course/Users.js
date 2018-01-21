@@ -10,12 +10,33 @@ class Users extends React.Component {
 
   componentWillMount() {
     api.get("/users/sections/" + this.props.match.params.id).then(response => {
-      this.setState({ users: response.data.data });
+      if (typeof response !== "undefined") {
+        this.setState({ users: response.data.data });
+      }
     });
   }
 
-  render() {
-    const users = this.state.users.map((user, index) => (
+  getUsersTable() {
+    if (this.state.users.length === 0) {
+      return "No users found.";
+    }
+
+    return (
+      <table className="table is-fullwidth is-striped">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Section</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>{this.getCourseUsers()}</tbody>
+      </table>
+    );
+  }
+
+  getCourseUsers() {
+    return this.state.users.map((user, index) => (
       <UserTableCard
         key={index}
         first_name={user.first_name}
@@ -26,7 +47,9 @@ class Users extends React.Component {
         role_name={user.role_name}
       />
     ));
+  }
 
+  render() {
     return (
       <div>
         <nav className="navbar is-transparent">
@@ -38,18 +61,7 @@ class Users extends React.Component {
           <div className="navbar-end" />
         </nav>
 
-        <div>
-          <table className="table is-fullwidth is-striped">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Section</th>
-                <th>Role</th>
-              </tr>
-            </thead>
-            <tbody>{users}</tbody>
-          </table>
-        </div>
+        <div>{this.getUsersTable()}</div>
       </div>
     );
   }

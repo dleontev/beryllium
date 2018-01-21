@@ -3,8 +3,12 @@ import logo from "../images/blank-profile.png";
 import CourseListCard from "../components/CourseListCard";
 
 class UserProfileCard extends React.Component {
-  render() {
-    var courses = this.props.courses.map((course, index) => (
+  getUserCourses() {
+    if (this.props.courses.length === 0) {
+      return <li>No enrollments found.</li>;
+    }
+
+    return this.props.courses.map((course, index) => (
       <CourseListCard
         key={index}
         id={course.id}
@@ -15,7 +19,9 @@ class UserProfileCard extends React.Component {
         course_code={course.course_code}
       />
     ));
+  }
 
+  render() {
     return (
       <section className="section">
         <div className="container">
@@ -38,7 +44,7 @@ class UserProfileCard extends React.Component {
         <br />
         <div className="container">
           <h2 className="subtitle">Enrollments</h2>
-          {courses}
+          {this.getUserCourses()}
         </div>
       </section>
     );

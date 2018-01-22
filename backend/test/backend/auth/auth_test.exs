@@ -756,4 +756,62 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_memberships(memberships)
     end
   end
+
+  describe "discussions" do
+    alias Backend.Auth.Discussion
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def discussion_fixture(attrs \\ %{}) do
+      {:ok, discussion} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_discussion()
+
+      discussion
+    end
+
+    test "list_discussions/0 returns all discussions" do
+      discussion = discussion_fixture()
+      assert Auth.list_discussions() == [discussion]
+    end
+
+    test "get_discussion!/1 returns the discussion with given id" do
+      discussion = discussion_fixture()
+      assert Auth.get_discussion!(discussion.id) == discussion
+    end
+
+    test "create_discussion/1 with valid data creates a discussion" do
+      assert {:ok, %Discussion{} = discussion} = Auth.create_discussion(@valid_attrs)
+    end
+
+    test "create_discussion/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_discussion(@invalid_attrs)
+    end
+
+    test "update_discussion/2 with valid data updates the discussion" do
+      discussion = discussion_fixture()
+      assert {:ok, discussion} = Auth.update_discussion(discussion, @update_attrs)
+      assert %Discussion{} = discussion
+    end
+
+    test "update_discussion/2 with invalid data returns error changeset" do
+      discussion = discussion_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_discussion(discussion, @invalid_attrs)
+      assert discussion == Auth.get_discussion!(discussion.id)
+    end
+
+    test "delete_discussion/1 deletes the discussion" do
+      discussion = discussion_fixture()
+      assert {:ok, %Discussion{}} = Auth.delete_discussion(discussion)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_discussion!(discussion.id) end
+    end
+
+    test "change_discussion/1 returns a discussion changeset" do
+      discussion = discussion_fixture()
+      assert %Ecto.Changeset{} = Auth.change_discussion(discussion)
+    end
+  end
 end

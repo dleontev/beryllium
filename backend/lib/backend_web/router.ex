@@ -28,7 +28,7 @@ defmodule BackendWeb.Router do
     resources "/roles", RoleController, except: [:edit, :show]
     resources "/schools", SchoolController, except: [:edit, :show]
     resources "/sections", SectionController, except: [:edit, :show]
-    resources "/announcements", AnnouncementController
+    resources "/discussions", DiscussionController, except: [:new, :edit]    
 
     get "/users/sections/:section_id/", UserController, :show_by_course
     get "/users/groups/:group_id/", UserController, :show_by_group

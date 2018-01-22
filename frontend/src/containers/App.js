@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/Layout/Header";
+import Footer from "../components/Layout/Footer";
 
-import Users from "./Users";
-import Profile from "./Profile";
 import Login from "./Login";
 import Register from "./Register";
 import Dashboard from "./Dashboard";
@@ -22,30 +25,24 @@ class App extends Component {
       <Router>
         <div>
           <Header />
-          <div>
-            <section className="section">
-              <div className="container is-fluid">
-                <Switch>
-                  <Route exact path="/" component={Login} />
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/account" component={Account} />
+          <div className="section">
+            <Switch>
+              <Route exact path="/" component={Login} />
 
-                  <Route exact path="/users/" component={Users} />
-                  <Route path="/users/:id" component={Profile} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/register" component={Register} />
 
-                  <Route exact path="/register" component={Register} />
+              <PrivateRoute exact path="/account" component={Account} />
 
-                  <Route exact path="/courses" component={Courses} />
-                  <Route path="/courses/:id" component={Course} />
+              <PrivateRoute exact path="/courses" component={Courses} />
+              <PrivateRoute path="/courses/:id" component={Course} />
 
-                  <Route exact path="/dashboard" component={Dashboard} />
-                  <Route exact path="/inbox" component={Inbox} />
-                  <Route exact path="/groups" component={Groups} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/inbox" component={Inbox} />
+              <PrivateRoute exact path="/groups" component={Groups} />
 
-                  <Route component={NotFound} />
-                </Switch>
-              </div>
-            </section>
+              <Route component={NotFound} />
+            </Switch>
           </div>
           <Footer />
         </div>
@@ -53,5 +50,25 @@ class App extends Component {
     );
   }
 }
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props =>
+      ////////////////////// FAKE AUTH CHECK////////////////////
+      localStorage.getItem("token") !== null ? (
+     //////////////////////////////////////////////////////////
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: "/login",
+            state: { from: props.location }
+          }}
+        />
+      )
+    }
+  />
+);
 
 export default App;

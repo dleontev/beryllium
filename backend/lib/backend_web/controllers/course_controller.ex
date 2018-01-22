@@ -26,9 +26,14 @@ defmodule BackendWeb.CourseController do
     render(conn, "show.json", course: course)
   end
 
+  def show(conn, %{"section_id" => section_id}) do
+    course = Auth.get_course(section_id)
+    render(conn, "show.json", course: course)
+  end
+
   def show_all(conn, _params) do
     %{id: id} = Guardian.Plug.current_resource(conn)
-    courses = Auth.list_courses(conn, id)
+    courses = Auth.list_courses(id)
     render(conn, "show_all.json", courses: courses)
   end
 

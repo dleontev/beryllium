@@ -5,8 +5,10 @@ defmodule Backend.Auth.Section do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "sections" do
-    field :name, :string
-    field :courseid, :binary_id
+    field :name, :string, null: false
+    field :courseid, :binary_id, null: false
+    field :finished, :boolean, null: false
+    field :published, :boolean, null: false
   end
 
   @doc false
@@ -14,5 +16,6 @@ defmodule Backend.Auth.Section do
     section
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

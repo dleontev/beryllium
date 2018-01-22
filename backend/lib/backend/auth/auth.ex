@@ -1258,4 +1258,5 @@ defmodule Backend.Auth do
   def change_discussion(%Discussion{} = discussion) do
     Discussion.changeset(discussion, %{})
   end
+
 end

@@ -21,7 +21,6 @@ defmodule BackendWeb.Router do
   scope "/api", BackendWeb do
     pipe_through([:api, :ensure_authed_access])
 
-    resources "/courses", CourseController, except: [:edit]
     resources "/enrollments", EnrollmentController, except: [:edit, :show]
     resources "/groups", GroupController, except: [:edit]
     resources "/groupsets", GroupsetController, except: [:edit, :show]

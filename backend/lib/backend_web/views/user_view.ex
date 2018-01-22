@@ -20,7 +20,7 @@ defmodule BackendWeb.UserView do
   end
 
   def render("user_course.json", %{user: user}) do
-    %{section_name: user.section_name, first_name: user.first_name, middle_name: user.middle_name, 
+    %{user_id: user.user_id, section_name: user.section_name, first_name: user.first_name, middle_name: user.middle_name, 
     last_name: user.last_name, course_code: user.course_code, role_name: user.role_name}   
   end
 end

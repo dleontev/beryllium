@@ -1,6 +1,7 @@
 import React from "react";
 import UserProfileCard from "../../components/UserProfileCard";
 import api from "../../api/Api";
+import profile_image from "../../images/blank-profile.png";
 
 class Profile extends React.Component {
   constructor() {
@@ -18,22 +19,24 @@ class Profile extends React.Component {
 
   getUserCard() {
     if (this.state.user.length === 0) {
-      return "No data found.";
+      return "No profile data found.";
     }
 
     return (
       <UserProfileCard
-        id={this.stateuser.id}
-        first_name={this.stateuser.first_name}
-        last_name={this.stateuser.last_name}
-        middle_name={this.stateuser.middle_name}
-        email={this.stateuser.email}
+        id={this.state.user.id}
+        profile_image={profile_image}
+        first_name={this.state.user.first_name}
+        last_name={this.state.user.last_name}
+        middle_name={this.state.user.middle_name}
+        email={this.state.user.email}
+        courses={<li>Enrollment data is unavailable.</li>}
       />
     );
   }
 
   render() {
-    return <div className="box">{this.getUserCard()}</div>;
+    return this.getUserCard();
   }
 }
 

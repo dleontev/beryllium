@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../../api/Api";
+import { Link } from "react-router-dom";
 import UserTableCard from "../../components/UserTableCard";
 
 class Users extends React.Component {
@@ -39,7 +40,7 @@ class Users extends React.Component {
     return this.state.users.map((user, index) => (
       <UserTableCard
         key={index}
-        name={user.first_name + " " + user.middle_name + " " + user.last_name}
+        name={<Link to={"users/" + user.user_id}>{user.first_name + " " + user.middle_name + " " + user.last_name}</Link>}
         course_code={user.course_code}
         section_name={user.section_name}
         role_name={user.role_name}

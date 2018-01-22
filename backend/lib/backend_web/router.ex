@@ -21,7 +21,6 @@ defmodule BackendWeb.Router do
   scope "/api", BackendWeb do
     pipe_through([:api, :ensure_authed_access])
 
-    resources "/users", UserController, except: [:edit]
     resources "/courses", CourseController, except: [:edit]
     resources "/enrollments", EnrollmentController, except: [:edit, :show]
     resources "/groups", GroupController, except: [:edit]
@@ -33,10 +32,8 @@ defmodule BackendWeb.Router do
 
     get "/users/sections/:section_id/", UserController, :show_by_course
     get "/users/groups/:group_id/", UserController, :show_by_group
+    get "/users/:id", UserController, :show_by_id
     get "/account/", UserController, :show
-
-    delete "/sessions", SessionController, :delete
-    post "/sessions/refresh", SessionController, :refresh
 
     get "/announcements/sections/:section_id", AnnouncementController, :show_all
 
@@ -44,6 +41,9 @@ defmodule BackendWeb.Router do
     get "/courses/user/all", CourseController, :show_all
 
     get "/groups/user/all", GroupController, :show_all
+
+    delete "/sessions", SessionController, :delete
+    post "/sessions/refresh", SessionController, :refresh    
   end
   
 end

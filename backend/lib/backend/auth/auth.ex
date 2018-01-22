@@ -49,12 +49,12 @@ defmodule Backend.Auth do
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
         order_by: [desc: u.last_name, desc: u.first_name, ],         
-        select: {map(s, [:name]), map(u, [:first_name, :last_name, :middle_name]), map(c, [:code]), map(r, [:name])}
+        select: {map(s, [:name]), map(u, [:id, :first_name, :last_name, :middle_name]), map(c, [:code]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_user_info(x) | acc] end)  
   end
 
-  defp extract_user_info({%{name: section_name}, %{first_name: first_name, last_name: last_name, middle_name: middle_name}, %{code: code}, %{name: role_name}}) do
-    %{section_name: section_name, first_name: first_name, middle_name: middle_name, last_name: last_name, course_code: code, role_name: role_name}
+  defp extract_user_info({%{name: section_name}, %{id: user_id, first_name: first_name, last_name: last_name, middle_name: middle_name}, %{code: code}, %{name: role_name}}) do
+    %{section_name: section_name, user_id: user_id, first_name: first_name, middle_name: middle_name, last_name: last_name, course_code: code, role_name: role_name}
   end
 
   @doc """

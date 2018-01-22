@@ -41,7 +41,7 @@ defmodule BackendWeb.AnnouncementController do
   def delete(conn, %{"id" => id}) do
     announcement = Auth.get_announcement!(id)
     
-    with {:ok, %announcement{}} <- Auth.delete_announcement(announcement) do
+    with {:ok, %Announcement{}} <- Auth.delete_announcement(announcement) do
       send_resp(conn, :no_content, "")
     end
   end

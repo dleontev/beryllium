@@ -1,22 +1,44 @@
 import React from "react";
+import api from "../../api/Api";
 import { Link } from "react-router-dom";
+import AnnouncementCard from "../../components/AnnouncementCard";
 
 class Discussions extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { announcements: [] };
   }
 
-  componentWillMount() {}
+    componentWillMount() {
+    api
+      .get("/discussions/sections/" + this.props.match.params.id + "/" + true)
+      .then(response => {
+        if (typeof response !== "undefined") {
+          this.setState({ announcements: response.data.data });
+          console.log(this.state.announcements);
+        }
+      });
+  }
+
+  getAnnouncements() {
+    if (this.state.announcements.length === 0) {
+      return "No announcements found.";
+    }
+
+    return this.state.announcements.map((announcement, index) => (
+      <AnnouncementCard
+        key={index}
+        id={announcement.id}
+        title={announcement.title}
+        author={announcement.first_name + " " + announcement.last_name}
+        inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
+        updated_at={new Date(announcement.updated_at).toLocaleDateString()}
+        content={announcement.content}
+      />
+    ));
+  }
 
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
-    var discussions = null;
-
-    if (discussions == null) {
-      discussions = "No discussions found.";
-    }
-    ///////////////////////////////////////////////////////
 
     return (
       <div>
@@ -35,7 +57,7 @@ class Discussions extends React.Component {
           </div>
         </nav>
 
-        <div>{discussions}</div>
+        <div><br/>{this.getAnnouncements()}</div>
       </div>
     );
   }

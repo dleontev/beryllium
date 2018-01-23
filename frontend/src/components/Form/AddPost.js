@@ -1,39 +1,58 @@
 import React from "react";
 import api from "../../api/Api";
+import { Link, Redirect } from "react-router-dom";
 
 class AddPost extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      sectionid: this.props.sectionid,
-      is_discussion: this.props.is_discussion,
-      title: "",
-      message: ""
+        data: {
+          sectionid: this.props.sectionid,
+          is_discussion: this.props.is_discussion,
+          title: "",
+          message: ""
+        },
+        finish: false
     }
   }
 
   handleSubmit(e){
-    //e.preventDefault();
+    e.preventDefault();
     console.log("Submitted");
      api
-      .post(`/discussions/`, this.state)
+      .post(`/discussions/`, this.state.data)
       .then(response => {
-        console.log(response);
+        this.setState({finish: true});
       }).catch(error =>{
         console.log(error);
       });
   }
 
   handleTitle(e){
-    //e.preventDefault();
-    this.setState({title: e.target.value});
+    e.preventDefault();
+    var data = Object.assign({}, this.state.data);
+    data.title = e.target.value;
+    this.setState({data});
   }
 
   handleMessage(e){
-    //e.preventDefault();
-    this.setState({message: e.target.value});
+    e.preventDefault();
+    var data = Object.assign({}, this.state.data);
+    data.message = e.target.value;
+    this.setState({data});
   }
   render() {
+    if(this.state.finish == true){
+      if(this.props.is_discussion == false){
+        return (
+          <Redirect to={`/courses/${this.props.sectionid}/announcements`}/>
+        );
+      }else if(this.props.is_discussion == true){
+        return (
+          <Redirect to={`/courses/${this.props.sectionid}/discussions`}/>
+        );
+      }
+    }
     return (
       <form onSubmit={this.handleSubmit.bind(this)}>
         <div className="field">

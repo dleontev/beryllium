@@ -18,7 +18,7 @@ class AddPost extends React.Component {
   }
 
   handleSubmit(event) {
-    e.preventDefault();
+    event.preventDefault();
     api.post(`/discussions/`, this.state.data).then(response => {
       this.setState({ finish: true });
     });
@@ -26,13 +26,13 @@ class AddPost extends React.Component {
 
   handleTitle(event) {
     var data = Object.assign({}, this.state.data);
-    data.title = e.target.value;
+    data.title = event.target.value;
     this.setState({ data });
   }
 
   handleMessage(event) {
     var data = Object.assign({}, this.state.data);
-    data.message = e.target.value;
+    data.message = event.target.value;
     this.setState({ data });
   }
 

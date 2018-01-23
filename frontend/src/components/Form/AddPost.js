@@ -12,28 +12,33 @@ class AddPost extends React.Component {
         title: "",
         message: ""
       },
-      finish: false
+      finish: false,
+      cancel: false
     };
   }
 
-  handleSubmit(e) {
+  handleSubmit(event) {
     e.preventDefault();
-    console.log("Submitted");
     api.post(`/discussions/`, this.state.data).then(response => {
       this.setState({ finish: true });
     });
   }
 
-  handleTitle(e) {
+  handleTitle(event) {
     var data = Object.assign({}, this.state.data);
     data.title = e.target.value;
     this.setState({ data });
   }
 
-  handleMessage(e) {
+  handleMessage(event) {
     var data = Object.assign({}, this.state.data);
     data.message = e.target.value;
     this.setState({ data });
+  }
+
+  handleCancel(event) {
+    event.preventDefault();
+    this.setState({ finish: true });
   }
 
   render() {
@@ -71,7 +76,13 @@ class AddPost extends React.Component {
         <div className="level-right">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-light">Cancel</button>
+              <button
+                className="button is-light"
+                value="Cancel"
+                onClick={this.handleCancel.bind(this)}
+              >
+                Cancel
+              </button>
             </div>
             <div className="control">
               <button className="button is-link" type="submit">

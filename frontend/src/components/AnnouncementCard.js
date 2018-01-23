@@ -11,9 +11,8 @@ class AnnouncementCard extends React.Component {
               <p>
                 <strong>{this.props.author}</strong>{" "}
                 <small>{this.props.inserted_at}</small>
-                <br />
-                <div className="display-linebreak">{this.props.content}</div>
               </p>
+              <div className="display-linebreak">{this.props.content}</div>
             </div>
           </div>
         </article>

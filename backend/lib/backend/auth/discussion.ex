@@ -9,6 +9,7 @@ defmodule Backend.Auth.Discussion do
     field :postid, :binary_id, null: false
     field :title, :string, null: false
     field :is_discussion, :boolean, null: false
+    field :is_locked, :boolean, null: false
   end
 
   @doc false

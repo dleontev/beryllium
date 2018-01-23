@@ -9,12 +9,12 @@ class Group extends React.Component {
   }
 
   componentWillMount() {
-    api.get("/groups/" + this.props.match.params.id).then(response => {
+    api.get(`/groups/${this.props.match.params.id}`).then(response => {
       if (typeof response !== "undefined") {
         this.setState({ group: response.data.data });
       }
     });
-    api.get("/users/groups/" + this.props.match.params.id).then(response => {
+    api.get(`/users/groups/${this.props.match.params.id}`).then(response => {
       if (typeof response !== "undefined") {
         this.setState({ users: response.data.data });
       }

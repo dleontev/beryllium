@@ -32,7 +32,6 @@ class Profile extends React.Component {
     return this.state.courses.map((course, index) => (
       <CourseListCard
         key={index}
-        id={course.id}
         role_name={course.role_name}
         course_name={course.course_name}
         section_name={course.section_name}

@@ -10,7 +10,7 @@ class Users extends React.Component {
   }
 
   componentWillMount() {
-    api.get("/users/sections/" + this.props.match.params.id).then(response => {
+    api.get(`/users/sections/${this.props.match.params.id}`).then(response => {
       if (typeof response !== "undefined") {
         this.setState({ users: response.data.data });
       }
@@ -40,7 +40,11 @@ class Users extends React.Component {
     return this.state.users.map((user, index) => (
       <UserTableCard
         key={index}
-        name={<Link to={"users/" + user.user_id}>{user.first_name + " " + user.middle_name + " " + user.last_name}</Link>}
+        name={
+          <Link to={"users/" + user.user_id}>
+            {user.first_name + " " + user.middle_name + " " + user.last_name}
+          </Link>
+        }
         course_code={user.course_code}
         section_name={user.section_name}
         role_name={user.role_name}

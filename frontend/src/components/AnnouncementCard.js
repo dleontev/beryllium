@@ -12,7 +12,7 @@ class AnnouncementCard extends React.Component {
                 <strong>{this.props.author}</strong>{" "}
                 <small>{this.props.inserted_at}</small>
                 <br />
-                {this.props.content}
+                <div className="display-linebreak">{this.props.content}</div>
               </p>
             </div>
           </div>

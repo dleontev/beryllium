@@ -49,7 +49,7 @@ class Courses extends React.Component {
           course_title={course.course_code + ": " + course.course_name}
           course_link={
             course.published ? (
-              <Link to={"/courses/" + course.section_id}>
+              <Link to={`/courses/${course.section_id}`}>
                 {course.course_code + ": " + course.course_name}
               </Link>
             ) : (

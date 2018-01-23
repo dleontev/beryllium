@@ -81,16 +81,22 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/announcements/new"
-                    render={props =>(
-                      <AddPost sectionid = {this.props.match.params.id} is_discussion={false}/>
+                    render={props => (
+                      <AddPost
+                        sectionid={this.props.match.params.id}
+                        is_discussion={false}
+                      />
                     )}
                   />
 
                   <Route
                     exact
                     path="/courses/:id/discussions/new"
-                    render={props =>(
-                      <AddPost sectionid = {this.props.match.params.id} is_discussion={true}/>
+                    render={props => (
+                      <AddPost
+                        sectionid={this.props.match.params.id}
+                        is_discussion={true}
+                      />
                     )}
                   />
 

@@ -21,3 +21,7 @@ body {
 .logo-text {
   color: white;
 }
+
+.display-linebreak {
+  white-space: pre-line;
+}

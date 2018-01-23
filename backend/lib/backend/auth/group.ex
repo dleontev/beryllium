@@ -5,8 +5,8 @@ defmodule Backend.Auth.Group do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "groups" do
-    field :name, :string
-    field :groupsetid, :binary_id
+    field :name, :string, null: false
+    field :groupsetid, :binary_id, null: false
   end
 
   @doc false
@@ -14,5 +14,6 @@ defmodule Backend.Auth.Group do
     group
     |> cast(attrs, [])
     |> validate_required([])
+    |> unique_constraint(:id)
   end
 end

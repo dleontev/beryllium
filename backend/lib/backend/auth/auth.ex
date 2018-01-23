@@ -4,6 +4,7 @@ defmodule Backend.Auth do
   """
 
   import Ecto.Query, warn: false
+  
   alias Backend.Repo
   alias Backend.Auth.User
   alias Backend.Auth.Enrollment
@@ -12,6 +13,13 @@ defmodule Backend.Auth do
   alias Backend.Auth.Role
   alias Backend.Auth.School
   alias Backend.Auth.Section
+  alias Backend.Auth.Course
+  alias Backend.Auth.Enrollment
+  alias Backend.Auth.Group
+  alias Backend.Auth.Groupset
+  alias Backend.Auth.Membership
+  alias Backend.Auth.Post
+  alias Backend.Auth.Discussion
 
   @doc """
   Returns the list of users.
@@ -24,6 +32,47 @@ defmodule Backend.Auth do
   """
   def list_users do
     Repo.all(User)
+  end
+
+  @doc """
+  Returns the list of users within the specified section.
+
+  ## Examples
+
+      iex> list_users_by_section(section_id)
+      [%User{}, ...]
+
+  """
+  def list_users_by_section(section_id) do
+      query = from u in User,
+        join: e in Enrollment, on: u.id == e.userid,
+        join: s in Section, on: e.sectionid == s.id and s.id == ^section_id,
+        join: c in Course, on: s.courseid == c.id,
+        join: r in Role, on: e.roleid == r.id,
+        order_by: [desc: u.last_name, desc: u.first_name, ],         
+        select: {map(s, [:name]), map(u, [:id, :first_name, :last_name, :middle_name]), map(c, [:code]), map(r, [:name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_user_info(x) | acc] end)  
+  end
+
+  defp extract_user_info({%{name: section_name}, %{id: user_id, first_name: first_name, last_name: last_name, middle_name: middle_name}, %{code: code}, %{name: role_name}}) do
+    %{section_name: section_name, user_id: user_id, first_name: first_name, middle_name: middle_name, last_name: last_name, course_code: code, role_name: role_name}
+  end
+
+  @doc """
+  Returns the list of users within the specified section.
+
+  ## Examples
+
+      iex> list_users_by_section(section_id)
+      [%User{}, ...]
+
+  """
+  def list_users_by_group(group_id) do
+    Repo.all(
+        from u in User,
+        join: m in Membership, on: m.userid == u.id and m.groupid == ^group_id,
+        order_by: [asc: u.last_name, asc: u.first_name, ],
+        select: [:id, :first_name, :last_name, :middle_name, :email])
   end
 
   @doc """
@@ -114,21 +163,6 @@ defmodule Backend.Auth do
     User.changeset(user, %{})
   end
 
-  alias Backend.Auth.Course
-
-  @doc """
-  Returns the list of courses.
-
-  ## Examples
-
-      iex> list_courses()
-      [%Course{}, ...]
-
-  """
-  def list_courses do
-    Repo.all(Course)
-  end
-
   @doc """
   Gets a single course.
 
@@ -144,6 +178,12 @@ defmodule Backend.Auth do
 
   """
   def get_course!(id), do: Repo.get!(Course, id)
+
+  def get_course(section_id) do
+    Repo.one(from c in Course,
+        join: s in Section, on: s.courseid == c.id and s.id == ^section_id,
+        select: [:name, :code, :id])
+  end
 
   @doc """
   Creates a course.
@@ -209,8 +249,6 @@ defmodule Backend.Auth do
   def change_course(%Course{} = course) do
     Course.changeset(course, %{})
   end
-
-  alias Backend.Auth.Enrollment
 
   @doc """
   Returns the list of enrollments.
@@ -306,8 +344,6 @@ defmodule Backend.Auth do
     Enrollment.changeset(enrollment, %{})
   end
 
-  alias Backend.Auth.Group
-
   @doc """
   Returns the list of groups.
 
@@ -320,6 +356,31 @@ defmodule Backend.Auth do
   def list_groups do
     Repo.all(Group)
   end
+
+  @doc """
+  Returns the list of groups.
+
+  ## Examples
+
+      iex> list_groups()
+      [%Group{}, ...]
+
+  """
+  def list_groups(user_id) do
+      query = from g in Group,
+        join: gs in Groupset, on: g.groupsetid == gs.id,
+        join: m in Membership, on: m.groupid == g.id and m.userid == ^user_id,
+        join: s in Section, on: s.id == gs.sectionid,
+        join: c in Course, on: s.courseid == c.id,
+        order_by: [desc: c.name, desc: g.name], 
+        select: {map(g, [:id, :name]), map(c, [:name, :code]), map(s, [:id])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_group_info(x) | acc] end)  
+  end
+
+  defp extract_group_info({%{name: group_name, id: group_id}, %{name: course_name, code: course_code}, %{id: section_id}}) do
+    %{group_id: group_id, group_name: group_name, course_name: course_name, course_code: course_code, section_id: section_id}
+  end
+
 
   @doc """
   Gets a single group.
@@ -401,8 +462,6 @@ defmodule Backend.Auth do
   def change_group(%Group{} = group) do
     Group.changeset(group, %{})
   end
-
-  alias Backend.Auth.Groupset
 
   @doc """
   Returns the list of groupsets.
@@ -789,20 +848,318 @@ defmodule Backend.Auth do
   @doc """
   Returns a combined courses query.
   """
-  def list_courses(conn, user_id) do
+  def list_courses(user_id) do
     query = from u in User,
         join: e in Enrollment, on: u.id == e.userid and u.id == ^user_id,
         join: s in Section, on: e.sectionid == s.id,
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
-        select: {map(s, [:name]), map(c, [:id, :code, :name, :start_date, :end_date, :visible]), map(r, [:name])}
+        order_by: [desc: c.code],        
+        select: {map(s, [:name, :id, :published]), map(c, [:id, :code, :name, :start_date, :end_date]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_course_info(x) | acc] end)
   end
 
-  @doc """
-  Remaps the results of a combined query into a single map.
-  """
-  defp extract_course_info({%{name: section_name}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date, visible: visible,}, %{name: role_name}}) do
-    %{section_name: section_name, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, visible: visible, role_name: role_name}
+  defp extract_course_info({%{name: section_name, id: section_id, published: published}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date}, %{name: role_name}}) do
+    %{section_name: section_name, section_id: section_id, published: published, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, role_name: role_name}
   end
+
+  @doc """
+  Returns the discussions/announcements for the given sections.
+  """
+  def list_discussions(section_id, is_discussion) do
+    query = from d in Discussion,
+        join: p in Post, on: d.postid == p.id,
+        join: u in User, on: u.id == p.userid,
+        order_by: p.inserted_at,
+        where: d.sectionid == ^section_id and d.is_discussion == ^is_discussion,
+        select: {map(d, [:title, :id]), map(p, [:content, :inserted_at, :updated_at]), map(u, [:first_name, :last_name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
+  end
+
+  defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
+    %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, first_name: first_name, last_name: last_name}
+  end
+
+  @doc """
+  Returns the list of posts.
+
+  ## Examples
+
+      iex> list_posts()
+      [%Post{}, ...]
+
+  """
+  def list_posts do
+    Repo.all(Post)
+  end
+
+  @doc """
+  Gets a single post.
+
+  Raises `Ecto.NoResultsError` if the Post does not exist.
+
+  ## Examples
+
+      iex> get_post!(123)
+      %Post{}
+
+      iex> get_post!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_post!(id), do: Repo.get!(Post, id)
+
+  @doc """
+  Creates a post.
+
+  ## Examples
+
+      iex> create_post(%{field: value})
+      {:ok, %Post{}}
+
+      iex> create_post(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_post(attrs \\ %{}) do
+    %Post{}
+    |> Post.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a post.
+
+  ## Examples
+
+      iex> update_post(post, %{field: new_value})
+      {:ok, %Post{}}
+
+      iex> update_post(post, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_post(%Post{} = post, attrs) do
+    post
+    |> Post.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Post.
+
+  ## Examples
+
+      iex> delete_post(post)
+      {:ok, %Post{}}
+
+      iex> delete_post(post)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_post(%Post{} = post) do
+    Repo.delete(post)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking post changes.
+
+  ## Examples
+
+      iex> change_post(post)
+      %Ecto.Changeset{source: %Post{}}
+
+  """
+  def change_post(%Post{} = post) do
+    Post.changeset(post, %{})
+  end
+
+  @doc """
+  Returns the list of membership.
+
+  ## Examples
+
+      iex> list_membership()
+      [%Memberships{}, ...]
+
+  """
+  def list_membership do
+    Repo.all(Membership)
+  end
+
+  @doc """
+  Gets a single memberships.
+
+  Raises `Ecto.NoResultsError` if the Memberships does not exist.
+
+  ## Examples
+
+      iex> get_memberships!(123)
+      %Memberships{}
+
+      iex> get_memberships!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_memberships!(id), do: Repo.get!(Membership, id)
+
+  @doc """
+  Creates a memberships.
+
+  ## Examples
+
+      iex> create_memberships(%{field: value})
+      {:ok, %Memberships{}}
+
+      iex> create_memberships(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_memberships(attrs \\ %{}) do
+    %Membership{}
+    |> Membership.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a memberships.
+
+  ## Examples
+
+      iex> update_memberships(memberships, %{field: new_value})
+      {:ok, %Memberships{}}
+
+      iex> update_memberships(memberships, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_memberships(%Membership{} = memberships, attrs) do
+    memberships
+    |> Membership.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Memberships.
+
+  ## Examples
+
+      iex> delete_memberships(memberships)
+      {:ok, %Memberships{}}
+
+      iex> delete_memberships(memberships)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_memberships(%Membership{} = memberships) do
+    Repo.delete(memberships)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking memberships changes.
+
+  ## Examples
+
+      iex> change_memberships(memberships)
+      %Ecto.Changeset{source: %Memberships{}}
+
+  """
+  def change_memberships(%Membership{} = memberships) do
+    Membership.changeset(memberships, %{})
+  end
+
+  @doc """
+  Returns the list of discussions.
+
+  ## Examples
+
+      iex> list_discussions()
+      [%Discussion{}, ...]
+
+  """
+  def list_discussions do
+    Repo.all(Discussion)
+  end
+
+  @doc """
+  Gets a single discussion.
+
+  Raises `Ecto.NoResultsError` if the Discussion does not exist.
+
+  ## Examples
+
+      iex> get_discussion!(123)
+      %Discussion{}
+
+      iex> get_discussion!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_discussion!(id), do: Repo.get!(Discussion, id)
+
+  @doc """
+  Creates a discussion.
+
+  ## Examples
+
+      iex> create_discussion(%{field: value})
+      {:ok, %Discussion{}}
+
+      iex> create_discussion(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_discussion(attrs \\ %{}) do
+    %Discussion{}
+    |> Discussion.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a discussion.
+
+  ## Examples
+
+      iex> update_discussion(discussion, %{field: new_value})
+      {:ok, %Discussion{}}
+
+      iex> update_discussion(discussion, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_discussion(%Discussion{} = discussion, attrs) do
+    discussion
+    |> Discussion.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Discussion.
+
+  ## Examples
+
+      iex> delete_discussion(discussion)
+      {:ok, %Discussion{}}
+
+      iex> delete_discussion(discussion)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_discussion(%Discussion{} = discussion) do
+    Repo.delete(discussion)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking discussion changes.
+
+  ## Examples
+
+      iex> change_discussion(discussion)
+      %Ecto.Changeset{source: %Discussion{}}
+
+  """
+  def change_discussion(%Discussion{} = discussion) do
+    Discussion.changeset(discussion, %{})
+  end
+
 end

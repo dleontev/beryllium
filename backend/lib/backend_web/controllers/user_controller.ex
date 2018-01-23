@@ -11,9 +11,10 @@ defmodule BackendWeb.UserController do
     render(conn, "index.json", users: users)
   end
 
-  def create(conn, %{"users" => %{"email" => email, "first_name" => first_name,
-  "middle_name" => middle_name, "last_name" => last_name, "password" => password}}) do
-    user_params = %{id: Ecto.UUID.generate(), email: email, first_name: first_name, middle_name: middle_name, last_name: last_name, password: Auth.hash_password(password)}
+  def create(conn, %{"email" => email, "first_name" => first_name,
+  "middle_name" => middle_name, "last_name" => last_name, "password" => password}) do
+    user_params = %{id: Ecto.UUID.generate(), email: email, first_name: first_name, 
+    middle_name: middle_name, last_name: last_name, password: Auth.hash_password(password)}
     with {:ok, %User{} = user} <- Auth.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -22,15 +23,25 @@ defmodule BackendWeb.UserController do
     end
   end
 
-  def show(conn, _params) do
+  def show(conn, _) do
     %{id: id} = Guardian.Plug.current_resource(conn)
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
   end
 
-  def show(conn, %{"id" => id}) do
+  def show_by_id(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
+  end
+
+  def show_by_course(conn, %{"section_id" => section_id}) do
+    users = Auth.list_users_by_section(section_id)
+    render(conn, "index_by_course.json", users: users)
+  end
+
+  def show_by_group(conn, %{"group_id" => group_id}) do
+    users = Auth.list_users_by_group(group_id)
+    render(conn, "index.json", users: users)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

@@ -6,12 +6,8 @@ class CourseTableCard extends React.Component {
     return (
       <li>
         {this.props.role_name} in{" "}
-        <Link to={"/courses/" + this.props.id}>
-          {this.props.course_code +
-            " " +
-            this.props.section_name +
-            ": " +
-            this.props.course_name}
+        <Link to={"/courses/" + this.props.section_id}>
+          {this.props.course_code + ": " + this.props.course_name}
         </Link>
       </li>
     );

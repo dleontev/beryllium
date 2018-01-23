@@ -1,25 +1,16 @@
 import React from "react";
-import logo from "../images/blank-profile.png";
-import CourseListCard from "../components/CourseListCard";
 
 class UserProfileCard extends React.Component {
   render() {
-    var courses = this.props.courses.map((course, index) => (
-      <CourseListCard
-        key={index}
-        id={course.id}
-        role_name={course.role_name}
-        course_name={course.course_name}
-        section_name={course.section_name}
-        course_code={course.course_code}
-      />
-    ));
-
     return (
       <section className="section">
         <div className="container">
           <figure className="image is-128x128">
-            <img src={logo} className="profile-image" alt="Change profile" />
+            <img
+              src={this.props.profile_image}
+              className="profile-image"
+              alt="Change profile"
+            />
           </figure>
           <br />
           <div className="container">
@@ -37,7 +28,7 @@ class UserProfileCard extends React.Component {
         <br />
         <div className="container">
           <h2 className="subtitle">Enrollments</h2>
-          {courses}
+          {this.props.courses}
         </div>
       </section>
     );

@@ -30,7 +30,7 @@ import_config "#{Mix.env}.exs"
 # Configures Guardian
 config :guardian, Guardian,
   issuer: "Backend",
-  ttl: {30, :days},
+  ttl: {7, :days},
   verify_issuer: true,
   serializer: Backend.GuardianSerializer,
   secret_key: "ZZIDKx7JZI1H0e5ZKv4rynC6ZR3QJgCJ+zv2utbb4couDzeFotU1GAKv46WmkICR"

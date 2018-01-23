@@ -6,7 +6,7 @@ class Footer extends React.Component {
       <footer className="footer">
         <div className="container">
           <div className="content has-text-centered">
-            <p >Beryllium LMS.</p>
+            <p>Beryllium LMS.</p>
           </div>
         </div>
       </footer>

@@ -8,6 +8,7 @@ class Login extends React.Component {
     this.state = {
       entered_password: "",
       email: "",
+      redirectToReferrer: false
     };
   }
 
@@ -28,63 +29,93 @@ class Login extends React.Component {
         entered_password: this.state.entered_password
       })
       .then(response => {
-        localStorage.setItem("token", response.data.meta.token);
-
-        ///////////////// FOR TESTING ONLY /////////////////////
-        this.props.history.push("/account");
+        ///////////////// INCOMPLETE AUTHENTICATION ////////////
+        if (
+          typeof response !== "undefined" &&
+          typeof response.data.meta !== "undefined"
+        ) {
+          localStorage.setItem("token", response.data.meta.token);
+          this.setState({ redirectToReferrer: true });
+        }
         ////////////////////////////////////////////////////////
       });
   }
 
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
-    if (localStorage.getItem("token") !== null) {
-      return <Redirect to="/account" />;
+    const { from } = this.props.location.state || { from: { pathname: "/account" } };
+
+    ///////////////// INCOMPLETE AUTH CHECK ///////////////////////////////
+    if (this.state.redirectToReferrer || localStorage.getItem('token')) {
+      return <Redirect to={from} />;
     }
-    ////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////
 
     return (
-      <div className="container" style={{ width: "40%" }}>
-        <div className="box">
-          <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className="field">
-              <label className="label">Email</label>
-              <div className="control has-icons-left">
-                <input
-                  className="input"
-                  type="text"
-                  value={this.state.email}
-                  onChange={this.handleEmail.bind(this)}
-                />
-                <span className="icon is-medium is-left">
-                  <i className="fa fa-envelope-o" aria-hidden="true" />
-                </span>
-              </div>
+      <div
+        className="box"
+        style={{
+          maxWidth: "500px",
+          padding: "3rem 4rem",
+          margin: "2rem auto"
+        }}
+      >
+        <h2
+          className="subtitle"
+          style={{ marginBottom: "2rem", textAlign: "center" }}
+        >
+          Login to Beryllium
+        </h2>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <div className="field">
+            <div className="control has-icons-left">
+              <input
+                className="input"
+                type="text"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={this.handleEmail.bind(this)}
+              />
+              <span className="icon is-medium is-left">
+                <i className="fa fa-envelope-o" aria-hidden="true" />
+              </span>
             </div>
+          </div>
 
-            <div className="field">
-              <label className="label">Password</label>
-              <div className="control has-icons-left">
-                <input
-                  className="input"
-                  type="password"
-                  value={this.state.entered_password}
-                  onChange={this.handlePassword.bind(this)}
-                />
-                <span className="icon is-medium is-left">
-                  <i className="fa fa-lock" aria-hidden="true" />
-                </span>
-              </div>
+          <div className="field">
+            <div className="control has-icons-left">
+              <input
+                className="input"
+                type="password"
+                placeholder="Password"
+                value={this.state.entered_password}
+                onChange={this.handlePassword.bind(this)}
+              />
+              <span className="icon is-medium is-left">
+                <i className="fa fa-lock" aria-hidden="true" />
+              </span>
             </div>
-            <button type="submit" value="Submit" className="button is-link">
-              Login
-            </button>
-            <div className="divider" />
-            <Link to="/register">
-              <button className="button is-primary">Register</button>
-            </Link>
-          </form>
-        </div>
+          </div>
+
+          <div className="levels">
+            <div className="control">
+              <button
+                type="submit"
+                value="Submit"
+                className="button is-link  is-fullwidth"
+              >
+                Login
+              </button>
+            </div>
+            <hr style={{ margin: "1rem 0" }} />
+            <div className="control">
+              <Link to="/register">
+                <button className="button i is-fullwidth">
+                  Create a new account
+                </button>
+              </Link>
+            </div>
+          </div>
+        </form>
       </div>
     );
   }

@@ -12,14 +12,12 @@ body {
 }
 
 .logo-border {
-  border: 1px solid darkorange;
-  border-radius: 8px;
+  border: 2px solid darkorange;
+  border-radius: 10px;
   white-space: nowrap;
   float: left;
 }
 
-.divider{
-  width:5px;
-  height:auto;
-  display:inline-block;
+.logo-text {
+  color: white;
 }

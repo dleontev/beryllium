@@ -11,7 +11,7 @@ class Announcements extends React.Component {
 
   componentWillMount() {
     api
-      .get("/announcements/sections/" + this.props.match.params.id)
+      .get("/discussions/sections/" + this.props.match.params.id + "/" + false)
       .then(response => {
         if (typeof response !== "undefined") {
           this.setState({ announcements: response.data.data });

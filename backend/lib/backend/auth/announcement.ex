@@ -8,6 +8,7 @@ defmodule Backend.Auth.Announcement do
     field :sectionid, :binary_id, null: false
     field :postid, :binary_id, null: false
     field :title, :string, null: false
+    field :is_discussion, :boolean, null: false
   end
 
   @doc false

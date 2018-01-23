@@ -5,34 +5,37 @@ class AddPost extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      id: this.props.id,
-      isAnnouncement: this.props.isAnnouncement,
+      sectionid: this.props.sectionid,
+      is_discussion: this.props.is_discussion,
       title: "",
       message: ""
     }
   }
 
   handleSubmit(e){
-    e.preventDefault();
+    //e.preventDefault();
+    console.log("Submitted");
      api
-      .post(`/sessions/`, this.state)
+      .post(`/discussions/`, this.state)
       .then(response => {
         console.log(response);
+      }).catch(error =>{
+        console.log(error);
       });
   }
 
   handleTitle(e){
-    e.preventDefault();
+    //e.preventDefault();
     this.setState({title: e.target.value});
   }
 
   handleMessage(e){
-    e.preventDefault();
+    //e.preventDefault();
     this.setState({message: e.target.value});
   }
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <div className="field">
           <label className="label">Title</label>
           <div className="control">
@@ -51,7 +54,7 @@ class AddPost extends React.Component {
               <button className="button is-text">Cancel</button>
             </div>
             <div className="control">
-              <button className="button is-link" type="submit" onSubmit={this.handleSubmit.bind(this)}>Submit</button>
+              <button className="button is-link" type="submit">Submit</button>
             </div>
           </div>
         </div>

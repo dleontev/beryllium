@@ -82,7 +82,7 @@ class Dashboard extends React.Component {
                     exact
                     path="/courses/:id/announcements/new"
                     render={props =>(
-                      <AddPost id = {this.props.match.params.id} isAnnouncement={true}/>
+                      <AddPost sectionid = {this.props.match.params.id} is_discussion={false}/>
                     )}
                   />
 
@@ -90,7 +90,7 @@ class Dashboard extends React.Component {
                     exact
                     path="/courses/:id/discussions/new"
                     render={props =>(
-                      <AddPost id = {this.props.match.params.id} isAnnouncement={false}/>
+                      <AddPost sectionid = {this.props.match.params.id} is_discussion={true}/>
                     )}
                   />
 

@@ -14,7 +14,7 @@ defmodule Backend.Auth.Discussion do
   @doc false
   def changeset(%Discussion{} = discussion, attrs) do
     discussion
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:id, :sectionid, :postid, :title, :is_discussion])
+    |> validate_required([:id, :sectionid, :postid, :title, :is_discussion])
   end
 end

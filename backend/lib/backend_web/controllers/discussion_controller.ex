@@ -11,7 +11,13 @@ defmodule BackendWeb.DiscussionController do
     render(conn, "index.json", discussions: discussions)
   end
 
-  def create(conn, %{"discussion" => discussion_params}) do
+  def create(conn,%{"sectionid" => sectionid, "is_discussion" => is_discussion, "title" => title, "message" => message}) do
+    %{id: id} = Guardian.Plug.current_resource(conn)
+    user_id = id
+    postid = Ecto.UUID.generate()
+    post_params = %{id: postid, content: message, userid: user_id}
+    Auth.create_post(post_params)
+    discussion_params = %{id: Ecto.UUID.generate(), is_discussion: is_discussion, sectionid: sectionid, title: title, postid: postid}
     with {:ok, %Discussion{} = discussion} <- Auth.create_discussion(discussion_params) do
       conn
       |> put_status(:created)

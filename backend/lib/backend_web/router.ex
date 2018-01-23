@@ -26,8 +26,8 @@ defmodule BackendWeb.Router do
     resources "/groupsets", GroupsetController, except: [:edit, :show]
     resources "/roles", RoleController, except: [:edit, :show]
     resources "/schools", SchoolController, except: [:edit, :show]
-    resources "/sections", SectionController, except: [:edit, :show]
-    resources "/discussions", DiscussionController, except: [:new, :edit]   
+    resources "/sections", SectionController, except: [:edit, :show] 
+    resources "/discussions", DiscussionController, except: [:edit, :show] 
     resources "/posts", PostController, except: [:new, :edit] 
 
     get "/users/sections/:section_id/", UserController, :show_by_course
@@ -35,7 +35,7 @@ defmodule BackendWeb.Router do
     get "/users/:id", UserController, :show_by_id
     get "/account/", UserController, :show
 
-    get "/announcements/sections/:section_id", AnnouncementController, :show_all
+    get "/discussions/sections/:section_id/:is_discussion", DiscussionController, :show_all
 
     get "/courses/sections/:section_id", CourseController, :show
     get "/courses/user/all", CourseController, :show_all

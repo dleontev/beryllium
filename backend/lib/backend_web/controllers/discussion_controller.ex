@@ -25,6 +25,11 @@ defmodule BackendWeb.DiscussionController do
     render(conn, "show.json", discussion: discussion)
   end
 
+  def show_all(conn, %{"section_id" => section_id, "is_discussion" => is_discussion}) do
+    discussions = Auth.list_discussions(section_id, is_discussion)
+    render(conn, "show_all.json", discussions: discussions)  
+  end
+
   def update(conn, %{"id" => id, "discussion" => discussion_params}) do
     discussion = Auth.get_discussion!(id)
 

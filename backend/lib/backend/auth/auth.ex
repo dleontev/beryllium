@@ -19,6 +19,7 @@ defmodule Backend.Auth do
   alias Backend.Auth.Groupset
   alias Backend.Auth.Membership
   alias Backend.Auth.Post
+  alias Backend.Auth.Discussion
 
   @doc """
   Returns the list of users.
@@ -862,117 +863,21 @@ defmodule Backend.Auth do
     %{section_name: section_name, section_id: section_id, published: published, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, role_name: role_name}
   end
 
-  alias Backend.Auth.Announcement
-
   @doc """
-  Returns the list of announcements.
-
-  ## Examples
-
-      iex> list_announcements()
-      [%Announcement{}, ...]
-
+  Returns the discussions/announcements for the given sections.
   """
-  def list_announcements do
-    Repo.all(Announcement)
-  end
-
-  @doc """
-  Returns the announcements for the given sections.
-  """
-  def list_announcements(section_id) do
-    query = from a in Announcement,
-        join: p in Post, on: a.postid == p.id,
+  def list_discussions(section_id, is_discussion) do
+    query = from d in Discussion,
+        join: p in Post, on: d.postid == p.id,
         join: u in User, on: u.id == p.userid,
         order_by: p.inserted_at,
-        where: a.sectionid == ^section_id,
-        select: {map(a, [:title, :id]), map(p, [:content, :inserted_at, :updated_at]), map(u, [:first_name, :last_name])}
-    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_announcement_info(x) | acc] end)
+        where: d.sectionid == ^section_id and d.is_discussion == ^is_discussion,
+        select: {map(d, [:title, :id]), map(p, [:content, :inserted_at, :updated_at]), map(u, [:first_name, :last_name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
   end
 
-  defp extract_announcement_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
+  defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
     %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, first_name: first_name, last_name: last_name}
-  end
-
-  @doc """
-  Gets a single announcement.
-
-  Raises `Ecto.NoResultsError` if the Announcement does not exist.
-
-  ## Examples
-
-      iex> get_announcement!(123)
-      %Announcement{}
-
-      iex> get_announcement!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_announcement!(id), do: Repo.get!(Announcement, id)
-
-  @doc """
-  Creates a announcement.
-
-  ## Examples
-
-      iex> create_announcement(%{field: value})
-      {:ok, %Announcement{}}
-
-      iex> create_announcement(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_announcement(attrs \\ %{}) do
-    %Announcement{}
-    |> Announcement.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a announcement.
-
-  ## Examples
-
-      iex> update_announcement(announcement, %{field: new_value})
-      {:ok, %Announcement{}}
-
-      iex> update_announcement(announcement, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_announcement(%Announcement{} = announcement, attrs) do
-    announcement
-    |> Announcement.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Announcement.
-
-  ## Examples
-
-      iex> delete_announcement(announcement)
-      {:ok, %Announcement{}}
-
-      iex> delete_announcement(announcement)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_announcement(%Announcement{} = announcement) do
-    Repo.delete(announcement)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking announcement changes.
-
-  ## Examples
-
-      iex> change_announcement(announcement)
-      %Ecto.Changeset{source: %Announcement{}}
-
-  """
-  def change_announcement(%Announcement{} = announcement) do
-    Announcement.changeset(announcement, %{})
   end
 
   @doc """
@@ -1162,8 +1067,6 @@ defmodule Backend.Auth do
   def change_memberships(%Membership{} = memberships) do
     Membership.changeset(memberships, %{})
   end
-
-  alias Backend.Auth.Discussion
 
   @doc """
   Returns the list of discussions.

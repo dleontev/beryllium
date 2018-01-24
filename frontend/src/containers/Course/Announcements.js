@@ -33,6 +33,7 @@ class Announcements extends React.Component {
         inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
         updated_at={new Date(announcement.updated_at).toLocaleDateString()}
         content={announcement.content}
+        is_discussion={false}
       />
     ));
   }

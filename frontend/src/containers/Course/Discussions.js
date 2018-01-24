@@ -33,6 +33,7 @@ class Discussions extends React.Component {
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
         content={discussion.content}
+        is_discussion={true}
       />
     ));
   }

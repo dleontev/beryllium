@@ -872,12 +872,17 @@ defmodule Backend.Auth do
         join: u in User, on: u.id == p.userid,
         order_by: p.inserted_at,
         where: d.sectionid == ^section_id and d.is_discussion == ^is_discussion,
-        select: {map(d, [:title, :id]), map(p, [:content, :inserted_at, :updated_at]), map(u, [:first_name, :last_name])}
+        select: {map(d, [:title, :id]), %{content: fragment("SUBSTRING(?, 1, 99)", p.content), inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:first_name, :last_name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
   end
 
   defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
     %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, first_name: first_name, last_name: last_name}
+  end
+
+  def list_discussions_preview() do
+      query = from p in Post, select: {%{content: fragment("SUBSTRING(?, 1, 10)", p.content), id: p.id}}
+      Repo.all(query)
   end
 
   @doc """

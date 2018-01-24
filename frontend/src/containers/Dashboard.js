@@ -21,8 +21,8 @@ class Dashboard extends React.Component {
   getCourseTiles() {
     var tiles;
 
-    if(this.state.courses !== null) {
-       tiles = this.state.courses.map((course, index) => {
+    if (this.state.courses !== null) {
+      tiles = this.state.courses.map((course, index) => {
         return (
           <DashboardTile
             key={index}
@@ -51,7 +51,9 @@ class Dashboard extends React.Component {
             <p className="title is-5">Recent</p>
           </div>
         </nav>
-        <div className="tile is-ancestor is-vertical">{this.getCourseTiles()}</div>
+        <div className="tile is-ancestor is-vertical">
+          {this.getCourseTiles()}
+        </div>
       </div>
     );
   }

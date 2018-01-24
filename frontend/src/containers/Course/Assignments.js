@@ -1,7 +1,6 @@
 import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
-import AssignmentCard from "../../components/AnnouncementCard";
 
 class Assignments extends React.Component {
   constructor() {
@@ -11,7 +10,7 @@ class Assignments extends React.Component {
 
   componentWillMount() {
     api
-      .get("/assignments/sections/" + this.props.match.params.id)
+      .get(`/assignments/sections/${this.props.match.params.id}`)
       .then(response => {
         if (typeof response !== "undefined") {
           this.setState({ assignments: response.data.data });
@@ -38,9 +37,9 @@ class Assignments extends React.Component {
   }
 
   getCourseAssignments() {
-    return this.state.assignments.map((assignment, index) => (
-      <AssignmentCard key={index} id={assignment.id} />
-    ));
+    // return this.state.assignments.map((assignment, index) => (
+      
+    // ));
   }
 
   render() {

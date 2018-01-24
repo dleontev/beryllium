@@ -11,7 +11,7 @@ class Announcements extends React.Component {
 
   componentWillMount() {
     api
-      .get("/discussions/sections/" + this.props.match.params.id + "/" + false)
+    .get(`/discussions/sections/${this.props.match.params.id}/false`)
       .then(response => {
         if (typeof response !== "undefined") {
           this.setState({ announcements: response.data.data });
@@ -33,6 +33,7 @@ class Announcements extends React.Component {
         inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
         updated_at={new Date(announcement.updated_at).toLocaleDateString()}
         content={announcement.content}
+        is_discussion={false}
       />
     ));
   }

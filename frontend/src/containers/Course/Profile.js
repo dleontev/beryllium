@@ -10,7 +10,7 @@ class Profile extends React.Component {
   }
 
   componentWillMount() {
-    api.get("/users/" + this.props.match.params.user_id).then(response => {
+    api.get(`/users/${this.props.match.params.user_id}`).then(response => {
       if (typeof response !== "undefined") {
         this.setState({ user: response.data.data });
       }

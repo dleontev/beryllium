@@ -21,6 +21,7 @@ import Group from "./Course/Group";
 import Groups from "./Course/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
+import Announcement from "./Announcement";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -80,17 +81,29 @@ class Dashboard extends React.Component {
 
                   <Route
                     exact
+                    path="/courses/:id/announcements/:discussion_id"
+                    component={Announcement}
+                  />
+
+                  <Route
+                    exact
                     path="/courses/:id/announcements/new"
-                    render={props =>(
-                      <AddPost sectionid = {this.props.match.params.id} is_discussion={false}/>
+                    render={props => (
+                      <AddPost
+                        sectionid={this.props.match.params.id}
+                        is_discussion={false}
+                      />
                     )}
                   />
 
                   <Route
                     exact
                     path="/courses/:id/discussions/new"
-                    render={props =>(
-                      <AddPost sectionid = {this.props.match.params.id} is_discussion={true}/>
+                    render={props => (
+                      <AddPost
+                        sectionid={this.props.match.params.id}
+                        is_discussion={true}
+                      />
                     )}
                   />
 
@@ -116,6 +129,12 @@ class Dashboard extends React.Component {
                     exact
                     path="/courses/:id/discussions"
                     component={Discussions}
+                  />
+
+                  <Route
+                    exact
+                    path="/courses/:id/discussions/:discussion_id"
+                    component={Announcement}
                   />
 
                   <Route

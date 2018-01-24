@@ -8,7 +8,8 @@ class CourseMenu extends React.Component {
         <ul className="menu-list">
           <li>
             <NavLink
-              exact to={"/courses/" + this.props.id + "/"}
+              exact
+              to={`/courses/${this.props.id}/`}
               activeClassName="is-active"
             >
               Home
@@ -16,7 +17,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/announcements"}
+              to={`/courses/${this.props.id}/announcements`}
               activeClassName="is-active"
             >
               Announcements
@@ -24,7 +25,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/discussions"}
+              to={`/courses/${this.props.id}/discussions`}
               activeClassName="is-active"
             >
               Discussions
@@ -32,7 +33,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/assignments"}
+              to={`/courses/${this.props.id}/assignments`}
               activeClassName="is-active"
             >
               Assignments
@@ -40,7 +41,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/pages"}
+              to={`/courses/${this.props.id}/pages`}
               activeClassName="is-active"
             >
               Pages
@@ -48,7 +49,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/files"}
+              to={`/courses/${this.props.id}/files`}
               activeClassName="is-active"
             >
               Files
@@ -56,7 +57,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/users"}
+              to={`/courses/${this.props.id}/users`}
               activeClassName="is-active"
             >
               People
@@ -64,7 +65,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/groups"}
+              to={`/courses/${this.props.id}/groups`}
               activeClassName="is-active"
             >
               Groups
@@ -72,7 +73,7 @@ class CourseMenu extends React.Component {
           </li>
           <li>
             <NavLink
-              to={"/courses/" + this.props.id + "/settings"}
+              to={`/courses/${this.props.id}/settings`}
               activeClassName="is-active"
             >
               Settings

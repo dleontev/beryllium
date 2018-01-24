@@ -4,9 +4,11 @@ import MainMenu from "../Menu/MainMenu";
 
 class Header extends React.Component {
   getMainMenu() {
+    ///////////////////////// FAKE AUTH CHECK /////////////
     if (localStorage.getItem("token") === null) {
       return null;
     }
+    //////////////////////////////////////////////////////
 
     return <MainMenu />;
   }

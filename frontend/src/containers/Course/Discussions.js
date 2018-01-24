@@ -6,40 +6,39 @@ import AnnouncementCard from "../../components/AnnouncementCard";
 class Discussions extends React.Component {
   constructor() {
     super();
-    this.state = { announcements: [] };
+    this.state = { discussions: [] };
   }
 
-    componentWillMount() {
+  componentWillMount() {
     api
-      .get("/discussions/sections/" + this.props.match.params.id + "/" + true)
+      .get(`/discussions/sections/${this.props.match.params.id}/true`)
       .then(response => {
         if (typeof response !== "undefined") {
-          this.setState({ announcements: response.data.data });
-          console.log(this.state.announcements);
+          this.setState({ discussions: response.data.data });
         }
       });
   }
 
-  getAnnouncements() {
-    if (this.state.announcements.length === 0) {
-      return "No announcements found.";
+  getDiscussions() {
+    if (this.state.discussions.length === 0) {
+      return "No discussions found.";
     }
 
-    return this.state.announcements.map((announcement, index) => (
+    return this.state.discussions.map((discussion, index) => (
       <AnnouncementCard
         key={index}
-        id={announcement.id}
-        title={announcement.title}
-        author={announcement.first_name + " " + announcement.last_name}
-        inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
-        updated_at={new Date(announcement.updated_at).toLocaleDateString()}
-        content={announcement.content}
+        id={discussion.id}
+        title={discussion.title}
+        author={discussion.first_name + " " + discussion.last_name}
+        inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
+        updated_at={new Date(discussion.updated_at).toLocaleDateString()}
+        content={discussion.content}
+        is_discussion={true}
       />
     ));
   }
 
   render() {
-
     return (
       <div>
         <nav className="navbar is-transparent">
@@ -57,7 +56,10 @@ class Discussions extends React.Component {
           </div>
         </nav>
 
-        <div><br/>{this.getAnnouncements()}</div>
+        <div>
+          <br />
+          {this.getDiscussions()}
+        </div>
       </div>
     );
   }

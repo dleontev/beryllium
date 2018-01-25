@@ -1,7 +1,8 @@
 import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
-import AnnouncementCard from "../../components/AnnouncementCard";
+import DiscussionTableCard from "../../components/DiscussionTableCard";
+//import AnnouncementCard from "../../components/AnnouncementCard";
 
 class Discussions extends React.Component {
   constructor() {
@@ -25,11 +26,11 @@ class Discussions extends React.Component {
     }
 
     return this.state.discussions.map((discussion, index) => (
-      <AnnouncementCard
+      <DiscussionTableCard
         key={index}
         id={discussion.id}
         title={discussion.title}
-        author={discussion.first_name + " " + discussion.last_name}
+        author={`${discussion.first_name} ${discussion.last_name}`}
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
         content={discussion.content}
@@ -58,7 +59,17 @@ class Discussions extends React.Component {
 
         <div>
           <br />
-          {this.getDiscussions()}
+          <table className="table is-fullwidth is-striped is-hoverable">
+            <thead>
+              <tr>
+                <th style={{ textAlign: "left" }}>Title</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Preview</th>
+              </tr>
+            </thead>
+            <tbody>{this.getDiscussions()}</tbody>
+          </table>
         </div>
       </div>
     );

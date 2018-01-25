@@ -10,7 +10,7 @@ class Announcement extends Component {
   render() {
     return (
       <section className="section">
-        <h1 className="title is-4"> {this.state.id} </h1>
+        <h1 className="title is-4"> {this.state.id} SHREK</h1>
       </section>
     );
   }

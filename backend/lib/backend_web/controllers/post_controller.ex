@@ -3,7 +3,7 @@ defmodule BackendWeb.PostController do
 
   alias Backend.Auth
   alias Backend.Auth.Post
-
+  
   action_fallback BackendWeb.FallbackController
 
   def index(conn, _params) do
@@ -11,7 +11,15 @@ defmodule BackendWeb.PostController do
     render(conn, "index.json", posts: posts)
   end
 
-  def create(conn, %{"post" => post_params}) do
+  def create(conn, %{"sectionid" => sectionid, "is_discussion" => is_discussion, "title" => title, "message" => message}) do
+    %{id: userid} = Guardian.Plug.current_resource(conn)
+
+    discussionid = Ecto.UUID.generate()
+    discussion_params = %{id: discussionid, sectionid: sectionid, title: title, is_discussion: is_discussion, is_locked: false }  
+    Auth.create_discussion(discussion_params)
+
+    post_params = %{id: Ecto.UUID.generate(), content: message, userid: userid, discussionid: discussionid}
+
     with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
       conn
       |> put_status(:created)

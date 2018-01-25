@@ -19,7 +19,7 @@ class AddPost extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    api.post(`/discussions/`, this.state.data).then(response => {
+    api.post(`/posts/`, this.state.data).then(response => {
       this.setState({ finish: true });
     });
   }

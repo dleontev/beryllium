@@ -11,7 +11,7 @@ class Announcements extends React.Component {
 
   componentWillMount() {
     api
-    .get(`/discussions/sections/${this.props.match.params.id}/false`)
+      .get(`/discussions/sections/${this.props.match.params.id}/false`)
       .then(response => {
         if (typeof response !== "undefined") {
           this.setState({ announcements: response.data.data });
@@ -27,13 +27,16 @@ class Announcements extends React.Component {
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
         key={index}
-        id={announcement.id}
         title={announcement.title}
+        id={announcement.id}
         author={announcement.first_name + " " + announcement.last_name}
         inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
         updated_at={new Date(announcement.updated_at).toLocaleDateString()}
-        content={announcement.content}
-        is_discussion={false}
+        content={
+          announcement.content.length > 100
+            ? announcement.content.substring(0, 100) + "[...]"
+            : announcement.content
+        }
       />
     ));
   }
@@ -56,7 +59,10 @@ class Announcements extends React.Component {
           </div>
         </nav>
 
-        <div><br/>{this.getAnnouncements()}</div>
+        <div>
+          <br />
+          {this.getAnnouncements()}
+        </div>
       </div>
     );
   }

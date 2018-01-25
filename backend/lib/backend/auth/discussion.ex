@@ -6,7 +6,6 @@ defmodule Backend.Auth.Discussion do
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "discussions" do
     field :sectionid, :binary_id, null: false
-    field :postid, :binary_id, null: false
     field :title, :string, null: false
     field :is_discussion, :boolean, null: false
     field :is_locked, :boolean, null: false
@@ -15,7 +14,7 @@ defmodule Backend.Auth.Discussion do
   @doc false
   def changeset(%Discussion{} = discussion, attrs) do
     discussion
-    |> cast(attrs, [:id, :sectionid, :postid, :title, :is_discussion])
-    |> validate_required([:id, :sectionid, :postid, :title, :is_discussion])
+    |> cast(attrs, [:id, :sectionid, :title, :is_discussion, :is_locked])
+    |> validate_required([:id, :sectionid, :title, :is_discussion, :is_locked])
   end
 end

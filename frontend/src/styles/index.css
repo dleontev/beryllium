@@ -18,6 +18,22 @@ body {
   float: left;
 }
 
+.loading {
+  -webkit-animation: spinAround 600ms infinite linear;
+  animation: spinAround 600ms infinite linear;
+  border: 2px solid #3273dc;
+  border-radius: 290486px;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 5em;
+  position: relative;
+  width: 5em;
+  position: absolute;
+  position: absolute !important;
+}
+
 .logo-text {
   color: white;
 }

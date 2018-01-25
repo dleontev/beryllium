@@ -8,13 +8,14 @@ defmodule Backend.Auth.Post do
     field :userid, :binary_id, null: false
     field :parentid, :binary_id
     field :content, :string, null: false
+    field :discussionid, :binary_id, null: false
     timestamps()
   end
 
   @doc false
   def changeset(%Post{} = post, attrs) do
     post
-    |> cast(attrs, [:id, :userid, :parentid, :content])
-    |> validate_required([:id, :userid, :content])
+    |> cast(attrs, [:id, :userid, :parentid, :content, :discussionid])
+    |> validate_required([:id, :userid, :content, :discussionid])
   end
 end

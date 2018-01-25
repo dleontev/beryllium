@@ -11,6 +11,7 @@ import AddPage from "../components/Form/AddPage";
 // Main containers.
 import Profile from "./Course/Profile";
 import CourseHome from "./Course/CourseHome";
+import Announcement from "./Course/Announcement";
 import Announcements from "./Course/Announcements";
 import Assignments from "./Course/Assignments";
 import Files from "./Course/Files";
@@ -21,7 +22,6 @@ import Group from "./Course/Group";
 import Groups from "./Course/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
-import Announcement from "./Announcement";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -81,12 +81,6 @@ class Dashboard extends React.Component {
 
                   <Route
                     exact
-                    path="/courses/:id/announcements/:discussion_id"
-                    component={Announcement}
-                  />
-
-                  <Route
-                    exact
                     path="/courses/:id/announcements/new"
                     render={props => (
                       <AddPost
@@ -94,6 +88,12 @@ class Dashboard extends React.Component {
                         is_discussion={false}
                       />
                     )}
+                  />
+
+                  <Route
+                    exact
+                    path="/courses/:id/announcements/:discussion_id"
+                    component={Announcement}
                   />
 
                   <Route

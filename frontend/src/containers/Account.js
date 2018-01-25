@@ -81,7 +81,12 @@ class Profile extends React.Component {
         <div className="level-right">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link">Edit Profile</button>
+              <button className="button is-link">
+                <span class="icon">
+                  <i class="fa fa-pencil" />
+                </span>
+                <span>Edit Profile</span>
+              </button>
             </div>
             <div className="control">
               <button

@@ -17,16 +17,10 @@ class Groups extends React.Component {
           </div>
           <div className="navbar-menu" />
 
-          <div className="navbar-end">
-            <div className="control">
-              <Link to="groups/new">
-                <button className="button is-link">Add Group</button>
-              </Link>
-            </div>
-          </div>
+          <div className="navbar-end" />
         </nav>
 
-        <div>..placeholder..</div>
+        <div>&lt;placeholder&gt;</div>
       </div>
     );
   }

@@ -53,16 +53,18 @@ class Announcements extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="announcements/new">
-                <button className="button is-link">+Announcement</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-plus-circle" />
+                  </span>
+                  <span>Announcement</span>
+                </button>
               </Link>
             </div>
           </div>
         </nav>
 
-        <div>
-          <br />
-          {this.getAnnouncements()}
-        </div>
+        <div>{this.getAnnouncements()}</div>
       </div>
     );
   }

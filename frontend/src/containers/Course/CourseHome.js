@@ -17,10 +17,19 @@ class CourseHome extends React.Component {
           </div>
           <div className="navbar-menu" />
 
-          <div className="navbar-end" />
+          <div className="navbar-end">
+            <div className="control">
+              <button className="button is-link">
+                <span class="icon">
+                  <i class="fa fa-pencil" />
+                </span>
+                <span>Edit</span>
+              </button>
+            </div>
+          </div>
         </nav>
 
-        <div>..placeholder..</div>
+        <div>&lt;placeholder&gt;</div>
       </div>
     );
   }

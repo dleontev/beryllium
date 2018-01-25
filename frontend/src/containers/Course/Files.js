@@ -29,7 +29,12 @@ class Files extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="files/new">
-                <button className="button is-link">Upload</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-upload" />
+                  </span>
+                  <span>Upload</span>
+                </button>
               </Link>
             </div>
           </div>

@@ -50,16 +50,17 @@ class Discussions extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="discussions/new">
-                <button className="button is-link">+Discussion</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-plus-circle" />
+                  </span>
+                  <span>Discussion</span>
+                </button>
               </Link>
             </div>
           </div>
         </nav>
-
-        <div>
-          <br />
-          {this.getDiscussions()}
-        </div>
+        {this.getDiscussions()}
       </div>
     );
   }

@@ -38,7 +38,6 @@ class Assignments extends React.Component {
 
   getCourseAssignments() {
     // return this.state.assignments.map((assignment, index) => (
-      
     // ));
   }
 
@@ -54,7 +53,12 @@ class Assignments extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="assignments/new">
-                <button className="button is-link">+Assignment</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-plus-circle" />
+                  </span>
+                  <span>Assignment</span>
+                </button>
               </Link>
             </div>
           </div>

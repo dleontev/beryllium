@@ -51,11 +51,17 @@ class Discussions extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="discussions/new">
-                <button className="button is-link">+Discussion</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-plus-circle" />
+                  </span>
+                  <span>Discussion</span>
+                </button>
               </Link>
             </div>
           </div>
         </nav>
+<<<<<<< HEAD
 
         <div>
           <br />
@@ -71,6 +77,9 @@ class Discussions extends React.Component {
             <tbody>{this.getDiscussions()}</tbody>
           </table>
         </div>
+=======
+        {this.getDiscussions()}
+>>>>>>> b08be7cc388f3ddedd41d65ad830bee33ec8017f
       </div>
     );
   }

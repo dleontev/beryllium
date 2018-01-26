@@ -29,7 +29,12 @@ class Pages extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="pages/new">
-                <button className="button is-link">+Page</button>
+                <button className="button is-link">
+                  <span class="icon">
+                    <i class="fa fa-plus-circle" />
+                  </span>
+                  <span>Page</span>
+                </button>
               </Link>
             </div>
           </div>

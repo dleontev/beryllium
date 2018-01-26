@@ -20,7 +20,7 @@ class Settings extends React.Component {
           <div className="navbar-end" />
         </nav>
 
-        <div>..placeholder..</div>
+        <div>&lt;placeholder&gt;</div>
       </div>
     );
   }

@@ -43,7 +43,6 @@ class ConfirmDeleteCard extends React.Component {
 								</div>
             	</div>
             </div>
-            <button className="modal-close is-large" aria-label="close"></button>
           </div>
         );
     }

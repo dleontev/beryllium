@@ -61,7 +61,6 @@ class Discussions extends React.Component {
             </div>
           </div>
         </nav>
-<<<<<<< HEAD
 
         <div>
           <br />
@@ -77,9 +76,6 @@ class Discussions extends React.Component {
             <tbody>{this.getDiscussions()}</tbody>
           </table>
         </div>
-=======
-        {this.getDiscussions()}
->>>>>>> b08be7cc388f3ddedd41d65ad830bee33ec8017f
       </div>
     );
   }

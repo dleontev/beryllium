@@ -25,7 +25,7 @@ class Courses extends React.Component {
     }
 
     return (
-      <table className="table is-fullwidth is-striped">
+      <table className="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
             <th style={{ textAlign: "left" }}>Name</th>

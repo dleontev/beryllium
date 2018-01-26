@@ -20,17 +20,33 @@ class Discussions extends React.Component {
       });
   }
 
-  getDiscussions() {
+  getDiscussionTable() {
     if (this.state.discussions.length === 0) {
       return "No discussions found.";
     }
 
+    return (
+      <table className="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Date</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>{this.getDiscussions()}</tbody>
+      </table>
+    );
+  }
+
+  getDiscussions() {
     return this.state.discussions.map((discussion, index) => (
       <DiscussionTableCard
         key={index}
         id={discussion.id}
         title={discussion.title}
-        author={`${discussion.first_name} ${discussion.last_name}`}
+        author={discussion.author_name}
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
         content={discussion.content}
@@ -62,20 +78,7 @@ class Discussions extends React.Component {
           </div>
         </nav>
 
-        <div>
-          <br />
-          <table className="table is-fullwidth is-striped is-hoverable">
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left" }}>Title</th>
-                <th>Author</th>
-                <th>Date</th>
-                <th>Preview</th>
-              </tr>
-            </thead>
-            <tbody>{this.getDiscussions()}</tbody>
-          </table>
-        </div>
+        <div>{this.getDiscussionTable()}</div>
       </div>
     );
   }

@@ -13,7 +13,7 @@ class DashboardTile extends React.Component {
             non massa sem. Etiam finibus odio quis feugiat facilisis.
           </div>
         </article>
-        <br/>
+        <br />
       </div>
     );
   }

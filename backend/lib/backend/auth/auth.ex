@@ -49,13 +49,13 @@ defmodule Backend.Auth do
         join: s in Section, on: e.sectionid == s.id and s.id == ^section_id,
         join: c in Course, on: s.courseid == c.id,
         join: r in Role, on: e.roleid == r.id,
-        order_by: [desc: u.last_name, desc: u.first_name, ],         
-        select: {map(s, [:name]), map(u, [:id, :first_name, :last_name, :middle_name]), map(c, [:code]), map(r, [:name])}
+        order_by: [desc: u.name],         
+        select: {map(s, [:name]), map(u, [:id, :name]), map(c, [:code]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_user_info(x) | acc] end)  
   end
 
-  defp extract_user_info({%{name: section_name}, %{id: user_id, first_name: first_name, last_name: last_name, middle_name: middle_name}, %{code: code}, %{name: role_name}}) do
-    %{section_name: section_name, user_id: user_id, first_name: first_name, middle_name: middle_name, last_name: last_name, course_code: code, role_name: role_name}
+  defp extract_user_info({%{name: section_name}, %{id: user_id, name: name}, %{code: code}, %{name: role_name}}) do
+    %{section_name: section_name, user_id: user_id, name: name, course_code: code, role_name: role_name}
   end
 
   @doc """
@@ -71,8 +71,8 @@ defmodule Backend.Auth do
     Repo.all(
         from u in User,
         join: m in Membership, on: m.userid == u.id and m.groupid == ^group_id,
-        order_by: [asc: u.last_name, asc: u.first_name, ],
-        select: [:id, :first_name, :last_name, :middle_name, :email])
+        order_by: [asc: u.name],
+        select: [:id, :name, :email])
   end
 
   @doc """
@@ -872,12 +872,27 @@ defmodule Backend.Auth do
         join: u in User, on: u.id == p.userid,
         order_by: p.inserted_at,
         where: d.sectionid == ^section_id and d.is_discussion == ^is_discussion,
-        select: {map(d, [:title, :id]), %{content: fragment("SUBSTRING(?, 1, 99)", p.content), inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:first_name, :last_name])}
+        select: {map(d, [:title, :id]), %{content: fragment("SUBSTRING(?, 1, 99)", p.content), inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
   end
 
-  defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{first_name: first_name, last_name: last_name}}) do
-    %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, first_name: first_name, last_name: last_name}
+  defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{name: author_name}}) do
+    %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, author_name: author_name}
+  end
+
+  @doc """
+  Returns the posts for the given discussions/announcements.
+  """
+  def list_posts_by_discussion(discussionid) do
+    query = (from p in Post,
+            join: u in User, on: u.id == p.userid,
+            where: p.discussionid == ^discussionid,
+            select: {map(p, [:id, :inserted_at, :updated_at, :content, :parentid]), map(u, [:name])})
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
+  end
+
+  defp extract_post_info({%{id: id, inserted_at: inserted_at, updated_at: updated_at, content: content, parentid: parentid}, %{name: author_name}}) do
+    %{id: id, content: content, inserted_at: inserted_at, parentid: parentid, updated_at: updated_at, author_name: author_name}
   end
 
   @doc """

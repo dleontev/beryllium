@@ -11,7 +11,7 @@ import AddPage from "../components/Form/AddPage";
 // Main containers.
 import Profile from "./Course/Profile";
 import CourseHome from "./Course/CourseHome";
-import Announcement from "./Course/Announcement";
+import Posts from "./Course/Posts";
 import Announcements from "./Course/Announcements";
 import Assignments from "./Course/Assignments";
 import Files from "./Course/Files";
@@ -93,7 +93,7 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/announcements/:discussion_id"
-                    component={Announcement}
+                    component={Posts}
                   />
 
                   <Route
@@ -134,7 +134,7 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/discussions/:discussion_id"
-                    component={Announcement}
+                    component={Posts}
                   />
 
                   <Route

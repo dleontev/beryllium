@@ -35,11 +35,7 @@ class Group extends React.Component {
     }
 
     return this.state.users.map((user, index) => (
-      <UserListCard
-        key={index}
-        id={user.id}
-        name={user.first_name + " " + user.middle_name + " " + user.last_name}
-      />
+      <UserListCard key={index} id={user.id} name={user.name} />
     ));
   }
 

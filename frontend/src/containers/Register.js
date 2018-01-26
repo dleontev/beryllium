@@ -6,10 +6,7 @@ class CreateUser extends React.Component {
   constructor() {
     super();
     this.state = {
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      time_zone: "",
+      name: "",
       password: "",
       email: ""
     };
@@ -19,16 +16,8 @@ class CreateUser extends React.Component {
     this.setState({ email: event.target.value });
   }
 
-  handleFirstName(event) {
-    this.setState({ first_name: event.target.value });
-  }
-
-  handleMiddleName(event) {
-    this.setState({ middle_name: event.target.value });
-  }
-
-  handleLastName(event) {
-    this.setState({ last_name: event.target.value });
+  handleName(event) {
+    this.setState({ name: event.target.value });
   }
 
   handlePassword(event) {
@@ -40,9 +29,7 @@ class CreateUser extends React.Component {
 
     api.post(`/users/`, {
       email: this.state.email,
-      first_name: this.state.first_name,
-      middle_name: this.state.middle_name,
-      last_name: this.state.last_name,
+      name: this.state.last_name,
       password: this.state.password
     });
   }
@@ -82,32 +69,8 @@ class CreateUser extends React.Component {
                 placeholder="First Name"
                 className="input"
                 type="text"
-                value={this.state.first_name}
-                onChange={this.handleFirstName.bind(this)}
-              />
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="control">
-              <input
-                placeholder="Middle Name"
-                className="input"
-                type="text"
-                value={this.state.middle_name}
-                onChange={this.handleMiddleName.bind(this)}
-              />
-            </div>
-          </div>
-
-          <div className="field">
-            <div className="control">
-              <input
-                placeholder="Last Name"
-                className="input"
-                type="text"
-                value={this.state.last_name}
-                onChange={this.handleLastName.bind(this)}
+                value={this.state.name}
+                onChange={this.handleName.bind(this)}
               />
             </div>
           </div>

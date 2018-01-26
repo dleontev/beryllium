@@ -26,9 +26,7 @@ class Profile extends React.Component {
       <UserProfileCard
         id={this.state.user.id}
         profile_image={profile_image}
-        first_name={this.state.user.first_name}
-        last_name={this.state.user.last_name}
-        middle_name={this.state.user.middle_name}
+        name={this.state.user.name}
         email={this.state.user.email}
         courses={<li>Enrollment data is unavailable.</li>}
       />

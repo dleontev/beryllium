@@ -33,6 +33,11 @@ defmodule BackendWeb.PostController do
     render(conn, "show.json", post: post)
   end
 
+  def show_all(conn, %{"discussion_id" => discussionid}) do
+    posts = Auth.list_posts_by_discussion(discussionid)
+    render(conn, "show_all.json", posts: posts)
+  end
+
   def update(conn, %{"id" => id, "post" => post_params}) do
     post = Auth.get_post!(id)
 

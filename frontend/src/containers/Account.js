@@ -49,9 +49,7 @@ class Profile extends React.Component {
     return (
       <UserProfileCard
         id={this.state.user.id}
-        first_name={this.state.user.first_name}
-        last_name={this.state.user.last_name}
-        middle_name={this.state.user.middle_name}
+        name={this.state.user.name}
         profile_image={profile_image}
         email={this.state.user.email}
         courses={this.getUserCourses()}

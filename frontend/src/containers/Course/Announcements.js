@@ -29,7 +29,7 @@ class Announcements extends React.Component {
         key={index}
         title={announcement.title}
         id={announcement.id}
-        author={announcement.first_name + " " + announcement.last_name}
+        author={announcement.author_name}
         inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
         updated_at={new Date(announcement.updated_at).toLocaleDateString()}
         content={

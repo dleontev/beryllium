@@ -15,8 +15,7 @@ class UserProfileCard extends React.Component {
           <br />
           <div className="container">
             <h1 className="title">
-              {this.props.first_name} {this.props.middle_name}{" "}
-              {this.props.last_name}
+              {this.props.name}
             </h1>
           </div>
         </div>

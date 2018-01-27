@@ -6,10 +6,20 @@ import AnnouncementCard from "../../components/AnnouncementCard";
 class Announcements extends React.Component {
   constructor() {
     super();
+    this.refreshAnnouncements = this.refreshAnnouncements.bind(this);
     this.state = { announcements: [] };
   }
 
+  refreshAnnouncements(){
+    this.apiCall();
+  }
+
   componentWillMount() {
+    this.apiCall();
+  }
+
+
+  apiCall(){
     api
       .get(`/discussions/sections/${this.props.match.params.id}/false`)
       .then(response => {
@@ -26,6 +36,8 @@ class Announcements extends React.Component {
 
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
+        refresh = {this.refreshAnnouncements}
+        section_id = {this.props.match.params.id}
         key={index}
         title={announcement.title}
         id={announcement.id}

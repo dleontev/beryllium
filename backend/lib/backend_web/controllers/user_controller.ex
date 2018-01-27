@@ -12,7 +12,7 @@ defmodule BackendWeb.UserController do
   end
 
   def create(conn, %{"email" => email, "name" => name, "password" => password}) do
-    user_params = %{id: Ecto.UUID.generate(), email: email, name: name, password: Auth.hash_password(password)}
+    user_params = %{id: '',  email: email, name: name, password: Auth.hash_password(password)}
     with {:ok, %User{} = user} <- Auth.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -40,6 +40,11 @@ defmodule BackendWeb.UserController do
   def show_by_group(conn, %{"group_id" => group_id}) do
     users = Auth.list_users_by_group(group_id)
     render(conn, "index.json", users: users)
+  end
+
+  def show_members_by_section(conn, %{"section_id" => section_id}) do
+    users = Auth.list_members_by_section(section_id)
+    render(conn, "index_by_section_grouped.json", users: users)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

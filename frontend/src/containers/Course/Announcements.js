@@ -54,8 +54,8 @@ class Announcements extends React.Component {
             <div className="control">
               <Link to="announcements/new">
                 <button className="button is-link">
-                  <span class="icon">
-                    <i class="fa fa-plus-circle" />
+                  <span className="icon">
+                    <i className="fa fa-plus-circle" />
                   </span>
                   <span>Announcement</span>
                 </button>

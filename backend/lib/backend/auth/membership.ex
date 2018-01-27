@@ -5,8 +5,9 @@ defmodule Backend.Auth.Membership do
   
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "memberships" do
-    field :userid, :binary_id, null: false
-    field :groupid, :binary_id, null: false
+    field :user_id, :binary_id, null: false
+    field :group_id, :binary_id, null: false
+    field :section_id, :binary_id, null: false
   end
 
   @doc false

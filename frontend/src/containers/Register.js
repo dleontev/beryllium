@@ -29,7 +29,7 @@ class CreateUser extends React.Component {
 
     api.post(`/users/`, {
       email: this.state.email,
-      name: this.state.last_name,
+      name: this.state.name,
       password: this.state.password
     });
   }

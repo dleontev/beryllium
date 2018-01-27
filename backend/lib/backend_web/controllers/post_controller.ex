@@ -11,14 +11,14 @@ defmodule BackendWeb.PostController do
     render(conn, "index.json", posts: posts)
   end
 
-  def create(conn, %{"sectionid" => sectionid, "is_discussion" => is_discussion, "title" => title, "message" => message}) do
-    %{id: userid} = Guardian.Plug.current_resource(conn)
+  def create(conn, %{"section_id" => section_id, "is_discussion" => is_discussion, "title" => title, "message" => message}) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
 
-    discussionid = Ecto.UUID.generate()
-    discussion_params = %{id: discussionid, sectionid: sectionid, title: title, is_discussion: is_discussion, is_locked: false }  
+    discussion_id = Ecto.UUID.generate()
+    discussion_params = %{id: discussion_id, section_id: section_id, title: title, is_discussion: is_discussion, is_locked: false }  
     Auth.create_discussion(discussion_params)
 
-    post_params = %{id: Ecto.UUID.generate(), content: message, userid: userid, discussionid: discussionid}
+    post_params = %{id: Ecto.UUID.generate(), content: message, user_id: user_id, discussion_id: discussion_id}
 
     with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
       conn

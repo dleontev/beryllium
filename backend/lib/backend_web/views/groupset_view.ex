@@ -11,6 +11,6 @@ defmodule BackendWeb.GroupsetView do
   end
 
   def render("groupset.json", %{groupset: groupset}) do
-    %{id: groupset.id}
+    %{id: groupset.id, name: groupset.name}
   end
 end

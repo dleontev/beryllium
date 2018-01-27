@@ -9,36 +9,62 @@ class Discussion extends Component {
   }
 
   componentWillMount() {
-    api.get(`/posts/discussions/${this.props.match.params.discussion_id}`).then(response => {
-      if (typeof response !== "undefined") {
-        this.setState({ posts: response.data.data });
-      }
-    });
+    api
+      .get(`/posts/discussions/${this.props.match.params.discussion_id}`)
+      .then(response => {
+        if (typeof response !== "undefined") {
+          this.setState({ posts: response.data.data });
+        }
+      });
   }
 
-  getPosts() {
-    if (this.state.posts.length === 0) {
-      return "No posts found.";
-    }
+  getOpeningPost() {
+    if (this.state.posts.length === 0) return;
 
-    return this.state.posts.map((post, index) => (
+    return (
       <PostCard
-        key={index}
-        id={post.id}
+        id={this.state.posts[0].id}
+        author_name={this.state.posts[0].author_name}
+        updated_at={this.state.posts[0].updated_at}
+        inserted_at={this.state.posts[0].inserted_at}
+        content={this.state.posts[0].content}
       />
-    ));
+    );
+  }
+
+  getReplies() {
+    if (this.state.posts.length === 0) return;
+
+    return this.state.posts
+      .filter(function(post) {
+        return post.parent_id !== null;
+      })
+      .map((post, index) => (
+        <PostCard
+          key={index}
+          id={post.id}
+          author_name={post.author_name}
+          updated_at={post.updated_at}
+          inserted_at={post.inserted_at}
+          content={post.content}
+        />
+      ));
   }
 
   render() {
+    // Shitty design for debugging.
     return (
       <section className="section">
         <h1 className="title is-4">
           Discussion/Announcement ID: {this.props.match.params.discussion_id}{" "}
         </h1>
         <br />
-        <h2 className="title is-4">Posts:</h2>
-        <br/>
-        {this.getPosts()}
+        <h2 className="title is-4">Opening post:</h2>
+        {this.getOpeningPost()}
+        <br />
+        <h2 className="title is-4">Replies:</h2>
+        <br />
+        {this.getReplies()}
       </section>
     );
   }

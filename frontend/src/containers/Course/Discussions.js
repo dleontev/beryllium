@@ -26,7 +26,7 @@ class Discussions extends React.Component {
     }
 
     return (
-      <table className="table is-fullwidth is-striped is-hoverable">
+      <table className="table is-fullwidth is-striped is-hoverable is-bordered">
         <thead>
           <tr>
             <th>Title</th>
@@ -68,8 +68,8 @@ class Discussions extends React.Component {
             <div className="control">
               <Link to="discussions/new">
                 <button className="button is-link">
-                  <span class="icon">
-                    <i class="fa fa-plus-circle" />
+                  <span className="icon">
+                    <i className="fa fa-plus-circle" />
                   </span>
                   <span>Discussion</span>
                 </button>

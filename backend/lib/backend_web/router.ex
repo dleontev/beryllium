@@ -29,6 +29,7 @@ defmodule BackendWeb.Router do
     resources "/sections", SectionController, except: [:edit, :show] 
     resources "/discussions", DiscussionController 
     resources "/posts", PostController, except: [:new, :edit] 
+    resources "/users", UserController, except: [:new, :edit] 
 
     get "/posts/discussions/:discussion_id", PostController, :show_all
 
@@ -43,6 +44,8 @@ defmodule BackendWeb.Router do
     get "/courses/user/all", CourseController, :show_all
 
     get "/groups/user/all", GroupController, :show_all
+    get "/groups/sections/:section_id", GroupController, :show_by_section
+    get "/groups/users/:section_id", UserController, :show_members_by_section
 
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh    

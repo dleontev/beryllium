@@ -31,6 +31,11 @@ defmodule BackendWeb.GroupController do
     render(conn, "show_all.json", groups: groups)
   end
 
+  def show_by_section(conn, %{"section_id" => section_id}) do
+    groups = Auth.list_groups_by_section(section_id)
+    render(conn, "show_by_section.json", groups: groups)
+  end
+
   def update(conn, %{"id" => id, "group" => group_params}) do
     group = Auth.get_group!(id)
 

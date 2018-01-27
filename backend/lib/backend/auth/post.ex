@@ -5,17 +5,17 @@ defmodule Backend.Auth.Post do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "posts" do
-    field :userid, :binary_id, null: false
-    field :parentid, :binary_id
+    field :user_id, :binary_id, null: false
+    field :parent_id, :binary_id
     field :content, :string, null: false
-    field :discussionid, :binary_id, null: false
+    field :discussion_id, :binary_id, null: false
     timestamps()
   end
 
   @doc false
   def changeset(%Post{} = post, attrs) do
     post
-    |> cast(attrs, [:id, :userid, :parentid, :content, :discussionid])
-    |> validate_required([:id, :userid, :content, :discussionid])
+    |> cast(attrs, [:id, :user_id, :parent_id, :content, :discussion_id])
+    |> validate_required([:id, :user_id, :content, :discussion_id])
   end
 end

@@ -45,10 +45,10 @@ defmodule Backend.Auth do
   """
   def list_users_by_section(section_id) do
       query = from u in User,
-        join: e in Enrollment, on: u.id == e.userid,
-        join: s in Section, on: e.sectionid == s.id and s.id == ^section_id,
-        join: c in Course, on: s.courseid == c.id,
-        join: r in Role, on: e.roleid == r.id,
+        join: e in Enrollment, on: u.id == e.user_id,
+        join: s in Section, on: e.section_id == s.id and s.id == ^section_id,
+        join: c in Course, on: s.course_id == c.id,
+        join: r in Role, on: e.role_id == r.id,
         order_by: [desc: u.name],         
         select: {map(s, [:name]), map(u, [:id, :name]), map(c, [:code]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_user_info(x) | acc] end)  
@@ -70,7 +70,7 @@ defmodule Backend.Auth do
   def list_users_by_group(group_id) do
     Repo.all(
         from u in User,
-        join: m in Membership, on: m.userid == u.id and m.groupid == ^group_id,
+        join: m in Membership, on: m.user_id == u.id and m.group_id == ^group_id,
         order_by: [asc: u.name],
         select: [:id, :name, :email])
   end
@@ -181,7 +181,7 @@ defmodule Backend.Auth do
 
   def get_course(section_id) do
     Repo.one(from c in Course,
-        join: s in Section, on: s.courseid == c.id and s.id == ^section_id,
+        join: s in Section, on: s.course_id == c.id and s.id == ^section_id,
         select: [:name, :code, :id])
   end
 
@@ -358,7 +358,7 @@ defmodule Backend.Auth do
   end
 
   @doc """
-  Returns the list of groups.
+  Returns the list of groups for given userid.
 
   ## Examples
 
@@ -368,10 +368,10 @@ defmodule Backend.Auth do
   """
   def list_groups(user_id) do
       query = from g in Group,
-        join: gs in Groupset, on: g.groupsetid == gs.id,
-        join: m in Membership, on: m.groupid == g.id and m.userid == ^user_id,
-        join: s in Section, on: s.id == gs.sectionid,
-        join: c in Course, on: s.courseid == c.id,
+        join: gs in Groupset, on: g.groupset_id == gs.id,
+        join: m in Membership, on: m.group_id == g.id and m.user_id == ^user_id,
+        join: s in Section, on: s.id == gs.section_id,
+        join: c in Course, on: s.course_id == c.id,
         order_by: [desc: c.name, desc: g.name], 
         select: {map(g, [:id, :name]), map(c, [:name, :code]), map(s, [:id])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_group_info(x) | acc] end)  
@@ -381,6 +381,49 @@ defmodule Backend.Auth do
     %{group_id: group_id, group_name: group_name, course_name: course_name, course_code: course_code, section_id: section_id}
   end
 
+  @doc """
+  Returns the list of groups for given section.
+
+  ## Examples
+
+      iex> list_groups()
+      [%Group{}, ...]
+
+  """
+  def list_groups_by_section(section_id) do
+      query = from g in Group,   
+               join: gs in Groupset, on: gs.id == g.groupset_id,
+               where: g.section_id == ^section_id,
+               order_by: [asc: gs.name, desc: g.name],
+               select: {map(g, [:id, :name, :groupset_id]), map(gs, [:name])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_section_group_info(x) | acc] end)  
+  end
+
+  defp extract_section_group_info({%{id: id, name: name, groupset_id: groupset_id}, %{name: groupset_name}}) do
+    %{id: id, name: name, groupset_id: groupset_id, groupset_name: groupset_name}
+  end
+
+  @doc """
+  Returns the list of users that belong to any group in the given section.
+
+  ## Examples
+
+      iex> list_groups()
+      [%Group{}, ...]
+
+  """
+  def list_members_by_section(section_id) do
+      query =  from u in User, 
+               join: m in Membership, on: u.id == m.user_id,
+               where: m.section_id == ^section_id,
+               order_by: [desc: u.name],
+               select: {map(u, [:id, :name]), map(m, [:group_id])}
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_group_user_info(x) | acc] end)  
+  end
+
+  defp extract_group_user_info({%{id: id, name: name}, %{group_id: group_id}}) do
+    %{id: id, name: name, group_id: group_id}
+  end
 
   @doc """
   Gets a single group.
@@ -850,10 +893,10 @@ defmodule Backend.Auth do
   """
   def list_courses(user_id) do
     query = from u in User,
-        join: e in Enrollment, on: u.id == e.userid and u.id == ^user_id,
-        join: s in Section, on: e.sectionid == s.id,
-        join: c in Course, on: s.courseid == c.id,
-        join: r in Role, on: e.roleid == r.id,
+        join: e in Enrollment, on: u.id == e.user_id and u.id == ^user_id,
+        join: s in Section, on: e.section_id == s.id,
+        join: c in Course, on: s.course_id == c.id,
+        join: r in Role, on: e.role_id == r.id,
         order_by: [desc: c.code],        
         select: {map(s, [:name, :id, :published]), map(c, [:id, :code, :name, :start_date, :end_date]), map(r, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_course_info(x) | acc] end)
@@ -868,10 +911,10 @@ defmodule Backend.Auth do
   """
   def list_discussions(section_id, is_discussion) do
     query = from d in Discussion,
-        join: p in Post, on: p.discussionid == d.id,
-        join: u in User, on: u.id == p.userid,
+        join: p in Post, on: p.discussion_id == d.id and is_nil(p.parent_id),
+        join: u in User, on: u.id == p.user_id,
         order_by: p.inserted_at,
-        where: d.sectionid == ^section_id and d.is_discussion == ^is_discussion,
+        where: d.section_id == ^section_id and d.is_discussion == ^is_discussion,
         select: {map(d, [:title, :id]), %{content: fragment("SUBSTRING(?, 1, 99)", p.content), inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
   end
@@ -883,16 +926,17 @@ defmodule Backend.Auth do
   @doc """
   Returns the posts for the given discussions/announcements.
   """
-  def list_posts_by_discussion(discussionid) do
+  def list_posts_by_discussion(discussion_id) do
     query = (from p in Post,
-            join: u in User, on: u.id == p.userid,
-            where: p.discussionid == ^discussionid,
-            select: {map(p, [:id, :inserted_at, :updated_at, :content, :parentid]), map(u, [:name])})
+            join: u in User, on: u.id == p.user_id,
+            where: p.discussion_id == ^discussion_id,
+            order_by: p.parent_id,
+            select: {map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]), map(u, [:name])})
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
   end
 
-  defp extract_post_info({%{id: id, inserted_at: inserted_at, updated_at: updated_at, content: content, parentid: parentid}, %{name: author_name}}) do
-    %{id: id, content: content, inserted_at: inserted_at, parentid: parentid, updated_at: updated_at, author_name: author_name}
+  defp extract_post_info({%{id: id, inserted_at: inserted_at, updated_at: updated_at, content: content, parent_id: parent_id}, %{name: author_name}}) do
+    %{id: id, content: content, inserted_at: inserted_at, parent_id: parent_id, updated_at: updated_at, author_name: author_name}
   end
 
   @doc """

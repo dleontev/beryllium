@@ -15,11 +15,10 @@ defmodule Backend.Auth.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:id, :email, :name, :password])
-    |> validate_required([:id, :email, :name, :password])
+    |> cast(attrs, [:email, :name, :password])
+    |> validate_required([:email, :name, :password])
 	  |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)
-    |> unique_constraint(:id)
   end
   
 end

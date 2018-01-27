@@ -2,7 +2,19 @@ import React from "react";
 
 class PostCard extends React.Component {
   render() {
-    return <li>{this.props.id},{this.props.author_name},{this.props.inserted_at},{this.props.updated_at}</li>;
+    return (
+      // Shitty design for debuggings.
+      <div>
+        <li>
+          <p>{this.props.id}</p>
+          <p>{this.props.author_name}</p>
+          <p>{this.props.inserted_at}</p>
+          <p>{this.props.updated_at}</p>
+          <p>{this.props.content}</p>
+        </li>
+        <br />
+      </div>
+    );
   }
 }
 

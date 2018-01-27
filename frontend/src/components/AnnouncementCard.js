@@ -38,18 +38,18 @@ class AnnouncementCard extends React.Component {
               </Link>
             </div>
             <div className="level-left">
-              <div class="field is-grouped">
-                <p class="control">
-                  <a class="button" onClick={this.handleModal}>
-                    <span class="icon">
-                      <i class="fa fa-trash-o fa-lg" />
+              <div className="field is-grouped">
+                <p className="control">
+                  <a className="button" onClick={this.handleModal}>
+                    <span className="icon">
+                      <i className="fa fa-trash-o fa-lg" />
                     </span>
                   </a>
                 </p>
-                <p class="control">
-                  <a class="button">
-                    <span class="icon">
-                      <i class="fa fa-lock fa-lg" />
+                <p className="control">
+                  <a className="button">
+                    <span className="icon">
+                      <i className="fa fa-lock fa-lg" />
                     </span>
                   </a>
                 </p>

@@ -7,7 +7,7 @@ class AddPost extends React.Component {
     super(props);
     this.state = {
       data: {
-        sectionid: this.props.sectionid,
+        section_id: this.props.section_id,
         is_discussion: this.props.is_discussion,
         title: "",
         message: ""
@@ -44,10 +44,10 @@ class AddPost extends React.Component {
   render() {
     if (this.state.finish) {
       if (this.props.is_discussion) {
-        return <Redirect to={`/courses/${this.props.sectionid}/discussions`} />;
+        return <Redirect to={`/courses/${this.props.section_id}/discussions`} />;
       } else {
         return (
-          <Redirect to={`/courses/${this.props.sectionid}/announcements`} />
+          <Redirect to={`/courses/${this.props.section_id}/announcements`} />
         );
       }
     }

@@ -1,8 +1,10 @@
 defmodule BackendWeb.DiscussionController do
   use BackendWeb, :controller
-
+  import Ecto.Query, warn: false
   alias Backend.Auth
   alias Backend.Auth.Discussion
+  alias Backend.Repo
+  alias Backend.Auth.Post
 
   action_fallback BackendWeb.FallbackController
 
@@ -31,6 +33,10 @@ defmodule BackendWeb.DiscussionController do
 
   def delete(conn, %{"id" => id}) do
     discussion = Auth.get_discussion!(id)
+    Repo.delete_all(
+      from p in Post,
+      where: p.discussion_id == ^id
+    )
     with {:ok, %Discussion{}} <- Auth.delete_discussion(discussion) do
       send_resp(conn, :no_content, "")
     end

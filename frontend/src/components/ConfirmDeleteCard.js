@@ -1,33 +1,29 @@
 import React from "react";
-//import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import api from "../api/Api";
 
 class ConfirmDeleteCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      deleted: false
-    };
   }
 
   handleClick(event) {
+    console.log(this.props.id);
     /*
 				MAKE API CALL HERE TO DELETE ANNOUNCEMENT
 				PARENT COMPONENT "<AnnouncementCard/>" PASSED
 				ITS ANNOUNCEMENT ID, WHICH CAN BE ACCESSED USING
 				"this.props.id"
 			*/
-
-    this.setState({ deleted: true });
+    api.delete(`/discussions/${this.props.id}`).then(response =>{
+      this.props.handle();
+      this.props.refresh();
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   render() {
-    /*
-				if(this.state.deleted === true){
-					return (
-						<Redirect to={`/courses/${this.props.match.params.id}/announcements`} />
-					);
-				}
-			*/
     return (
       <div className={this.props.modalToggle}>
         <div className="modal-background" />

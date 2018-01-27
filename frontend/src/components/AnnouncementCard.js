@@ -23,9 +23,11 @@ class AnnouncementCard extends React.Component {
     return (
       <div>
         <ConfirmDeleteCard
+          refresh = {this.props.refresh}
+          section_id = {this.props.section_id}
           modalToggle={this.state.modalState}
           handle={this.handleModal}
-          id={this.id}
+          id={this.props.id}
         />
         <article className="message is-link">
           <div className="message-header">

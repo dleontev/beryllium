@@ -394,13 +394,13 @@ defmodule Backend.Auth do
       query = from g in Group,   
                join: gs in Groupset, on: gs.id == g.groupset_id,
                where: g.section_id == ^section_id,
-               order_by: [asc: gs.name, desc: g.name],
-               select: {map(g, [:id, :name, :groupset_id]), map(gs, [:name])}
+               order_by: [desc: gs.name, desc: g.name],
+               select: {map(g, [:id, :name, :groupset_id, :max_members]), map(gs, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_section_group_info(x) | acc] end)  
   end
 
-  defp extract_section_group_info({%{id: id, name: name, groupset_id: groupset_id}, %{name: groupset_name}}) do
-    %{id: id, name: name, groupset_id: groupset_id, groupset_name: groupset_name}
+  defp extract_section_group_info({%{id: id, name: name, groupset_id: groupset_id, max_members: max_members}, %{name: groupset_name}}) do
+    %{id: id, name: name, groupset_id: groupset_id, groupset_name: groupset_name, max_members: max_members}
   end
 
   @doc """

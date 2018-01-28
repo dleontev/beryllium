@@ -20,8 +20,8 @@ class CourseHome extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <button className="button is-link">
-                <span class="icon">
-                  <i class="fa fa-pencil" />
+                <span className="icon">
+                  <i className="fa fa-pencil" />
                 </span>
                 <span>Edit</span>
               </button>

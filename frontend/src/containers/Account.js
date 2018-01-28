@@ -3,6 +3,7 @@ import UserProfileCard from "../components/UserProfileCard";
 import CourseListCard from "../components/CourseListCard";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
+import aws from "../api/Aws";
 
 class Profile extends React.Component {
   constructor() {
@@ -57,7 +58,7 @@ class Profile extends React.Component {
     );
   }
 
-  ///////////////// INCOMPLETE SIGNOUT ////////////
+  ///////////////// INCOMPLETE BUTTONS ////////////
   handleLogout(event) {
     event.preventDefault();
 
@@ -65,6 +66,10 @@ class Profile extends React.Component {
       localStorage.removeItem("token");
       this.props.history.push("/login");
     });
+  }
+
+  handleEdit(event) {
+    console.log("PRESSED EDIT");
   }
   ////////////////////////////////////////////////
 
@@ -79,9 +84,12 @@ class Profile extends React.Component {
         <div className="level-right">
           <div className="field is-grouped">
             <div className="control">
-              <button className="button is-link">
-                <span class="icon">
-                  <i class="fa fa-pencil" />
+              <button
+                className="button is-link"
+                onClick={this.handleEdit.bind(this)}
+              >
+                <span className="icon">
+                  <i className="fa fa-pencil" />
                 </span>
                 <span>Edit Profile</span>
               </button>

@@ -1,12 +1,8 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+//import { Redirect } from "react-router-dom";
 import api from "../api/Api";
 
 class ConfirmDeleteCard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   handleClick(event) {
     console.log(this.props.id);
     /*

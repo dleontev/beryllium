@@ -31,7 +31,7 @@ class Announcements extends React.Component {
 
   getAnnouncements() {
     if (this.state.announcements.length === 0) {
-      return "No announcements found.";
+      return "There are no assignments to show.";
     }
 
     return this.state.announcements.map((announcement, index) => (

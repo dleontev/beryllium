@@ -42,7 +42,7 @@ class Groups extends React.Component {
           key={index}
           group_id={group.group_id}
           group_link={
-            <Link to={`/courses/${group.section_id}/groups/${group.group_id}`}>
+            <Link to={`/courses/${group.section_id}/groups/`}>
               {group.group_name}
             </Link>
           }

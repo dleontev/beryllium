@@ -5,7 +5,12 @@ class GroupCard extends React.Component {
     // Shitty design for debugging.
     return (
       <div>
-        <h2>{this.props.name}</h2>
+        <h2>
+          <b>{this.props.name}</b> ::: {this.props.groupset_name}
+          <br />
+          {this.props.current_members}
+          {this.props.max_members} members{" "}
+        </h2>
         {this.props.members}
         <br />
       </div>

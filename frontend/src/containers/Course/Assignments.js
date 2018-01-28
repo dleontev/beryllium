@@ -20,7 +20,7 @@ class Assignments extends React.Component {
 
   getAssignmentTable() {
     if (this.state.assignments.length === 0) {
-      return "No assignments found.";
+      return "There are no assignments to show.";
     }
 
     return (

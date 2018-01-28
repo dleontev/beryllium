@@ -14,7 +14,7 @@ class Pages extends React.Component {
     var pages = null;
 
     if (pages == null) {
-      pages = "No pages found.";
+      pages = "There are no pages to show.";
     }
     ///////////////////////////////////////////////////////
 

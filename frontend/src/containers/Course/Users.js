@@ -19,7 +19,7 @@ class Users extends React.Component {
 
   getUsersTable() {
     if (this.state.users.length === 0) {
-      return "No users found.";
+      return "There are no users to show.";
     }
 
     return (

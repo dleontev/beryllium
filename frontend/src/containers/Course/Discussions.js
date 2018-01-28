@@ -22,7 +22,7 @@ class Discussions extends React.Component {
 
   getDiscussionTable() {
     if (this.state.discussions.length === 0) {
-      return "No discussions found.";
+      return "There are no dicsussions to show.";
     }
 
     return (

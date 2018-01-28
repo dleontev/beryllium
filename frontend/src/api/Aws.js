@@ -33,7 +33,7 @@ export default {
 
     return s3.upload(
       {
-        Key: photoKey,
+        Key: newUploadKey,
         Body: file,
         ACL: "public-read"
       },

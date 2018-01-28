@@ -1,6 +1,7 @@
 import React from "react";
 import api from "../api/Api";
 import { Link } from "react-router-dom";
+import aws from "../api/Aws";
 
 class CreateUser extends React.Component {
   constructor() {
@@ -8,7 +9,9 @@ class CreateUser extends React.Component {
     this.state = {
       name: "",
       password: "",
-      email: ""
+      email: "",
+      filedata: "",
+      filename: ""
     };
   }
 
@@ -24,13 +27,31 @@ class CreateUser extends React.Component {
     this.setState({ password: event.target.value });
   }
 
+  handleLoaded(event) {
+    this.state.image = event.result;
+  }
+
+  handleFilename(event) {
+    var files = event.target.files;
+
+    // Only process image files.
+    if (!files[0].type.match("image.*")) {
+      return;
+    }
+
+    this.setState({ filename: files[0].name, filedata: event.target.files });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
+    // const response = aws.upload("test1", this.state.filedata);
+    // console.log(response);
+
     api.post(`/users/`, {
-      email: this.state.email,
-      name: this.state.name,
-      password: this.state.password
+     email: this.state.email,
+     name: this.state.name,
+     password: this.state.password
     });
   }
 
@@ -84,6 +105,28 @@ class CreateUser extends React.Component {
                 value={this.state.password}
                 onChange={this.handlePassword.bind(this)}
               />
+            </div>
+          </div>
+
+          <div className="field">
+            <div className="file has-name is-fullwidth">
+              <label className="file-label">
+                <input
+                  className="file-input"
+                  type="file"
+                  name="resume"
+                  onChange={this.handleFilename.bind(this)}
+                />
+                <span className="file-cta">
+                  <span className="file-icon">
+                    <i className="fa fa-upload" />
+                  </span>
+                  <span className="file-label">Choose a file…</span>
+                </span>
+                <span className="file-name" placeholder="Test">
+                  {this.state.filename}
+                </span>
+              </label>
             </div>
           </div>
 

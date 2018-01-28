@@ -27,8 +27,15 @@ class Groups extends React.Component {
     return this.state.groups.map((group, index) => (
       <GroupCard
         key={group.id}
-        name={`${group.name}: ${group.groupset_name}`}
+        name={group.name}
+        groupset_name={group.groupset_name}
         members={this.getMembers(group.id)}
+        current_members={
+          this.state.members.filter(function(member) {
+            return member.group_id === group.id;
+          }).length
+        }
+        max_members={group.max_members > 0 ? `/${group.max_members}` : ""}
       />
     ));
   }
@@ -38,13 +45,8 @@ class Groups extends React.Component {
       return member.group_id === group_id;
     });
 
-    // Shitty design for debugging.
     if (members.length === 0) {
-      return (
-        <div>
-          <li>No members in this group.</li>
-        </div>
-      );
+      return;
     }
 
     return members.map((member, index) => (

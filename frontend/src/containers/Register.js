@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../api/Api";
 import { Link } from "react-router-dom";
-import aws from "../api/Aws";
+//import aws from "../api/Aws";
 
 class CreateUser extends React.Component {
   constructor() {
@@ -25,10 +25,6 @@ class CreateUser extends React.Component {
 
   handlePassword(event) {
     this.setState({ password: event.target.value });
-  }
-
-  handleLoaded(event) {
-    this.state.image = event.result;
   }
 
   handleFilename(event) {

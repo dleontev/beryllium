@@ -19,8 +19,14 @@ defmodule BackendWeb.DiscussionView do
   end
 
   def render("discussions_all.json", %{discussion: discussion}) do
-    %{id: discussion.id, title: discussion.title, content: discussion.content, inserted_at: discussion.inserted_at, 
-    is_locked: discussion.is_locked,
-    updated_at: discussion.updated_at, author_name: discussion.author_name}
+    %{
+      id: discussion.id, 
+      title: discussion.title, 
+      content: discussion.content, 
+      inserted_at: discussion.inserted_at, 
+      is_locked: discussion.is_locked,
+      updated_at: discussion.updated_at, 
+      author_name: discussion.author_name
+    }
   end  
 end

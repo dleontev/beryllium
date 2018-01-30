@@ -3,22 +3,39 @@ defmodule BackendWeb.PostController do
 
   alias Backend.Auth
   alias Backend.Auth.Post
-  
-  action_fallback BackendWeb.FallbackController
+
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     posts = Auth.list_posts()
     render(conn, "index.json", posts: posts)
   end
 
-  def create(conn, %{"section_id" => section_id, "is_discussion" => is_discussion, "title" => title, "message" => message}) do
+  def create(conn, %{
+        "section_id" => section_id,
+        "is_discussion" => is_discussion,
+        "title" => title,
+        "message" => message
+      }) do
     %{id: user_id} = Guardian.Plug.current_resource(conn)
 
     discussion_id = Ecto.UUID.generate()
-    discussion_params = %{id: discussion_id, section_id: section_id, title: title, is_discussion: is_discussion, is_locked: false }  
+
+    discussion_params = %{
+      id: discussion_id,
+      section_id: section_id,
+      title: title,
+      is_discussion: is_discussion,
+      is_locked: false
+    }
+
     Auth.create_discussion(discussion_params)
 
-    post_params = %{id: Ecto.UUID.generate(), content: message, user_id: user_id, discussion_id: discussion_id}
+    post_params = %{
+      content: message,
+      user_id: user_id,
+      discussion_id: discussion_id
+    }
 
     with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
       conn
@@ -48,6 +65,7 @@ defmodule BackendWeb.PostController do
 
   def delete(conn, %{"id" => id}) do
     post = Auth.get_post!(id)
+
     with {:ok, %Post{}} <- Auth.delete_post(post) do
       send_resp(conn, :no_content, "")
     end

@@ -42,17 +42,20 @@ body {
 .media-left img {
   border-radius: 50%;
 }
+
 .media-content p {
   font-size: 14px;
   line-height: 2.3;
   font-weight: 700;
   color: #8f99a3;
 }
+
 article.post {
   margin: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e6eaee;
 }
+
 article.post:last-child {
   padding-bottom: 0;
   border-bottom: none;

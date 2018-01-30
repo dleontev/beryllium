@@ -4,7 +4,7 @@ defmodule BackendWeb.GroupsetController do
   alias Backend.Auth
   alias Backend.Auth.Groupset
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     groupsets = Auth.list_groupsets()
@@ -35,6 +35,7 @@ defmodule BackendWeb.GroupsetController do
 
   def delete(conn, %{"id" => id}) do
     groupset = Auth.get_groupset!(id)
+
     with {:ok, %Groupset{}} <- Auth.delete_groupset(groupset) do
       send_resp(conn, :no_content, "")
     end

@@ -7,7 +7,7 @@ defmodule BackendWeb.SessionView do
       meta: %{token: jwt}
     }
   end
-  
+
   def render("error.json", _) do
     %{error: "Invalid email or password"}
   end
@@ -26,5 +26,4 @@ defmodule BackendWeb.SessionView do
       email: user.email
     }
   end
-
 end

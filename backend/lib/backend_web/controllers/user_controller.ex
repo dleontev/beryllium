@@ -4,7 +4,7 @@ defmodule BackendWeb.UserController do
   alias Backend.Auth
   alias Backend.Auth.User
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     users = Auth.list_users()
@@ -12,7 +12,12 @@ defmodule BackendWeb.UserController do
   end
 
   def create(conn, %{"email" => email, "name" => name, "password" => password}) do
-    user_params = %{id: Ecto.UUID.generate(), email: email, name: name, password: Auth.hash_password(password)}
+    user_params = %{
+      email: email,
+      name: name,
+      password: Auth.hash_password(password)
+    }
+
     with {:ok, %User{} = user} <- Auth.create_user(user_params) do
       conn
       |> put_status(:created)
@@ -57,6 +62,7 @@ defmodule BackendWeb.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Auth.get_user!(id)
+
     with {:ok, %User{}} <- Auth.delete_user(user) do
       send_resp(conn, :no_content, "")
     end

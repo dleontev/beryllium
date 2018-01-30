@@ -2,7 +2,6 @@ import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import DiscussionTableCard from "../../components/DiscussionTableCard";
-//import AnnouncementCard from "../../components/AnnouncementCard";
 
 class Discussions extends React.Component {
   constructor() {
@@ -21,23 +20,15 @@ class Discussions extends React.Component {
   }
 
   getDiscussionTable() {
-    if (this.state.discussions === null) return <div className="loading" />;
+    if (!this.state.discussions) return <div className="loading" />;
 
     if (this.state.discussions.length === 0)
       return "There are no dicsussions to show.";
 
     return (
-      <table className="table is-fullwidth is-striped is-hoverable is-bordered">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Date</th>
-            <th>Preview</th>
-          </tr>
-        </thead>
-        <tbody>{this.getDiscussions()}</tbody>
-      </table>
+      <div className="column is-fullhd">
+        <div className="content">{this.getDiscussions()} </div>
+      </div>
     );
   }
 
@@ -46,12 +37,21 @@ class Discussions extends React.Component {
       <DiscussionTableCard
         key={index}
         id={discussion.id}
-        title={discussion.title}
-        author={discussion.author_name}
+        title={
+          <Link to={`discussions/${discussion.id}`}>{discussion.title}</Link>
+        }
+        author={
+          <Link
+            to={`/courses/${this.props.match.params.id}/users/${
+              discussion.author_id
+            }`}
+          >
+            @{discussion.author_name}
+          </Link>
+        }
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
-        content={discussion.content}
-        is_discussion={true}
+        reply_count={"10"}
       />
     ));
   }
@@ -79,7 +79,7 @@ class Discussions extends React.Component {
           </div>
         </nav>
 
-        <div>{this.getDiscussionTable()}</div>
+        {this.getDiscussionTable()}
       </div>
     );
   }

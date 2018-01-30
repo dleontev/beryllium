@@ -7,6 +7,7 @@ import CourseMenu from "../components/Menu/CourseMenu";
 import AddPost from "../components/Form/AddPost";
 import AddAssignment from "../components/Form/AddAssignment";
 import AddPage from "../components/Form/AddPage";
+import AddGroup from "../components/Form/AddGroup";
 
 // Main containers.
 import Profile from "./Course/Profile";
@@ -104,6 +105,12 @@ class Dashboard extends React.Component {
                         is_discussion={true}
                       />
                     )}
+                  />
+
+                  <Route
+                    exact
+                    path="/courses/:id/groups/new"
+                    component={AddGroup}
                   />
 
                   <Route

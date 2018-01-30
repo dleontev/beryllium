@@ -4,7 +4,7 @@ defmodule BackendWeb.RoleController do
   alias Backend.Auth
   alias Backend.Auth.Role
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     roles = Auth.list_roles()
@@ -35,6 +35,7 @@ defmodule BackendWeb.RoleController do
 
   def delete(conn, %{"id" => id}) do
     role = Auth.get_role!(id)
+
     with {:ok, %Role{}} <- Auth.delete_role(role) do
       send_resp(conn, :no_content, "")
     end

@@ -15,16 +15,12 @@ class CreateUser extends React.Component {
     };
   }
 
-  handleEmail(event) {
-    this.setState({ email: event.target.value });
-  }
+  handleChange(event) {
+    const { name, value } = event.target;
 
-  handleName(event) {
-    this.setState({ name: event.target.value });
-  }
-
-  handlePassword(event) {
-    this.setState({ password: event.target.value });
+    this.setState(() => ({
+      [name]: value
+    }));
   }
 
   handleFilename(event) {
@@ -45,9 +41,9 @@ class CreateUser extends React.Component {
     // console.log(response);
 
     api.post(`/users/`, {
-     email: this.state.email,
-     name: this.state.name,
-     password: this.state.password
+      email: this.state.email.toLowerCase(),
+      name: this.state.name,
+      password: this.state.password
     });
   }
 
@@ -74,8 +70,9 @@ class CreateUser extends React.Component {
                 className="input"
                 placeholder="Email"
                 type="text"
+                name="email"
                 value={this.state.email}
-                onChange={this.handleEmail.bind(this)}
+                onChange={this.handleChange.bind(this)}
               />
             </div>
           </div>
@@ -83,11 +80,12 @@ class CreateUser extends React.Component {
           <div className="field">
             <div className="control">
               <input
-                placeholder="First Name"
+                placeholder="Name"
                 className="input"
                 type="text"
+                name="name"
                 value={this.state.name}
-                onChange={this.handleName.bind(this)}
+                onChange={this.handleChange.bind(this)}
               />
             </div>
           </div>
@@ -98,8 +96,9 @@ class CreateUser extends React.Component {
                 placeholder="Password"
                 className="input"
                 type="password"
+                name="password"
                 value={this.state.password}
-                onChange={this.handlePassword.bind(this)}
+                onChange={this.handleChange.bind(this)}
               />
             </div>
           </div>

@@ -39,8 +39,7 @@ class Assignments extends React.Component {
   }
 
   getAssignments() {
-    // return this.state.assignments.map((assignment, index) => (
-    // ));
+    // TODO: Get assignment list.
   }
 
   render() {

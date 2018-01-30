@@ -1,6 +1,6 @@
 defmodule BackendWeb.SessionController do
   use BackendWeb, :controller
-  
+
   alias Backend.Auth.User
 
   def create(conn, %{"email" => email, "entered_password" => entered_password}) do
@@ -12,10 +12,11 @@ defmodule BackendWeb.SessionController do
         new_conn
         |> put_status(:created)
         |> render("show.json", user: user, jwt: jwt)
+
       :error ->
         conn
         |> put_status(:unauthorized)
-		    |> render("error.json")
+        |> render("error.json")
     end
   end
 
@@ -44,15 +45,16 @@ defmodule BackendWeb.SessionController do
         conn
         |> put_status(:ok)
         |> render("show.json", user: user, jwt: new_jwt)
+
       {:error, _reason} ->
         conn
         |> put_status(:unauthorized)
         |> render("forbidden.json", error: "Not authenticated")
     end
-  end  
+  end
 
   defp check_password(nil, _), do: Comeonin.Bcrypt.dummy_checkpw()
-  
+
   defp check_password(user, entered_password) do
     case user do
       nil -> Comeonin.Bcrypt.dummy_checkpw()
@@ -66,7 +68,6 @@ defmodule BackendWeb.SessionController do
 
     conn
     |> put_status(:ok)
-    |> render("delete.json")    
+    |> render("delete.json")
   end
-
 end

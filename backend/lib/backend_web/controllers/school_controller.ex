@@ -4,7 +4,7 @@ defmodule BackendWeb.SchoolController do
   alias Backend.Auth
   alias Backend.Auth.School
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     schools = Auth.list_schools()
@@ -35,6 +35,7 @@ defmodule BackendWeb.SchoolController do
 
   def delete(conn, %{"id" => id}) do
     school = Auth.get_school!(id)
+
     with {:ok, %School{}} <- Auth.delete_school(school) do
       send_resp(conn, :no_content, "")
     end

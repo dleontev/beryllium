@@ -4,7 +4,7 @@ defmodule BackendWeb.SectionController do
   alias Backend.Auth
   alias Backend.Auth.Section
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     sections = Auth.list_sections()
@@ -35,6 +35,7 @@ defmodule BackendWeb.SectionController do
 
   def delete(conn, %{"id" => id}) do
     section = Auth.get_section!(id)
+
     with {:ok, %Section{}} <- Auth.delete_section(section) do
       send_resp(conn, :no_content, "")
     end

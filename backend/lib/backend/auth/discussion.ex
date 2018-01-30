@@ -5,10 +5,10 @@ defmodule Backend.Auth.Discussion do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "discussions" do
-    field :section_id, :binary_id, null: false
-    field :title, :string, null: false
-    field :is_discussion, :boolean, null: false
-    field :is_locked, :boolean, null: false
+    field(:section_id, :binary_id, null: false)
+    field(:title, :string, null: false)
+    field(:is_discussion, :boolean, null: false)
+    field(:is_locked, :boolean, null: false)
   end
 
   @doc false

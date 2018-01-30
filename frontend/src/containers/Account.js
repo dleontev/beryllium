@@ -3,7 +3,7 @@ import UserProfileCard from "../components/UserProfileCard";
 import CourseListCard from "../components/CourseListCard";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
-import aws from "../api/Aws";
+//import aws from "../api/Aws";
 
 class Profile extends React.Component {
   constructor() {

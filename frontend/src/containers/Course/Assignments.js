@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 class Assignments extends React.Component {
   constructor() {
     super();
-    this.state = { assignments: [] };
+    this.state = { assignments: null };
   }
 
   componentWillMount() {
@@ -19,6 +19,8 @@ class Assignments extends React.Component {
   }
 
   getAssignmentTable() {
+    if (!this.state.assignments) return <div className="loading" />;
+
     if (this.state.assignments.length === 0) {
       return "There are no assignments to show.";
     }
@@ -31,12 +33,12 @@ class Assignments extends React.Component {
             <th>Name</th>
           </tr>
         </thead>
-        <tbody>{this.getCourseAssignments()}</tbody>
+        <tbody>{this.getAssignments()}</tbody>
       </table>
     );
   }
 
-  getCourseAssignments() {
+  getAssignments() {
     // return this.state.assignments.map((assignment, index) => (
     // ));
   }
@@ -54,8 +56,8 @@ class Assignments extends React.Component {
             <div className="control">
               <Link to="assignments/new">
                 <button className="button is-link">
-                  <span class="icon">
-                    <i class="fa fa-plus-circle" />
+                  <span className="icon">
+                    <i className="fa fa-plus-circle" />
                   </span>
                   <span>Assignment</span>
                 </button>

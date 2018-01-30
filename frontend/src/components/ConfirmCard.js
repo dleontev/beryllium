@@ -1,24 +1,6 @@
 import React from "react";
-//import { Redirect } from "react-router-dom";
-import api from "../api/Api";
 
 class ConfirmDeleteCard extends React.Component {
-  handleClick(event) {
-    console.log(this.props.id);
-    /*
-				MAKE API CALL HERE TO DELETE ANNOUNCEMENT
-				PARENT COMPONENT "<AnnouncementCard/>" PASSED
-				ITS ANNOUNCEMENT ID, WHICH CAN BE ACCESSED USING
-				"this.props.id"
-			*/
-    api.delete(`/discussions/${this.props.id}`).then(response =>{
-      this.props.handle();
-      this.props.refresh();
-    }).catch(error => {
-      console.log(error);
-    });
-  }
-
   render() {
     return (
       <div className={this.props.modalToggle}>
@@ -30,7 +12,7 @@ class ConfirmDeleteCard extends React.Component {
               <div className="level-item">
                 <button
                   className="button is-success"
-                  onClick={this.props.handle}
+                  onClick={() => this.props.onCancel()}
                 >
                   Cancel
                 </button>
@@ -38,7 +20,7 @@ class ConfirmDeleteCard extends React.Component {
               <div className="level-item">
                 <button
                   className="button is-danger"
-                  onClick={this.handleClick.bind(this)}
+                  onClick={() => this.props.onClick()}
                 >
                   Confirm
                 </button>

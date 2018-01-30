@@ -3,10 +3,16 @@ import React from "react";
 class CourseHome extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { page: null };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    // TODO: Load the main page of the course.
+  }
+
+  getHomePage() {
+    if (!this.state.page) return <div className="loading" />;
+  }
 
   render() {
     return (
@@ -29,7 +35,7 @@ class CourseHome extends React.Component {
           </div>
         </nav>
 
-        <div>&lt;placeholder&gt;</div>
+        <div>{this.getHomePage()}</div>
       </div>
     );
   }

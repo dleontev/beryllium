@@ -6,7 +6,7 @@ import GroupTableCard from "../components/GroupTableCard";
 class Groups extends React.Component {
   constructor() {
     super();
-    this.state = { groups: [] };
+    this.state = { groups: null };
   }
 
   componentWillMount() {
@@ -18,6 +18,8 @@ class Groups extends React.Component {
   }
 
   getUserGroupsTable() {
+    if (this.state.groups === null) return <div className="loading" />;
+
     if (this.state.groups.length === 0) {
       return "No groups found.";
     }

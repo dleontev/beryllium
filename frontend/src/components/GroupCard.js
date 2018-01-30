@@ -10,6 +10,7 @@ class GroupCard extends React.Component {
           <br />
           {this.props.current_members}
           {this.props.max_members} members{" "}
+          {this.props.is_current_user ? <button>Leave</button> : ""}
         </h2>
         {this.props.members}
         <br />

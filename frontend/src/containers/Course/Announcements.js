@@ -7,10 +7,10 @@ class Announcements extends React.Component {
   constructor() {
     super();
     this.refreshAnnouncements = this.refreshAnnouncements.bind(this);
-    this.state = { announcements: [] };
+    this.state = { announcements: null };
   }
 
-  refreshAnnouncements(){
+  refreshAnnouncements() {
     this.apiCall();
   }
 
@@ -18,8 +18,7 @@ class Announcements extends React.Component {
     this.apiCall();
   }
 
-
-  apiCall(){
+  apiCall() {
     api
       .get(`/discussions/sections/${this.props.match.params.id}/false`)
       .then(response => {
@@ -30,14 +29,15 @@ class Announcements extends React.Component {
   }
 
   getAnnouncements() {
-    if (this.state.announcements.length === 0) {
+    if (!this.state.announcements) return <div className="loading" />;
+
+    if (this.state.announcements.length === 0)
       return "There are no assignments to show.";
-    }
 
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
-        refresh = {this.refreshAnnouncements}
-        section_id = {this.props.match.params.id}
+        refresh={this.refreshAnnouncements}
+        section_id={this.props.match.params.id}
         key={index}
         title={announcement.title}
         id={announcement.id}
@@ -49,6 +49,7 @@ class Announcements extends React.Component {
             ? announcement.content.substring(0, 100) + "[...]"
             : announcement.content
         }
+        is_locked={announcement.is_locked}
       />
     ));
   }

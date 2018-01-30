@@ -6,7 +6,7 @@ class Dashboard extends React.Component {
   constructor() {
     super();
     this.state = {
-      courses: []
+      courses: null
     };
   }
 
@@ -19,25 +19,19 @@ class Dashboard extends React.Component {
   }
 
   getCourseTiles() {
-    var tiles;
+    if (this.state.courses === null) return <div className="loading" />;
 
-    if (this.state.courses !== null) {
-      tiles = this.state.courses.map((course, index) => {
-        return (
-          <DashboardTile
-            key={index}
-            id={course.id}
-            course_name={course.course_name}
-            course_code={course.course_code}
-            section_name={course.section_name}
-          />
-        );
-      });
-
-      return tiles;
-    }
-
-    return;
+    return this.state.courses.map((course, index) => {
+      return (
+        <DashboardTile
+          key={index}
+          id={course.id}
+          course_name={course.course_name}
+          course_code={course.course_code}
+          section_name={course.section_name}
+        />
+      );
+    });
   }
 
   render() {

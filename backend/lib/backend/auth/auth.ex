@@ -903,7 +903,8 @@ defmodule Backend.Auth do
   end
 
   defp extract_course_info({%{name: section_name, id: section_id, published: published}, %{id: id, end_date: end_date, code: code, name: name, start_date: start_date}, %{name: role_name}}) do
-    %{section_name: section_name, section_id: section_id, published: published, id: id, course_code: code, course_name: name, start_date: start_date, end_date: end_date, role_name: role_name}
+    %{section_name: section_name, section_id: section_id, published: published, id: id, 
+    course_code: code, course_name: name, start_date: start_date, end_date: end_date, role_name: role_name}
   end
 
   @doc """
@@ -915,12 +916,12 @@ defmodule Backend.Auth do
         join: u in User, on: u.id == p.user_id,
         order_by: p.inserted_at,
         where: d.section_id == ^section_id and d.is_discussion == ^is_discussion,
-        select: {map(d, [:title, :id]), %{content: fragment("SUBSTRING(?, 1, 99)", p.content), inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:name])}
+        select: {map(d, [:title, :id, :is_locked]), %{content: p.content, inserted_at: p.inserted_at, updated_at: p.updated_at}, map(u, [:name])}
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_discussion_info(x) | acc] end)
   end
 
-  defp extract_discussion_info({%{title: title, id: id}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{name: author_name}}) do
-    %{title: title, id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, author_name: author_name}
+  defp extract_discussion_info({%{title: title, id: id, is_locked: is_locked}, %{content: content, inserted_at: inserted_at, updated_at: updated_at}, %{name: author_name}}) do
+    %{title: title, id: id, content: content, is_locked: is_locked, inserted_at: inserted_at, updated_at: updated_at, author_name: author_name}
   end
 
   @doc """

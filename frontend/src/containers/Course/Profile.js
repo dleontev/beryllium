@@ -6,7 +6,7 @@ import profile_image from "../../images/blank-profile.png";
 class Profile extends React.Component {
   constructor() {
     super();
-    this.state = { user: [] };
+    this.state = { user: null };
   }
 
   componentWillMount() {
@@ -18,9 +18,9 @@ class Profile extends React.Component {
   }
 
   getUserCard() {
-    if (this.state.user.length === 0) {
-      return "No profile data found.";
-    }
+    if (!this.state.user) return <div className="loading" />;
+
+    if (this.state.user.length === 0) return "No profile data found.";
 
     return (
       <UserProfileCard

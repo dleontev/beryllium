@@ -3,7 +3,7 @@ defmodule Backend.Auth.User do
   import Ecto.Changeset
   alias Backend.Auth.User
 
-  @primary_key {:id, :binary_id, autogenerate: false}
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "users" do
     field(:email, :string, null: false)
     field(:name, :string, null: false)
@@ -14,7 +14,7 @@ defmodule Backend.Auth.User do
   @doc false
   def changeset(%User{} = user, attrs) do
     user
-    |> cast(attrs, [:email, :name, :password])
+    |> cast(attrs, [:id, :email, :name, :password])
     |> validate_required([:email, :name, :password])
     |> validate_format(:email, ~r/@/)
     |> unique_constraint(:email)

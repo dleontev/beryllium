@@ -13,7 +13,6 @@ defmodule BackendWeb.UserController do
 
   def create(conn, %{"email" => email, "name" => name, "password" => password}) do
     user_params = %{
-      id: Ecto.UUID.generate(),
       email: email,
       name: name,
       password: Auth.hash_password(password)

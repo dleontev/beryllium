@@ -32,15 +32,6 @@ defmodule BackendWeb.DiscussionController do
     end
   end
 
-  def update(conn, %{"id" => id, "discussion" => discussion_params}) do
-    discussion = Auth.get_discussion!(id)
-
-    with {:ok, %Discussion{} = discussion} <-
-           Auth.update_discussion(discussion, discussion_params) do
-      render(conn, "show.json", discussion: discussion)
-    end
-  end
-
   def delete(conn, %{"id" => id}) do
     discussion = Auth.get_discussion!(id)
     Repo.delete_all(from(p in Post, where: p.discussion_id == ^id))

@@ -32,7 +32,6 @@ defmodule BackendWeb.PostController do
     Auth.create_discussion(discussion_params)
 
     post_params = %{
-      id: Ecto.UUID.generate(),
       content: message,
       user_id: user_id,
       discussion_id: discussion_id

@@ -10,7 +10,7 @@ class Announcements extends React.Component {
     this.state = { announcements: [] };
   }
 
-  refreshAnnouncements(){
+  refreshAnnouncements() {
     this.apiCall();
   }
 
@@ -18,8 +18,7 @@ class Announcements extends React.Component {
     this.apiCall();
   }
 
-
-  apiCall(){
+  apiCall() {
     api
       .get(`/discussions/sections/${this.props.match.params.id}/false`)
       .then(response => {
@@ -36,8 +35,8 @@ class Announcements extends React.Component {
 
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
-        refresh = {this.refreshAnnouncements}
-        section_id = {this.props.match.params.id}
+        refresh={this.refreshAnnouncements}
+        section_id={this.props.match.params.id}
         key={index}
         title={announcement.title}
         id={announcement.id}
@@ -49,6 +48,7 @@ class Announcements extends React.Component {
             ? announcement.content.substring(0, 100) + "[...]"
             : announcement.content
         }
+        is_locked={announcement.is_locked}
       />
     ));
   }

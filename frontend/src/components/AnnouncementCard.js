@@ -1,33 +1,57 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ConfirmDeleteCard from "./ConfirmDeleteCard";
+import ConfirmCard from "./ConfirmCard";
+import api from "../api/Api";
 
 class AnnouncementCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalState: "modal"
+      modalState: "modal",
+      isModalDelete: false
     };
 
     this.handleModal = this.handleModal.bind(this);
   }
 
-  handleModal(e) {
+  handleModal() {
     this.setState({
-      modalState:
-        this.state.modalState === "modal" ? "modal is-active" : "modal"
+      modalState: 
+      this.state.modalState === "modal" ? "modal is-active" : "modal"
     });
+  }
+
+  handleDelete() {
+    api
+      .delete(`/discussions/${this.props.id}`)
+      .then(() => {
+        this.handleModal();
+        this.props.refresh();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  handleLock() {
+    api
+      .put(`/discussions/${this.props.id}`, {
+        discussion: {
+          is_locked: !this.props.is_locked
+        }
+      })
+      .then(() => {
+        this.props.refresh();
+      });
   }
 
   render() {
     return (
       <div>
-        <ConfirmDeleteCard
-          refresh = {this.props.refresh}
-          section_id = {this.props.section_id}
+        <ConfirmCard
           modalToggle={this.state.modalState}
-          handle={this.handleModal}
-          id={this.props.id}
+          onClick={() => this.handleDelete()}
+          onCancel={() => this.hideModal()}
         />
         <article className="message is-link">
           <div className="message-header">
@@ -42,14 +66,23 @@ class AnnouncementCard extends React.Component {
             <div className="level-left">
               <div className="field is-grouped">
                 <p className="control">
-                  <a className="button" onClick={this.handleModal}>
+                  {this.props.is_locked ? "Locked" : "Unlocked"}{" "}
+                </p>
+                <p className="control">
+                  <a
+                    className="button is-danger"
+                    onClick={() => this.handleModal()}
+                  >
                     <span className="icon">
                       <i className="fa fa-trash-o fa-lg" />
                     </span>
                   </a>
                 </p>
                 <p className="control">
-                  <a className="button">
+                  <a
+                    className="button"
+                    onClick={() => this.handleLock()}
+                  >
                     <span className="icon">
                       <i className="fa fa-lock fa-lg" />
                     </span>

@@ -18,7 +18,6 @@ import Files from "./Course/Files";
 import Discussions from "./Course/Discussions";
 import Pages from "./Course/Pages";
 import Users from "./Course/Users";
-import Group from "./Course/Group";
 import Groups from "./Course/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
@@ -144,12 +143,6 @@ class Dashboard extends React.Component {
                   />
 
                   <Route exact path="/courses/:id/groups" component={Groups} />
-
-                  <Route
-                    exact
-                    path="/courses/:section_id/groups/:id"
-                    component={Group}
-                  />
 
                   <Route exact path="/courses/:id/pages" component={Pages} />
 

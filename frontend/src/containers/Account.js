@@ -8,7 +8,7 @@ import api from "../api/Api";
 class Profile extends React.Component {
   constructor() {
     super();
-    this.state = { user: [], courses: [] };
+    this.state = { user: null, courses: null };
   }
 
   componentWillMount() {
@@ -26,10 +26,6 @@ class Profile extends React.Component {
   }
 
   getUserCourses() {
-    if (this.state.courses.length === 0) {
-      return <li>No enrollments found.</li>;
-    }
-
     return this.state.courses.map((course, index) => (
       <CourseListCard
         key={index}
@@ -43,8 +39,8 @@ class Profile extends React.Component {
   }
 
   getUserCard() {
-    if (this.state.user === null) {
-      return;
+    if (!this.state.user || !this.state.courses) {
+      return <div className="loading" />;
     }
 
     return (
@@ -81,34 +77,36 @@ class Profile extends React.Component {
           maxWidth: "800px"
         }}
       >
-        <div className="level-right">
-          <div className="field is-grouped">
-            <div className="control">
-              <button
-                className="button is-link"
-                onClick={this.handleEdit.bind(this)}
-              >
-                <span className="icon">
-                  <i className="fa fa-pencil" />
-                </span>
-                <span>Edit Profile</span>
-              </button>
-            </div>
-            <div className="control">
-              <button
-                className="button is-link"
-                onClick={this.handleLogout.bind(this)}
-              >
-                <span className="icon">
-                  <i className="fa fa-sign-out" />
-                </span>
-                <span>Sign Out</span>
-              </button>
+        <div>
+          <div className="level-right">
+            <div className="field is-grouped">
+              <div className="control">
+                <button
+                  className="button is-link"
+                  onClick={this.handleEdit.bind(this)}
+                >
+                  <span className="icon">
+                    <i className="fa fa-pencil" />
+                  </span>
+                  <span>Edit Profile</span>
+                </button>
+              </div>
+              <div className="control">
+                <button
+                  className="button is-link"
+                  onClick={this.handleLogout.bind(this)}
+                >
+                  <span className="icon">
+                    <i className="fa fa-sign-out" />
+                  </span>
+                  <span>Sign Out</span>
+                </button>
+              </div>
             </div>
           </div>
+          <br />
+          <div className="box">{this.getUserCard()}</div>
         </div>
-        <br />
-        <div className="box">{this.getUserCard()}</div>
       </div>
     );
   }

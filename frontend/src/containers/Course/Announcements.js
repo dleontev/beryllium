@@ -7,7 +7,7 @@ class Announcements extends React.Component {
   constructor() {
     super();
     this.refreshAnnouncements = this.refreshAnnouncements.bind(this);
-    this.state = { announcements: [] };
+    this.state = { announcements: null };
   }
 
   refreshAnnouncements() {
@@ -29,9 +29,10 @@ class Announcements extends React.Component {
   }
 
   getAnnouncements() {
-    if (this.state.announcements.length === 0) {
+    if (!this.state.announcements) return <div className="loading" />;
+
+    if (this.state.announcements.length === 0)
       return "There are no assignments to show.";
-    }
 
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard

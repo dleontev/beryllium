@@ -1,23 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import api from "../../api/Api";
 
 class Pages extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { pages: null };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    api.get(`/pages/sections/${this.props.match.params.id}`).then(response => {
+      if (typeof response !== "undefined") {
+        this.setState({ assignments: response.data.data });
+      }
+    });
+  }
+
+  getPages() {
+    if (!this.state.pages) return <div className="loading" />;
+
+    if (this.state.pages.length === 0) {
+      return "There are no pages to show.";
+    }
+
+    return (
+      <table className="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>TODO</tbody>
+      </table>
+    );
+  }
 
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
-    var pages = null;
-
-    if (pages == null) {
-      pages = "There are no pages to show.";
-    }
-    ///////////////////////////////////////////////////////
-
     return (
       <div>
         <nav className="navbar is-transparent">
@@ -30,8 +49,8 @@ class Pages extends React.Component {
             <div className="control">
               <Link to="pages/new">
                 <button className="button is-link">
-                  <span class="icon">
-                    <i class="fa fa-plus-circle" />
+                  <span className="icon">
+                    <i className="fa fa-plus-circle" />
                   </span>
                   <span>Page</span>
                 </button>
@@ -40,7 +59,7 @@ class Pages extends React.Component {
           </div>
         </nav>
 
-        <div>{pages}</div>
+        <div>{this.getPages()}</div>
       </div>
     );
   }

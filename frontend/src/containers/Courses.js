@@ -7,7 +7,7 @@ class Courses extends React.Component {
   constructor() {
     super();
     this.state = {
-      courses: []
+      courses: null
     };
   }
 
@@ -20,9 +20,9 @@ class Courses extends React.Component {
   }
 
   getCourseTable() {
-    if (this.state.courses.length === 0) {
-      return "No enrollments found.";
-    }
+    if (this.state.courses === null) return <div className="loading" />;
+
+    if (this.state.courses.length === 0) return "No enrollments found.";
 
     return (
       <table className="table is-fullwidth is-striped is-hoverable">

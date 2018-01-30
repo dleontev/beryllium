@@ -6,7 +6,7 @@ import UserTableCard from "../../components/UserTableCard";
 class Users extends React.Component {
   constructor() {
     super();
-    this.state = { users: [] };
+    this.state = { users: null };
   }
 
   componentWillMount() {
@@ -18,9 +18,9 @@ class Users extends React.Component {
   }
 
   getUsersTable() {
-    if (this.state.users.length === 0) {
-      return "There are no users to show.";
-    }
+    if (!this.state.users) return <div className="loading" />;
+
+    if (this.state.users.length === 0) return "There are no users to show.";
 
     return (
       <table className="table is-fullwidth is-striped">

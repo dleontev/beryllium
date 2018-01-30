@@ -3,10 +3,14 @@ import React from "react";
 class Settings extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { settings: null };
   }
 
   componentWillMount() {}
+
+  getSettings() {
+    if (!this.state.settings) return <div className="loading" />;
+  }
 
   render() {
     return (
@@ -20,7 +24,7 @@ class Settings extends React.Component {
           <div className="navbar-end" />
         </nav>
 
-        <div>&lt;placeholder&gt;</div>
+        <div>{this.getSettings()}</div>
       </div>
     );
   }

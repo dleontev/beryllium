@@ -7,7 +7,7 @@ import DiscussionTableCard from "../../components/DiscussionTableCard";
 class Discussions extends React.Component {
   constructor() {
     super();
-    this.state = { discussions: [] };
+    this.state = { discussions: null };
   }
 
   componentWillMount() {
@@ -21,9 +21,10 @@ class Discussions extends React.Component {
   }
 
   getDiscussionTable() {
-    if (this.state.discussions.length === 0) {
+    if (this.state.discussions === null) return <div className="loading" />;
+
+    if (this.state.discussions.length === 0)
       return "There are no dicsussions to show.";
-    }
 
     return (
       <table className="table is-fullwidth is-striped is-hoverable is-bordered">

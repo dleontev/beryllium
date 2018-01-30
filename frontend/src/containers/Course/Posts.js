@@ -5,7 +5,7 @@ import PostCard from "../../components/PostCard";
 class Discussion extends Component {
   constructor() {
     super();
-    this.state = { posts: [] };
+    this.state = { posts: null };
   }
 
   componentWillMount() {
@@ -19,6 +19,8 @@ class Discussion extends Component {
   }
 
   getOpeningPost() {
+    if (!this.state.posts) return <div className="loading" />;
+
     if (this.state.posts.length === 0) return;
 
     return (
@@ -33,7 +35,7 @@ class Discussion extends Component {
   }
 
   getReplies() {
-    if (this.state.posts.length === 0) return;
+    if (!this.state.posts || this.state.posts.length === 0) return;
 
     return this.state.posts
       .filter(function(post) {

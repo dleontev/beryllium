@@ -4,20 +4,16 @@ import { Link } from "react-router-dom";
 class Files extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { files: null };
   }
 
   componentWillMount() {}
 
+  getFiles() {
+    if (!this.state.files) return <div className="loading" />;
+  }
+
   render() {
-    ///////////////// FOR TESTING ONLY /////////////////////
-    var files = null;
-
-    if (files == null) {
-      files = "No files found.";
-    }
-    ///////////////////////////////////////////////////////
-
     return (
       <div>
         <nav className="navbar is-transparent">
@@ -40,7 +36,7 @@ class Files extends React.Component {
           </div>
         </nav>
 
-        <div>{files}</div>
+        <div>{this.getFiles()}</div>
       </div>
     );
   }

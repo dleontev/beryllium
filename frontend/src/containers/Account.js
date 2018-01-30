@@ -26,6 +26,8 @@ class Profile extends React.Component {
   }
 
   getUserCourses() {
+    if (this.state.courses.length === 0) return <li>No enrollments found.</li>;
+
     return this.state.courses.map((course, index) => (
       <CourseListCard
         key={index}
@@ -39,9 +41,8 @@ class Profile extends React.Component {
   }
 
   getUserCard() {
-    if (!this.state.user || !this.state.courses) {
+    if (!this.state.user || !this.state.courses)
       return <div className="loading" />;
-    }
 
     return (
       <UserProfileCard

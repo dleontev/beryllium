@@ -1,18 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 class DiscussionTableCard extends React.Component {
   render() {
     return (
-      <tr>
-        <td><Link to={`discussions/${this.props.id}`} style={{textDecoration: "none"}}>
-                {this.props.title}
-            </Link>
-        </td>
-        <td>{this.props.author}</td>
-        <td>{this.props.inserted_at}</td>
-        <td>{this.props.content}</td>        
-      </tr>
+      <article className="post">
+        <h4>{this.props.title}</h4>
+        <span className="pull-right has-text-grey-light">
+          <i className="fa fa-comments" /> {this.props.reply_count}
+        </span>
+        <div className="media">
+          <div className="media-content">
+            <div className="content">
+              <p>{this.props.author}</p>
+            </div>
+          </div>
+        </div>
+      </article>
     );
   }
 }

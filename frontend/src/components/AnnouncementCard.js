@@ -8,7 +8,6 @@ class AnnouncementCard extends React.Component {
     super(props);
     this.state = {
       modalState: "modal",
-      isModalDelete: false
     };
 
     this.handleModal = this.handleModal.bind(this);
@@ -16,8 +15,8 @@ class AnnouncementCard extends React.Component {
 
   handleModal() {
     this.setState({
-      modalState: 
-      this.state.modalState === "modal" ? "modal is-active" : "modal"
+      modalState:
+        this.state.modalState === "modal" ? "modal is-active" : "modal"
     });
   }
 
@@ -51,7 +50,7 @@ class AnnouncementCard extends React.Component {
         <ConfirmCard
           modalToggle={this.state.modalState}
           onClick={() => this.handleDelete()}
-          onCancel={() => this.hideModal()}
+          onCancel={() => this.handleModal()}
         />
         <article className="message is-link">
           <div className="message-header">
@@ -65,7 +64,7 @@ class AnnouncementCard extends React.Component {
             </div>
             <div className="level-left">
               <div className="field is-grouped">
-                <p className="control">
+                <p className="control is-small">
                   {this.props.is_locked ? "Locked" : "Unlocked"}{" "}
                 </p>
                 <p className="control">
@@ -79,12 +78,13 @@ class AnnouncementCard extends React.Component {
                   </a>
                 </p>
                 <p className="control">
-                  <a
-                    className="button"
-                    onClick={() => this.handleLock()}
-                  >
+                  <a className="button" onClick={() => this.handleLock()}>
                     <span className="icon">
-                      <i className="fa fa-lock fa-lg" />
+                      {this.props.is_locked ? (
+                        <i className="fa fa-unlock fa-lg" />
+                      ) : (
+                        <i className="fa fa-lock fa-lg" />
+                      )}
                     </span>
                   </a>
                 </p>

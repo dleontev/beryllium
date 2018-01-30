@@ -5,8 +5,8 @@ defmodule Backend.Auth.School do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "schools" do
-    field :name, :string, null: false
-    field :time_zone, :integer, null: false
+    field(:name, :string, null: false)
+    field(:time_zone, :integer, null: false)
   end
 
   @doc false

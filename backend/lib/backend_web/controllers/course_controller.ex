@@ -4,10 +4,10 @@ defmodule BackendWeb.CourseController do
   alias Backend.Auth
   alias Backend.Auth.Course
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
-    #IO.puts(to_string(Guardian.Plug.current_resource(conn)))
+    # IO.puts(to_string(Guardian.Plug.current_resource(conn)))
     courses = Auth.list_courses(conn)
     render(conn, "index.json", courses: courses)
   end
@@ -47,6 +47,7 @@ defmodule BackendWeb.CourseController do
 
   def delete(conn, %{"id" => id}) do
     course = Auth.get_course!(id)
+
     with {:ok, %Course{}} <- Auth.delete_course(course) do
       send_resp(conn, :no_content, "")
     end

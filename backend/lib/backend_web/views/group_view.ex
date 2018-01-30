@@ -20,30 +20,29 @@ defmodule BackendWeb.GroupView do
 
   def render("group.json", %{group: group}) do
     %{
-      id: group.id, 
-      name: group.name, 
+      id: group.id,
+      name: group.name,
       groupset_id: group.groupset_id
     }
   end
 
   def render("group_section.json", %{group: group}) do
     %{
-      id: group.id, 
-      name: group.name, 
-      groupset_id: group.groupset_id, 
-      groupset_name: group.groupset_name, 
+      id: group.id,
+      name: group.name,
+      groupset_id: group.groupset_id,
+      groupset_name: group.groupset_name,
       max_members: group.max_members
     }
   end
 
   def render("group_all.json", %{group: group}) do
     %{
-      group_id: group.group_id, 
-      group_name: group.group_name, 
-      course_code: group.course_code, 
-      course_name: group.course_name, 
+      group_id: group.group_id,
+      group_name: group.group_name,
+      course_code: group.course_code,
+      course_name: group.course_name,
       section_id: group.section_id
     }
   end
-
 end

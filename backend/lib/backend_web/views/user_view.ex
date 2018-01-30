@@ -28,11 +28,11 @@ defmodule BackendWeb.UserView do
 
   def render("user_course.json", %{user: user}) do
     %{
-      user_id: user.user_id, 
-      section_name: user.section_name, 
+      user_id: user.user_id,
+      section_name: user.section_name,
       name: user.name,
-      course_code: user.course_code, 
+      course_code: user.course_code,
       role_name: user.role_name
-    }   
+    }
   end
 end

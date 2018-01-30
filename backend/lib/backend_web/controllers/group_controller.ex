@@ -4,7 +4,7 @@ defmodule BackendWeb.GroupController do
   alias Backend.Auth
   alias Backend.Auth.Group
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     groups = Auth.list_groups()
@@ -46,6 +46,7 @@ defmodule BackendWeb.GroupController do
 
   def delete(conn, %{"id" => id}) do
     group = Auth.get_group!(id)
+
     with {:ok, %Group{}} <- Auth.delete_group(group) do
       send_resp(conn, :no_content, "")
     end

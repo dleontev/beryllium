@@ -4,9 +4,9 @@ defmodule Backend.Auth.Enrollment do
   alias Backend.Auth.Enrollment
 
   schema "enrollments" do
-    field :user_id, :binary_id, null: false
-    field :section_id, :binary_id, null: false
-    field :role_id, :binary_id, null: false
+    field(:user_id, :binary_id, null: false)
+    field(:section_id, :binary_id, null: false)
+    field(:role_id, :binary_id, null: false)
   end
 
   @doc false

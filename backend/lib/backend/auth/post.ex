@@ -5,10 +5,10 @@ defmodule Backend.Auth.Post do
 
   @primary_key {:id, :binary_id, autogenerate: false}
   schema "posts" do
-    field :user_id, :binary_id, null: false
-    field :parent_id, :binary_id
-    field :content, :string, null: false
-    field :discussion_id, :binary_id, null: false
+    field(:user_id, :binary_id, null: false)
+    field(:parent_id, :binary_id)
+    field(:content, :string, null: false)
+    field(:discussion_id, :binary_id, null: false)
     timestamps()
   end
 

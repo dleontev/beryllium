@@ -4,7 +4,7 @@ defmodule BackendWeb.EnrollmentController do
   alias Backend.Auth
   alias Backend.Auth.Enrollment
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     enrollments = Auth.list_enrollments()
@@ -28,13 +28,15 @@ defmodule BackendWeb.EnrollmentController do
   def update(conn, %{"id" => id, "enrollment" => enrollment_params}) do
     enrollment = Auth.get_enrollment!(id)
 
-    with {:ok, %Enrollment{} = enrollment} <- Auth.update_enrollment(enrollment, enrollment_params) do
+    with {:ok, %Enrollment{} = enrollment} <-
+           Auth.update_enrollment(enrollment, enrollment_params) do
       render(conn, "show.json", enrollment: enrollment)
     end
   end
 
   def delete(conn, %{"id" => id}) do
     enrollment = Auth.get_enrollment!(id)
+
     with {:ok, %Enrollment{}} <- Auth.delete_enrollment(enrollment) do
       send_resp(conn, :no_content, "")
     end

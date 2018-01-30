@@ -51,7 +51,7 @@ class AnnouncementCard extends React.Component {
         <ConfirmCard
           modalToggle={this.state.modalState}
           onClick={() => this.handleDelete()}
-          onCancel={() => this.hideModal()}
+          onCancel={() => this.handleModal()}
         />
         <article className="message is-link">
           <div className="message-header">

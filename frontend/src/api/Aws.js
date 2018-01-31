@@ -39,10 +39,7 @@ export default {
       },
       function(err, data) {
         if (err) {
-          return alert(
-            "There was an error uploading your file: ",
-            err.message
-          );
+          return alert("There was an error uploading your file: ", err.message);
         }
         alert("Successfully uploaded file.");
       }

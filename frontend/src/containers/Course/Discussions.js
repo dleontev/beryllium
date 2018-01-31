@@ -3,6 +3,7 @@ import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import DiscussionTableCard from "../../components/DiscussionTableCard";
 
+
 class Discussions extends React.Component {
   constructor() {
     super();
@@ -51,7 +52,7 @@ class Discussions extends React.Component {
         }
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
-        reply_count={"10"}
+        reply_count={"<TODO: GET_REPLY_COUNT>"}
       />
     ));
   }

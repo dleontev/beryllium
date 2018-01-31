@@ -14,10 +14,12 @@ class TopAnnouncement extends React.Component{
 	}
 
 	handleClick(){
+		this.props.handleViewReplies();
 		this.setState({
 			data: !this.state.data
-		 });
-		}
+		});
+	}
+
     render(){
         return (
             <div className="card">
@@ -32,13 +34,15 @@ class TopAnnouncement extends React.Component{
 									{this.props.author_name}
     						</p>
  	 						</div>
+								{this.props.hasPosts === true ?
   						<footer className="card-footer">
     						<p className="card-footer-item">
       						<span>
-        						<div className="button" onClick={this.handleClick.bind(this)}> View Replies {this.state.data === true ? <span className="loading"/> : ""} </div>
+        						<a className="button" onClick={this.handleClick.bind(this)}> {!this.state.data ? "Collapse Replies" : "View Replies"} </a>
       						</span>
     						</p>
   						</footer>
+								: ""}
 					</div>
         );
 

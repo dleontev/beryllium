@@ -46,12 +46,17 @@ defmodule BackendWeb.PostController do
   end
 
   def show(conn, %{"id" => id}) do
-    post = Auth.get_post!(id)
+    post = Auth.get_post_by_discussion_id(id)
     render(conn, "show.json", post: post)
   end
 
   def show_all(conn, %{"discussion_id" => discussionid}) do
     posts = Auth.list_posts_by_discussion(discussionid)
+    render(conn, "show_all.json", posts: posts)
+  end
+
+  def show_children(conn, %{"post_id" => post_id}) do
+    posts = Auth.list_posts_by_parent(post_id)
     render(conn, "show_all.json", posts: posts)
   end
 

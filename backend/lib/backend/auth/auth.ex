@@ -1079,6 +1079,19 @@ defmodule Backend.Auth do
     Enum.reduce(Repo.all(query), [], fn x, acc -> [extract_post_info(x) | acc] end)
   end
 
+  def list_posts_by_parent(post_id) do
+    query = from p in Post,
+    join: u in User,
+    on: p.user_id == u.id,
+    where: p.parent_id == ^post_id,
+    order_by: p.inserted_at,
+    select: {
+      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
+      map(u, [:name])
+    }
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
+  end
+
   defp extract_post_info({
          %{
            id: id,
@@ -1127,6 +1140,19 @@ defmodule Backend.Auth do
 
   """
   def get_post!(id), do: Repo.get!(Post, id)
+
+  def get_post_by_discussion_id(discussion_id) do
+    query =
+    from p in Post,
+    join: u in User,
+    on: p.user_id == u.id,
+    where: p.discussion_id == ^discussion_id and is_nil(p.parent_id),
+    select: {
+      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
+      map(u, [:name])
+    }
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
+  end
 
   @doc """
   Creates a post.

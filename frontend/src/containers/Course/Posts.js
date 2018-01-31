@@ -6,23 +6,46 @@ import TopAnnouncement from "../../components/TopAnnouncement";
 class Discussion extends Component {
   constructor() {
     super();
-    this.state = { posts: null };
+    this.handleViewReplies = this.handleViewReplies.bind(this);
+    this.state = {
+      top: null,
+      posts: [],
+      replies: true
+    };
   }
-
+  
   componentWillMount() {
     api
-      .get(`/posts/discussions/${this.props.match.params.discussion_id}`)
+      .get(`/posts/${this.props.match.params.discussion_id}`)
       .then(response => {
         if (typeof response !== "undefined") {
-          this.setState({ posts: response.data.data });
+          console.log(response.data.data);
+          this.setState({ top: response.data.data });
         }
+      }).then(()=>{
+        api
+        .get(`/posts/discussions/children/${this.state.top.id}`)
+        .then(response =>{
+          this.setState({
+            posts: response.data.data
+          });
+          return true;
+        }).catch(error => {
+          console.log(error);
+          return false;
+        });
       });
   }
 
-  getOpeningPost() {
-    if (!this.state.posts) return <div className="loading" />;
 
-    if (this.state.posts.length === 0) return;
+  handleViewReplies(){
+    this.setState({replies: !this.state.replies});
+  }
+
+  getOpeningPost() {
+    if (!this.state.top) return <div className="loading" />;
+
+    if (this.state.top.length === 0) return;
 
     return (
       /*
@@ -35,11 +58,13 @@ class Discussion extends Component {
       />
       */
       <TopAnnouncement
-        id={this.state.posts[0].id}
-        author_name={this.state.posts[0].author_name}
-        updated_at={new Date(this.state.posts[0].updated_at).toLocaleDateString()}
-        inserted_at= {new Date(this.state.posts[0].inserted_at).toLocaleDateString()}
-        content={this.state.posts[0].content}
+        id={this.state.top.id}
+        author_name={this.state.top.author_name}
+        updated_at={new Date(this.state.top.updated_at).toLocaleDateString()}
+        inserted_at= {new Date(this.state.top.inserted_at).toLocaleDateString()}
+        content={this.state.top.content}
+        handleViewReplies={this.handleViewReplies}
+        hasPosts={this.state.posts.length === 0 ? false : true}
       />
     );
   }
@@ -56,9 +81,10 @@ class Discussion extends Component {
           key={index}
           id={post.id}
           author_name={post.author_name}
-          updated_at={post.updated_at}
-          inserted_at={post.inserted_at}
+          updated_at={new Date(post.updated_at).toLocaleDateString()}
+          inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
+          box={true}
         />
       ));
   }
@@ -69,9 +95,7 @@ class Discussion extends Component {
       <section className="section">
         {this.getOpeningPost()}
         <br />
-        <h2 className="title is-4">Replies:</h2>
-        <br />
-        {this.getReplies()}
+        {this.state.replies ? this.getReplies() : ""}
       </section>
     );
   }

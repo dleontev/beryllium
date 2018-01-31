@@ -5602,6 +5602,7 @@ a.tag:hover {
 
 .card-content {
   padding: 1.5rem;
+  line-height: 1.75;
 }
 
 .card-footer {

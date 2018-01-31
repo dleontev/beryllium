@@ -69,12 +69,9 @@ class PostCard extends React.Component {
           <div className="media-content">
             <div className="content">
               <p>
-                <strong> {this.props.author_name} </strong>
-                <br />
-                <small>{this.props.inserted_at}</small>
-                <br />
-                {this.props.content}
-                <br />
+                <strong> {this.props.author_name}</strong>
+                <div className="timestamp">{this.props.inserted_at}</div>
+                <div>{this.props.content}</div>
               </p>
             </div>
 

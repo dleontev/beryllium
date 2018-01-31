@@ -23,8 +23,7 @@ class TopAnnouncement extends React.Component {
       <div className="card">
         <div className="card-content">
           <strong>{this.props.author_name}</strong>
-          <br />
-          <small>{this.props.inserted_at}</small>
+          <div className="timestamp">{this.props.inserted_at}</div>
           <br />
           {this.props.content}
         </div>
@@ -37,7 +36,9 @@ class TopAnnouncement extends React.Component {
                   onClick={this.handleClick.bind(this)}
                 >
                   <span className="icon">
-                    <i className={this.state.data ? "fa fa-plus" : "fa fa-minus"} />
+                    <i
+                      className={this.state.data ? "fa fa-plus" : "fa fa-minus"}
+                    />
                   </span>
                   <span>
                     {!this.state.data ? "Collapse Replies" : "View Replies"}

@@ -43,14 +43,17 @@ body {
   border-radius: 50%;
 }
 
-.media-content p {
-  line-height: 1.75;
-}
-
 article.post {
   margin: 1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e6eaee;
+}
+
+.timestamp {
+  font-size: smaller;
+  color: #8f99a3;
+  display: inline-block;
+  margin-left: 5px;
 }
 
 article.post:last-child {

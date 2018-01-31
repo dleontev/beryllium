@@ -5603,6 +5603,7 @@ a.tag:hover {
 .card-content {
   padding: 1.5rem;
   line-height: 1.75;
+  white-space: pre-line;
 }
 
 .card-footer {
@@ -5954,6 +5955,7 @@ a.dropdown-item.is-active {
       flex-shrink: 1;
   overflow: auto;
   text-align: left;
+  white-space: pre-line;
 }
 
 .menu {

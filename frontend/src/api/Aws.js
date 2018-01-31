@@ -1,5 +1,5 @@
 // import entire SDK
-var AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 var bucketName = "beryllium-west";
 var bucketRegion = "us-west-2";

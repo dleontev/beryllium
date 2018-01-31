@@ -2454,7 +2454,7 @@ a.box:active {
 .button.is-loading:after {
   -webkit-animation: spinAround 500ms infinite linear;
           animation: spinAround 500ms infinite linear;
-  border: 2px solid #dbdbdb;
+  border: 2px solid #3273dc;;
   border-radius: 290486px;
   border-right-color: transparent;
   border-top-color: transparent;

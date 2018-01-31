@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import api from "../../api/Api";
 import PostCard from "../../components/PostCard";
+import TopAnnouncement from "../../components/TopAnnouncement";
 
 class Discussion extends Component {
   constructor() {
@@ -24,11 +25,20 @@ class Discussion extends Component {
     if (this.state.posts.length === 0) return;
 
     return (
+      /*
       <PostCard
         id={this.state.posts[0].id}
         author_name={this.state.posts[0].author_name}
         updated_at={this.state.posts[0].updated_at}
         inserted_at={this.state.posts[0].inserted_at}
+        content={this.state.posts[0].content}
+      />
+      */
+      <TopAnnouncement
+        id={this.state.posts[0].id}
+        author_name={this.state.posts[0].author_name}
+        updated_at={new Date(this.state.posts[0].updated_at).toLocaleDateString()}
+        inserted_at= {new Date(this.state.posts[0].inserted_at).toLocaleDateString()}
         content={this.state.posts[0].content}
       />
     );
@@ -57,11 +67,6 @@ class Discussion extends Component {
     // Shitty design for debugging.
     return (
       <section className="section">
-        <h1 className="title is-4">
-          Discussion/Announcement ID: {this.props.match.params.discussion_id}{" "}
-        </h1>
-        <br />
-        <h2 className="title is-4">Opening post:</h2>
         {this.getOpeningPost()}
         <br />
         <h2 className="title is-4">Replies:</h2>

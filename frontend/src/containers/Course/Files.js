@@ -26,8 +26,8 @@ class Files extends React.Component {
             <div className="control">
               <Link to="files/new">
                 <button className="button is-link">
-                  <span class="icon">
-                    <i class="fa fa-upload" />
+                  <span className="icon">
+                    <i className="fa fa-upload" />
                   </span>
                   <span>Upload</span>
                 </button>

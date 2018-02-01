@@ -45,6 +45,19 @@ defmodule BackendWeb.PostController do
     end
   end
 
+
+  def create(conn, %{"discussion_id" => discussion_id, "content" => content, "parent_id" => parent_id}) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    id = Ecto.UUID.generate();
+    post_params = %{id: id, discussion_id: discussion_id, parent_id: parent_id, user_id: user_id, content: content}
+    with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", post_path(conn, :show, post))
+      |> render("show.json", post: post)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     post = Auth.get_post_by_discussion_id(id)
     render(conn, "show.json", post: post)

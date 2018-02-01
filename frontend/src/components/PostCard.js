@@ -1,26 +1,41 @@
 import React from "react";
-//import { Link } from "react-router-dom";
-//import ConfirmCard from "./ConfirmCard";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
+import ReplyCard from "./ReplyCard";
 
 class PostCard extends React.Component {
   constructor() {
     super();
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       posts: [],
       length: 0,
-      replies: false
+      comments: false,
+      reply: false
     };
   }
 
   handleClick(event) {
     this.setState({
-      replies: !this.state.replies
+      comments: !this.state.comments
     });
   }
 
-  componentWillMount() {
+  handleReply(event){
+    this.setState({
+      reply: !this.state.reply
+    });
+  }
+
+
+  handleSubmit(){
+    this.setState({
+      reply: !this.state.reply
+    });
+    this.getReplies();
+  }
+
+  getReplies(){
     api
       .get(`/posts/discussions/children/${this.props.id}`)
       .then(response => {
@@ -36,7 +51,11 @@ class PostCard extends React.Component {
       });
   }
 
-  getReplies() {
+  componentWillMount() {
+    this.getReplies();
+  }
+
+  getComments() {
     if (!this.state.posts || this.state.posts.length === 0) return;
 
     return this.state.posts
@@ -82,7 +101,7 @@ class PostCard extends React.Component {
                 </p>
 
                 <p className="control">
-                  <a className="button is-info is-small">Reply</a>
+                  <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
                 </p>
 
                 <p className="control">
@@ -94,7 +113,7 @@ class PostCard extends React.Component {
                     }
                     onClick={this.handleClick.bind(this)}
                   >
-                    <span>{this.state.replies ? "Collapse" : "Expand"}</span>
+                    <span>{this.state.comments ? "Collapse" : "Expand"}</span>
                     <span className="icon">
                       <i className="fa fa-reply" />
                     </span>
@@ -104,7 +123,11 @@ class PostCard extends React.Component {
               </div>
               <br />
             </div>
-            {this.state.replies ? this.getReplies() : ""}
+            {this.state.reply ? <ReplyCard 
+                                    handleSubmit={this.handleSubmit} 
+                                    discussion_id={this.props.discussion_id} 
+                                    parent_id = {this.props.id}/> : ""}
+            {this.state.comments ? this.getComments() : ""}
           </div>
         </article>
       </div>

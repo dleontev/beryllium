@@ -85,6 +85,8 @@ class Discussion extends Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={true}
+          discussion_id = {this.props.match.params.discussion_id}
+          section_id = {this.props.match.params.id}
         />
       ));
   }

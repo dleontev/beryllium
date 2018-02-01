@@ -33,6 +33,9 @@ class PostCard extends React.Component {
       reply: !this.state.reply
     });
     this.getReplies();
+    this.setState({
+      comments: true
+    });
   }
 
   getReplies(){
@@ -71,6 +74,8 @@ class PostCard extends React.Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={false}
+          discussion_id = {this.props.discussion_id}
+          section_id = {this.props.section_id}
         />
       ));
   }
@@ -87,11 +92,11 @@ class PostCard extends React.Component {
 
           <div className="media-content">
             <div className="content">
-              <p>
+              <div>
                 <strong> {this.props.author_name}</strong>
                 <div className="timestamp">{this.props.inserted_at}</div>
                 <div>{this.props.content}</div>
-              </p>
+              </div>
             </div>
 
             <div className="level-left">
@@ -104,7 +109,7 @@ class PostCard extends React.Component {
                   <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
                 </p>
 
-                <p className="control">
+                <div className="control">
                   <div
                     className={
                       this.state.length === 0
@@ -119,7 +124,7 @@ class PostCard extends React.Component {
                     </span>
                     <span>{this.state.length}</span>
                   </div>
-                </p>
+                </div>
               </div>
               <br />
             </div>

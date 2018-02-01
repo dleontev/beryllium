@@ -22,14 +22,16 @@ class ReplyCard extends React.Component{
 				.then(response => {
 					console.log("posted");
 					this.props.handleSubmit();
+				}).catch(error => {
+					console.log(error);
 				});
 		}
 
 
 		handleText(event){
-			this.setState({
-				content: event.target.value
-			});
+			var data = Object.assign({}, this.state.data);
+    	data.content = event.target.value;
+    	this.setState({ data });
 		}
 
     render(){
@@ -37,26 +39,19 @@ class ReplyCard extends React.Component{
 					<article className="media">
 						<figure className="media-left">
 							<p className="image is-64x64">
-								<img src="https://bulma.io/images/placeholders/128x128.png"/>
+								<img src={profile_image}/>
 							</p>
 						</figure>
 						<div className="media-content">
 							<div className="field">
 								<p className="control">
-									<textarea className="textarea" placeholder="Add a comment..." onChange={this.handleText.bind(this)}> </textarea>
+									<textarea className="textarea" placeholder="Add a comment..." onChange={this.handleText.bind(this)}></textarea>
 								</p>
 							</div>
 							<nav className="level">
 								<div className="level-left">
 									<div className="level-item">
 										<a className="button is-info" onClick={this.handleSubmit.bind(this)}> Submit </a>
-									</div>
-								</div>
-								<div className="level-right">
-									<div className="level-item">
-										<label className="checkbox">
-											<input className="checkbox"/> Press enter to submit 
-										</label>	
 									</div>
 								</div>
 							</nav>

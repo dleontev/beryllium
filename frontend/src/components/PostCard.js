@@ -1,26 +1,44 @@
 import React from "react";
-//import { Link } from "react-router-dom";
-//import ConfirmCard from "./ConfirmCard";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
+import ReplyCard from "./ReplyCard";
 
 class PostCard extends React.Component {
   constructor() {
     super();
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       posts: [],
       length: 0,
-      replies: false
+      comments: false,
+      reply: false
     };
   }
 
   handleClick(event) {
     this.setState({
-      replies: !this.state.replies
+      comments: !this.state.comments
     });
   }
 
-  componentWillMount() {
+  handleReply(event){
+    this.setState({
+      reply: !this.state.reply
+    });
+  }
+
+
+  handleSubmit(){
+    this.setState({
+      reply: !this.state.reply
+    });
+    this.getReplies();
+    this.setState({
+      comments: true
+    });
+  }
+
+  getReplies(){
     api
       .get(`/posts/discussions/children/${this.props.id}`)
       .then(response => {
@@ -36,7 +54,11 @@ class PostCard extends React.Component {
       });
   }
 
-  getReplies() {
+  componentWillMount() {
+    this.getReplies();
+  }
+
+  getComments() {
     if (!this.state.posts || this.state.posts.length === 0) return;
 
     return this.state.posts
@@ -52,6 +74,8 @@ class PostCard extends React.Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={false}
+          discussion_id = {this.props.discussion_id}
+          section_id = {this.props.section_id}
         />
       ));
   }
@@ -68,11 +92,11 @@ class PostCard extends React.Component {
 
           <div className="media-content">
             <div className="content">
-              <p>
+              <div>
                 <strong> {this.props.author_name}</strong>
                 <div className="timestamp">{this.props.inserted_at}</div>
                 <div>{this.props.content}</div>
-              </p>
+              </div>
             </div>
 
             <div className="level-left">
@@ -82,10 +106,10 @@ class PostCard extends React.Component {
                 </p>
 
                 <p className="control">
-                  <a className="button is-info is-small">Reply</a>
+                  <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
                 </p>
 
-                <p className="control">
+                <div className="control">
                   <div
                     className={
                       this.state.length === 0
@@ -94,17 +118,21 @@ class PostCard extends React.Component {
                     }
                     onClick={this.handleClick.bind(this)}
                   >
-                    <span>{this.state.replies ? "Collapse" : "Expand"}</span>
+                    <span>{this.state.comments ? "Collapse" : "Expand"}</span>
                     <span className="icon">
                       <i className="fa fa-reply" />
                     </span>
                     <span>{this.state.length}</span>
                   </div>
-                </p>
+                </div>
               </div>
               <br />
             </div>
-            {this.state.replies ? this.getReplies() : ""}
+            {this.state.reply ? <ReplyCard 
+                                    handleSubmit={this.handleSubmit} 
+                                    discussion_id={this.props.discussion_id} 
+                                    parent_id = {this.props.id}/> : ""}
+            {this.state.comments ? this.getComments() : ""}
           </div>
         </article>
       </div>

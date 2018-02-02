@@ -1,6 +1,12 @@
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 @import "bulma.css";
 
+
+.random {
+  padding: 10px;
+  padding-top: 0px;
+}
+
 body {
   margin: 0;
   padding: 0;

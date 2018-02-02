@@ -7,6 +7,7 @@ class Discussion extends Component {
   constructor() {
     super();
     this.handleViewReplies = this.handleViewReplies.bind(this);
+    this.getChildren = this.getChildren.bind(this);
     this.state = {
       top: null,
       posts: [],
@@ -23,23 +24,27 @@ class Discussion extends Component {
           this.setState({ top: response.data.data });
         }
       }).then(()=>{
-        api
-        .get(`/posts/discussions/children/${this.state.top.id}`)
-        .then(response =>{
-          this.setState({
-            posts: response.data.data
-          });
-          return true;
-        }).catch(error => {
-          console.log(error);
-          return false;
-        });
+        this.getChildren();
       });
   }
 
 
-  handleViewReplies(){
-    this.setState({replies: !this.state.replies});
+  getChildren(){
+    api
+      .get(`/posts/discussions/children/${this.state.top.id}`)
+      .then(response =>{
+        this.setState({
+          posts: response.data.data
+        });
+        return true;
+      }).catch(error => {
+        console.log(error);
+        return false;
+      });
+  }
+
+  handleViewReplies(true_false){
+    this.setState({replies: true_false});
   }
 
   getOpeningPost() {
@@ -65,6 +70,8 @@ class Discussion extends Component {
         content={this.state.top.content}
         handleViewReplies={this.handleViewReplies}
         hasPosts={this.state.posts.length === 0 ? false : true}
+        handleGetChildren={this.getChildren}
+        discussion_id = {this.props.match.params.discussion_id}
       />
     );
   }
@@ -85,6 +92,8 @@ class Discussion extends Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={true}
+          discussion_id = {this.props.match.params.discussion_id}
+          section_id = {this.props.match.params.id}
         />
       ));
   }

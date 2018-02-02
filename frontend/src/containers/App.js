@@ -18,6 +18,7 @@ import Courses from "./Courses";
 import Course from "./Course";
 import Account from "./Account";
 import NotFound from "./NotFound";
+import Chat from "./Chat";
 
 class App extends Component {
   render() {
@@ -38,7 +39,7 @@ class App extends Component {
               <PrivateRoute path="/courses/:id" component={Course} />
 
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
-              <PrivateRoute exact path="/inbox" component={Inbox} />
+              <PrivateRoute exact path="/inbox" component={Chat} />
               <PrivateRoute exact path="/groups" component={Groups} />
 
               <Route component={NotFound} />

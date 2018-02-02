@@ -1154,6 +1154,13 @@ defmodule Backend.Auth do
     Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
   end
 
+  def get_children_of_discussion(discussion_id) do
+    query = from p in Post,
+    where: p.discussion_id == ^discussion_id,
+    select: p.id
+    Repo.all(query)
+  end
+
   @doc """
   Creates a post.
 

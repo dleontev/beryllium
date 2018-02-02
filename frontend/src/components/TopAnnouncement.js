@@ -1,21 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ConfirmCard from "./ConfirmCard";
+import ReplyCard from "./ReplyCard";
 //import api from "../api/Api";
 
 class TopAnnouncement extends React.Component {
   constructor() {
     super();
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
-      data: false
+      data: false,
+      reply: false
     };
   }
 
   handleClick() {
-    this.props.handleViewReplies();
     this.setState({
       data: !this.state.data
     });
+    this.props.handleViewReplies(this.state.data);
+  }
+
+
+  handleReply(){
+    console.log("Reply");
+    this.setState({
+      reply: !this.state.reply
+    });
+  }
+
+
+  handleSubmit(){
+    this.setState({
+      reply: !this.state.reply
+    });
+    this.setState({
+      data: false
+    });
+    this.props.handleGetChildren();
+    this.props.handleViewReplies(!this.state.data);
   }
 
   render() {
@@ -27,8 +50,25 @@ class TopAnnouncement extends React.Component {
           <br />
           {this.props.content}
         </div>
-        {this.props.hasPosts === true ? (
           <footer className="card-footer">
+            <p className="card-footer-item">
+              <span>
+                <button
+                  className="button"
+                  onClick={this.handleReply.bind(this)}
+                >
+                  <span className="icon">
+                    <i
+                      className="fa fa-reply"
+                    />
+                  </span>
+                  <span>
+                    Reply
+                  </span>
+                </button>
+              </span>
+            </p>
+            {this.props.hasPosts === true ? (
             <p className="card-footer-item">
               <span>
                 <button
@@ -46,8 +86,13 @@ class TopAnnouncement extends React.Component {
                 </button>
               </span>
             </p>
+            ) : null}
           </footer>
-        ) : null}
+        {this.state.reply ?
+        <div className="random">
+           <ReplyCard handleSubmit={this.handleSubmit} discussion_id={this.props.discussion_id} parent_id={this.props.id}/>
+        </div>
+        : ""}
       </div>
     );
   }

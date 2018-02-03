@@ -11,12 +11,17 @@ defmodule BackendWeb.PostView do
   end
 
   def render("show.json", %{post: post}) do
+    IO.puts("INSPECTING POST----------------------------------------------------")
     IO.inspect(post)
     %{data: render_one(post, PostView, "post.json")}
   end
 
   def render("post.json", %{post: [%{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}]}) do
     %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}
+  end
+
+  def render("post_single.json", %{post: post}) do
+     %{id: post.id, content: post.content, inserted_at: post.inserted_at, updated_at: post.updated_at, parent_id: post.parent_id}
   end
 
   def render("post_detailed.json", %{post: post}) do

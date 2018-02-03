@@ -51,11 +51,14 @@ defmodule BackendWeb.PostController do
     id = Ecto.UUID.generate();
     post_params = %{id: id, discussion_id: discussion_id, parent_id: parent_id, user_id: user_id, content: content}
     with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
-      BackendWeb.Endpoint.broadcast("notifications:"<>discussion_id, "new_response", %{})
+      process_name = String.to_atom(discussion_id)
+      Agent.update(process_name, fn amount -> amount + 1 end)
+      BackendWeb.Endpoint.broadcast("notifications:discussion"<>discussion_id, "new_response", %{})
+      BackendWeb.Endpoint.broadcast("notifications:replies"<>parent_id, "new_response", %{})
       conn
       |> put_status(:created)
       |> put_resp_header("location", post_path(conn, :show, post))
-      |> render("show.json", post: post)
+      |> render("post_single.json", post: post)
     end
   end
 

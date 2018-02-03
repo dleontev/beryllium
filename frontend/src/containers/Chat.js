@@ -1,5 +1,5 @@
 import React from "react";
-import {Socket} from "../../node_modules/phoenix/priv/static/phoenix";
+import {Socket} from "phoenix";
 
 
 class Chat extends React.Component{

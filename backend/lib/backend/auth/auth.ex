@@ -1069,7 +1069,7 @@ defmodule Backend.Auth do
         join: u in User,
         on: u.id == p.user_id,
         where: p.discussion_id == ^discussion_id,
-        order_by: p.parent_id,
+        order_by: p.updated_at,
         select: {
           map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
           map(u, [:name])
@@ -1156,8 +1156,8 @@ defmodule Backend.Auth do
 
   def get_children_of_discussion(discussion_id) do
     query = from p in Post,
-    where: p.discussion_id == ^discussion_id,
-    select: p.id
+    where: p.discussion_id == ^discussion_id and not is_nil(p.parent_id),
+    select: count(p.id)
     Repo.all(query)
   end
 

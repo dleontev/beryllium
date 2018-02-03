@@ -2,15 +2,18 @@ import React from "react";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
 import ReplyCard from "./ReplyCard";
+import {Socket} from "phoenix";
 
 class PostCard extends React.Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.initSocket = this.initSocket.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
     this.state = {
       posts: [],
       length: 0,
-      comments: false,
+      comments: true,
       reply: false
     };
   }
@@ -29,13 +32,23 @@ class PostCard extends React.Component {
 
 
   handleSubmit(){
+    this.channel
+			.push("new_comment", {}, 100000)
+				.receive("ok", (msg) => {console.log("created message", msg)})
+				.receive("error", (reason) => {console.log("create failed", reason)})
+        .receive("timeout", () => {console.log("Networking issue...")});
     this.setState({
-      reply: !this.state.reply
+      reply: false
     });
-    this.getReplies();
+    //this.getReplies();
     this.setState({
       comments: true
     });
+  }
+
+
+  handleUpdate(){  
+    this.getReplies();
   }
 
   getReplies(){
@@ -55,7 +68,31 @@ class PostCard extends React.Component {
   }
 
   componentWillMount() {
+    this.initSocket();
     this.getReplies();
+  }
+
+  componentWillUnmount(){
+    this.channel.leave().receive("ok", () => {
+			console.log("left");
+			this.socket.disconnect();
+		});
+  }
+
+  initSocket(){
+    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
+		this.socket.connect();
+    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
+    this.channel.on("new_response", (msg) => {
+      console.log(`GOT UPDATE`);
+      this.handleUpdate();
+		});
+		this.channel.join()
+			.receive("ok", ({messages}) => {
+        console.log("Joined!", messages);
+      })
+			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
+			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
   }
 
   getComments() {
@@ -67,7 +104,7 @@ class PostCard extends React.Component {
       })
       .map((post, index) => (
         <PostCard
-          key={index}
+          key={post.id}
           id={post.id}
           author_name={post.author_name}
           updated_at={new Date(post.updated_at).toLocaleDateString()}

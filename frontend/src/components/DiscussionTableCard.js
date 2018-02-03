@@ -1,5 +1,5 @@
 import React from "react";
-import {Socket} from "../../node_modules/phoenix/priv/static/phoenix";
+import {Socket} from "phoenix";
 
 class DiscussionTableCard extends React.Component { 
   constructor(){
@@ -9,7 +9,7 @@ class DiscussionTableCard extends React.Component {
       totalReplies: ""
     }
   }
-  componentDidMount(){
+  componentWillMount(){
     this.initSocket();
   }
 
@@ -23,7 +23,7 @@ class DiscussionTableCard extends React.Component {
   initSocket(){
     this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
 		this.socket.connect();
-    this.channel = this.socket.channel(`notifications:${this.props.id}`, {});
+    this.channel = this.socket.channel(`notifications:discussion${this.props.id}`, {});
     this.channel.on("new_response", (msg) => {
       console.log(`GOT UPDATE`);
       this.setState({

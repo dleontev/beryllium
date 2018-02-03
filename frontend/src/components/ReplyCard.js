@@ -10,13 +10,16 @@ class ReplyCard extends React.Component{
             data: {
 							discussion_id: this.props.discussion_id,
 							parent_id: this.props.parent_id,
-							content: ""
+							content: "",
+							submitted: false
 						}
         }
     }
 
 
 		handleSubmit(event){
+			if(!this.state.submitted){
+			this.setState({submitted: true});
 			api
 				.post(`/posts/`, this.state.data)
 				.then(response => {
@@ -25,6 +28,7 @@ class ReplyCard extends React.Component{
 				}).catch(error => {
 					console.log(error);
 				});
+			}
 		}
 
 

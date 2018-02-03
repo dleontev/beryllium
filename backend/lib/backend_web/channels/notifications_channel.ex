@@ -1,22 +1,39 @@
 defmodule BackendWeb.NotificationsChannel do
   use BackendWeb, :channel
-  alias BackendWeb.Endpoint
+  #alias BackendWeb.Endpoint
   alias Backend.Auth
 
-  def join("notifications:" <> discussion_id, payload, socket) do
-    if authorized?(payload) do
-      agent_name = String.to_atom(discussion_id)
-      get_total = Auth.get_children_of_discussion(discussion_id)
-      initLength = length(get_total)
-      IO.inspect(get_total)
-      if(GenServer.whereis(agent_name) == nil) do
-        Agent.start_link(fn -> initLength end, name: agent_name)
-      end
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
+  def join("notifications:discussion" <> discussion_id, payload, socket) do
+    agent_name = String.to_atom(discussion_id)
+    IO.puts("AGENT NAME ----------------------------")
+    IO.puts(agent_name)
+    case({authorized?(payload), GenServer.whereis(agent_name)}) do
+      {true, nil} -> 
+        IO.puts("---------------------{true, nil} --------------------")
+        [head | tail] = Auth.get_children_of_discussion(discussion_id)
+        #Agent.start_link(fn -> head end, name: {:global,agent_name})
+        BackendWeb.Notification.start_child(agent_name, head)
+        {:ok, socket}
+      {true, _} -> 
+        IO.puts("---------------------{true, _} --------------------")
+        {:ok, socket}
+      {false, _} ->
+        IO.puts("---------------------{false, _} --------------------")
+        {:error, %{reason: "unauthorized"}}
     end
   end
+
+
+  def join("notifications:replies" <> post_id, payload, socket) do
+    agent_name = String.to_atom(post_id)
+    case ({authorized?(payload)}) do
+      {true} ->
+        {:ok, socket}
+      {false} ->
+        {:error, %{reason: "unauthorized"}}
+    end
+  end
+
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
@@ -27,8 +44,16 @@ defmodule BackendWeb.NotificationsChannel do
 
   def handle_in("get_responses", %{"body" => discussion_id}, socket) do
     agent_name = String.to_atom(discussion_id)
+    IO.puts("GETTING EXISTING AGENT --------------------------")
+    IO.inspect(GenServer.whereis(agent_name))
     amountOfReplies = Agent.get(agent_name, fn amount -> amount end)
     {:reply, {:ok, %{amount: amountOfReplies}}, socket}
+  end
+
+
+  def handle_in("new_comment", _, socket) do
+    broadcast socket, "new_response", nil
+    {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and

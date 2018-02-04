@@ -123,6 +123,7 @@ class Discussion extends Component {
           key={post.id}
           id={post.id}
           author_name={post.author_name}
+          user_id={post.user_id}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}

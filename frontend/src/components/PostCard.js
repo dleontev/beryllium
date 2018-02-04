@@ -55,6 +55,7 @@ class PostCard extends React.Component {
     api
       .get(`/posts/discussions/children/${this.props.id}`)
       .then(response => {
+        console.log(response.data.data)
         this.setState({
           posts: response.data.data,
           length: response.data.data.length
@@ -107,6 +108,7 @@ class PostCard extends React.Component {
           key={post.id}
           id={post.id}
           author_name={post.author_name}
+          user_id={post.user_id}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
@@ -138,13 +140,17 @@ class PostCard extends React.Component {
 
             <div className="level-left">
               <div className="field is-grouped">
-                <p className="control">
-                  <button className="button is-success is-small">Like</button>
-                </p>
 
                 <p className="control">
                   <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
                 </p>
+                
+                {this.props.user_id == api.getUserId() ?
+                <p className="control">
+                  <a className="button is-danger is-small" >Delete</a>
+                </p>
+                : ""
+                }
 
                 <div className="control">
                   <div

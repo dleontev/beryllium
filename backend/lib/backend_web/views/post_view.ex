@@ -10,6 +10,10 @@ defmodule BackendWeb.PostView do
     %{data: render_many(posts, PostView, "post_detailed.json")}
   end
 
+  def render("show_all_with_user_id.json", %{posts: posts}) do
+    %{data: render_many(posts, PostView, "post_detailed_with_user_id.json")}
+  end
+
   def render("show.json", %{post: post}) do
     IO.puts("INSPECTING POST----------------------------------------------------")
     IO.inspect(post)
@@ -31,6 +35,18 @@ defmodule BackendWeb.PostView do
       updated_at: post.updated_at,
       content: post.content,
       parent_id: post.parent_id,
+      author_name: post.author_name
+    }
+  end
+
+  def render("post_detailed_with_user_id.json", %{post: post}) do
+    %{
+      id: post.id,
+      inserted_at: post.inserted_at,
+      updated_at: post.updated_at,
+      content: post.content,
+      parent_id: post.parent_id,
+      user_id: post.user_id,
       author_name: post.author_name
     }
   end

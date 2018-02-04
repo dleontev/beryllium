@@ -1086,10 +1086,10 @@ defmodule Backend.Auth do
     where: p.parent_id == ^post_id,
     order_by: p.inserted_at,
     select: {
-      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
+      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id, :user_id]),
       map(u, [:name])
     }
-    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
+    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info_with_user_id(x) | acc] end)
   end
 
   defp extract_post_info({
@@ -1107,6 +1107,29 @@ defmodule Backend.Auth do
       content: content,
       inserted_at: inserted_at,
       parent_id: parent_id,
+      updated_at: updated_at,
+      author_name: author_name
+    }
+  end
+
+
+  defp extract_post_info_with_user_id({
+         %{
+           id: id,
+           inserted_at: inserted_at,
+           updated_at: updated_at,
+           content: content,
+           parent_id: parent_id,
+           user_id: user_id
+         },
+         %{name: author_name}
+       }) do
+    %{
+      id: id,
+      content: content,
+      inserted_at: inserted_at,
+      parent_id: parent_id,
+      user_id: user_id,
       updated_at: updated_at,
       author_name: author_name
     }

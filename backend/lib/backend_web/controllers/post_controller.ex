@@ -74,7 +74,7 @@ defmodule BackendWeb.PostController do
 
   def show_children(conn, %{"post_id" => post_id}) do
     posts = Auth.list_posts_by_parent(post_id)
-    render(conn, "show_all.json", posts: posts)
+    render(conn, "show_all_with_user_id.json", posts: posts)
   end
 
   def update(conn, %{"id" => id, "post" => post_params}) do

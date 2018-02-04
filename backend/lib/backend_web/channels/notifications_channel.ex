@@ -52,7 +52,7 @@ defmodule BackendWeb.NotificationsChannel do
 
 
   def handle_in("new_comment", _, socket) do
-    broadcast socket, "new_response", nil
+    broadcast socket, "new_response", %{}
     {:noreply, socket}
   end
 

@@ -37,7 +37,7 @@ class TopAnnouncement extends React.Component {
     this.setState({
       data: false
     });
-    this.props.handleGetChildren();
+    this.props.handleSubmit();
     this.props.handleViewReplies(!this.state.data);
   }
 

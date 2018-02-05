@@ -29,10 +29,11 @@ defmodule BackendWeb.Router do
     resources "/sections", SectionController, except: [:edit, :show] 
     resources "/discussions", DiscussionController 
     resources "/posts", PostController, except: [:new, :edit] 
-    resources "/users", UserController, except: [:new, :edit] 
+    resources "/users", UserController, except: [:new, :edit, :show] 
 
     get "/posts/discussions/:discussion_id", PostController, :show_all
     get "/posts/discussions/children/:post_id", PostController, :show_children
+    get "/posts/discussions/self/:post_id", PostController, :show_self
 
     get "/users/sections/:section_id/", UserController, :show_by_course
     get "/users/groups/:group_id/", UserController, :show_by_group

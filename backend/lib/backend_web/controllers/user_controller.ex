@@ -33,6 +33,7 @@ defmodule BackendWeb.UserController do
   end
 
   def show_by_id(conn, %{"id" => id}) do
+    IO.puts("---------------------TRIGGERING THIS FUNCTION-----------------------")
     user = Auth.get_user!(id)
     render(conn, "show.json", user: user)
   end

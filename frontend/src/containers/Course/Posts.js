@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import api from "../../api/Api";
 import PostCard from "../../components/PostCard";
 import TopAnnouncement from "../../components/TopAnnouncement";
+import {Socket} from "phoenix";
 
 class Discussion extends Component {
   constructor() {
     super();
     this.handleViewReplies = this.handleViewReplies.bind(this);
-    this.getChildren = this.getChildren.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       top: null,
       posts: [],
-      replies: true
+      replies: true,
+      isLoading: true
     };
   }
   
@@ -24,28 +26,85 @@ class Discussion extends Component {
           this.setState({ top: response.data.data });
         }
       }).then(()=>{
-        this.getChildren();
+        this.retrieveChildren();
       });
+      this.initSocket();
   }
 
 
-  getChildren(){
+  handleSubmit(){
+    this.channel
+			.push("new_comment", {}, 100000)
+				.receive("ok", (msg) => {console.log("created message", msg)})
+				.receive("error", (reason) => {console.log("create failed", reason)})
+        .receive("timeout", () => {console.log("Networking issue...")});
+  }
+
+  retrieveChildren(){
     api
       .get(`/posts/discussions/children/${this.state.top.id}`)
       .then(response =>{
+        console.log("---------------------------");
+        console.log(response);
+        console.log("---------------------------");
         this.setState({
-          posts: response.data.data
+          posts: response.data.data,
+          isLoading: false
         });
         return true;
       }).catch(error => {
         console.log(error);
         return false;
       });
+      this.setState({
+        replies: true
+      });
   }
 
   handleViewReplies(true_false){
-    this.setState({replies: true_false});
+    if(true_false == true){
+      this.retrieveChildren();
+    }else{
+      this.setState({
+        replies: true_false,
+        isLoading: true
+      });
+    }
   }
+
+
+  /*
+    NEW
+  */
+  initSocket(){
+    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
+		this.socket.connect();
+    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
+    this.channel.on("new_response", (msg) => {
+      console.log(`GOT UPDATE`);
+      this.handleUpdate();
+		});
+		this.channel.join()
+			.receive("ok", ({messages}) => {
+        console.log("Joined!", messages);
+      })
+			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
+			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
+  }
+
+  componentWillUnmount(){
+    this.channel.leave().receive("ok", () => {
+			console.log("left");
+			this.socket.disconnect();
+		});
+  }
+
+  handleUpdate(){
+    this.retrieveChildren();
+  }
+   /*
+    NEW
+  */
 
   getOpeningPost() {
     if (!this.state.top) return <div className="loading" />;
@@ -53,15 +112,6 @@ class Discussion extends Component {
     if (this.state.top.length === 0) return;
 
     return (
-      /*
-      <PostCard
-        id={this.state.posts[0].id}
-        author_name={this.state.posts[0].author_name}
-        updated_at={this.state.posts[0].updated_at}
-        inserted_at={this.state.posts[0].inserted_at}
-        content={this.state.posts[0].content}
-      />
-      */
       <TopAnnouncement
         id={this.state.top.id}
         author_name={this.state.top.author_name}
@@ -70,7 +120,7 @@ class Discussion extends Component {
         content={this.state.top.content}
         handleViewReplies={this.handleViewReplies}
         hasPosts={this.state.posts.length === 0 ? false : true}
-        handleGetChildren={this.getChildren}
+        handleSubmit={this.handleSubmit}
         discussion_id = {this.props.match.params.discussion_id}
       />
     );
@@ -85,21 +135,23 @@ class Discussion extends Component {
       })
       .map((post, index) => (
         <PostCard
-          key={index}
+          key={post.id}
           id={post.id}
           author_name={post.author_name}
+          user_id={post.user_id}
+          is_deleted={post.is_deleted}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={true}
           discussion_id = {this.props.match.params.discussion_id}
           section_id = {this.props.match.params.id}
+          isLoading = {this.state.isLoading}
         />
       ));
   }
 
   render() {
-    // Shitty design for debugging.
     return (
       <section className="section">
         {this.getOpeningPost()}

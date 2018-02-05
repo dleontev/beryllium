@@ -8,6 +8,7 @@ class TopAnnouncement extends React.Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.closeReplyBox = this.closeReplyBox.bind(this);
     this.state = {
       data: false,
       reply: false
@@ -30,10 +31,14 @@ class TopAnnouncement extends React.Component {
   }
 
 
-  handleSubmit(){
+  closeReplyBox(){
     this.setState({
       reply: !this.state.reply
     });
+  }
+
+
+  handleSubmit(){
     this.setState({
       data: false
     });
@@ -90,7 +95,7 @@ class TopAnnouncement extends React.Component {
           </footer>
         {this.state.reply ?
         <div className="random">
-           <ReplyCard handleSubmit={this.handleSubmit} discussion_id={this.props.discussion_id} parent_id={this.props.id}/>
+           <ReplyCard handleSubmit={this.handleSubmit} discussion_id={this.props.discussion_id} parent_id={this.props.id} closeReplyBox = {this.closeReplyBox}/>
         </div>
         : ""}
       </div>

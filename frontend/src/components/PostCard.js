@@ -13,6 +13,7 @@ class PostCard extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);
     this.handleModal = this.handleModal.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.closeReplyBox = this.closeReplyBox.bind(this);
 
     this.state = {
       posts: [],
@@ -21,7 +22,8 @@ class PostCard extends React.Component {
       reply: false,
       modalState: "modal",
       data: null,
-      isLoading: true
+      isLoading: true,
+      isPressed: false
     };
   }
 
@@ -51,15 +53,20 @@ class PostCard extends React.Component {
   }
 
   handleDelete() {
-    api
-      .put(`/posts/${this.props.id}`, {post: {is_deleted: true}})
-      .then(() => {
-        this.handleModal();
-        this.handleRefresh();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.handleModal();
+    this.setState({isPressed: true});
+    if(!this.state.isPressed){
+      if(!this.getDeleted()){
+        api
+          .put(`/posts/${this.props.id}`, {post: {is_deleted: true}})
+          .then(() => {
+            this.handleRefresh();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    }
   }
 
   handleRefresh(){
@@ -84,6 +91,7 @@ class PostCard extends React.Component {
       });
   }
 
+/*
   getAuthor(){
     return this.state.data == null ? this.props.author_name : this.state.data.author_name;
   }
@@ -91,6 +99,7 @@ class PostCard extends React.Component {
   getInsertedAt(){
     return this.state.data == null ? new Date(this.props.inserted_at).toLocaleDateString() : new Date(this.state.data.inserted_at).toLocaleDateString();
   }
+*/
 
   getContent(){
     return this.state.data == null ? this.props.content : this.state.data.content;
@@ -103,15 +112,22 @@ class PostCard extends React.Component {
 
   handleSubmit(){
     this.handleRefresh();
+    /*
     this.setState({
       reply: false
     });
+    */
     //this.getReplies();
     this.setState({
       comments: true
     });
   }
 
+  closeReplyBox(){
+    this.setState({
+      reply: false
+    });
+  }
 
   handleUpdate(){  
     this.getReplies();
@@ -218,8 +234,8 @@ class PostCard extends React.Component {
             <div className="media-content">
               <div className="content">
                 <div>
-                  <strong> {this.getDeleted() ? "[DELETED]" : this.getAuthor()} </strong>
-                  <div className="timestamp">{this.getInsertedAt()}</div>
+                  <strong> {this.getDeleted() ? "[DELETED]" : this.props.author_name} </strong>
+                  <div className="timestamp">{this.props.inserted_at}</div>
                   <div>{this.getDeleted() ? "[DELETED]" : this.getContent()}</div>
                 </div>
               </div>
@@ -260,7 +276,9 @@ class PostCard extends React.Component {
               {this.state.reply ? <ReplyCard 
                                       handleSubmit={this.handleSubmit} 
                                       discussion_id={this.props.discussion_id} 
-                                      parent_id = {this.props.id}/> : ""}
+                                      parent_id = {this.props.id}
+                                      closeReplyBox = {this.closeReplyBox}/>
+                                      : ""}
               {this.state.comments ? this.getComments() : ""}
             </div>
           </article>

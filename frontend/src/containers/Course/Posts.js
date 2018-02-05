@@ -12,7 +12,8 @@ class Discussion extends Component {
     this.state = {
       top: null,
       posts: [],
-      replies: true
+      replies: true,
+      isLoading: true
     };
   }
   
@@ -43,18 +44,32 @@ class Discussion extends Component {
     api
       .get(`/posts/discussions/children/${this.state.top.id}`)
       .then(response =>{
+        console.log("---------------------------");
+        console.log(response);
+        console.log("---------------------------");
         this.setState({
-          posts: response.data.data
+          posts: response.data.data,
+          isLoading: false
         });
         return true;
       }).catch(error => {
         console.log(error);
         return false;
       });
+      this.setState({
+        replies: true
+      });
   }
 
   handleViewReplies(true_false){
-    this.setState({replies: true_false});
+    if(true_false == true){
+      this.retrieveChildren();
+    }else{
+      this.setState({
+        replies: true_false,
+        isLoading: true
+      });
+    }
   }
 
 
@@ -124,12 +139,14 @@ class Discussion extends Component {
           id={post.id}
           author_name={post.author_name}
           user_id={post.user_id}
+          is_deleted={post.is_deleted}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={true}
           discussion_id = {this.props.match.params.discussion_id}
           section_id = {this.props.match.params.id}
+          isLoading = {this.state.isLoading}
         />
       ));
   }

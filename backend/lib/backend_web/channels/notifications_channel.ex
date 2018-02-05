@@ -56,6 +56,12 @@ defmodule BackendWeb.NotificationsChannel do
     {:noreply, socket}
   end
 
+
+  def handle_in("edit_comment", _, socket) do
+    broadcast socket, "edit_response", %{}
+    {:noreply, socket}
+  end
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (notifications:lobby).
   def handle_in("shout", payload, socket) do

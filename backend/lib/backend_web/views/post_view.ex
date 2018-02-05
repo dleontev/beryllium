@@ -20,8 +20,18 @@ defmodule BackendWeb.PostView do
     %{data: render_one(post, PostView, "post.json")}
   end
 
+  def render("show_is_deleted.json", %{post: post}) do
+    IO.puts("INSPECTING POST----------------------------------------------------")
+    IO.inspect(post)
+    %{data: render_one(post, PostView, "post_is_deleted.json")}
+  end
+
   def render("post.json", %{post: [%{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}]}) do
     %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}
+  end
+
+  def render("post_is_deleted.json", %{post: %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}}) do
+    %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}
   end
 
   def render("post_single.json", %{post: post}) do
@@ -47,6 +57,7 @@ defmodule BackendWeb.PostView do
       content: post.content,
       parent_id: post.parent_id,
       user_id: post.user_id,
+      is_deleted: post.is_deleted,
       author_name: post.author_name
     }
   end

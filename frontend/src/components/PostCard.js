@@ -122,7 +122,7 @@ class PostCard extends React.Component {
   ///////////////////EDIT STUFF///////////////////////////
 
   handleSubmit(){
-    this.handleRefresh();
+    //this.handleRefresh();
     this.setState({
       comments: true
     });

@@ -1,5 +1,6 @@
 import React from "react";
 import ReplyCard from "./ReplyCard";
+import {Socket} from "phoenix";
 //import api from "../api/Api";
 
 class TopAnnouncement extends React.Component {
@@ -13,6 +14,35 @@ class TopAnnouncement extends React.Component {
     };
   }
 
+  componentWillMount(){
+    this.initSocket();
+  }
+
+  initSocket(){
+    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
+		this.socket.connect();
+    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
+    this.channel.on("new_response", (msg) => {
+      console.log(`GOT UPDATE TOP ANNOUNCEMENT`);
+      this.handleUpdate();
+    });
+    this.channel.on("edit_response", (msg) => {
+      console.log(`GOT UPDATE`);
+      this.getUpdate();
+		});
+		this.channel.join()
+			.receive("ok", ({messages}) => {
+        console.log("TOP ANNOUNCEMENT JOINED", messages);
+      })
+			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
+			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
+  }
+
+  handleUpdate(){
+    this.props.retrieveChildren();
+  }
+
+
   handleClick() {
     this.setState({
       data: !this.state.data
@@ -21,7 +51,7 @@ class TopAnnouncement extends React.Component {
   }
 
 
-  handleReply(){
+  handleReply() {
     console.log("Reply");
     this.setState({
       reply: !this.state.reply
@@ -41,7 +71,6 @@ class TopAnnouncement extends React.Component {
       data: false
     });
     this.props.handleSubmit();
-    this.props.handleViewReplies(!this.state.data);
   }
 
   render() {

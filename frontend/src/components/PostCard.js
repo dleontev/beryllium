@@ -31,7 +31,7 @@ class PostCard extends React.Component {
   }
 
   handleClick(event) {
-    if(!this.state.comments == true){
+    if(!this.state.comments === true){
       this.getReplies();
     }else{
       this.setState({
@@ -236,7 +236,7 @@ class PostCard extends React.Component {
               </p>
             </figure>
             <div className="media-content">
-              {this.state.isEdit == false ?
+              {this.state.isEdit === false ?
               <div>
               <div className="content">
                 <div>
@@ -254,13 +254,13 @@ class PostCard extends React.Component {
                   </p>
                   
 
-                  {this.props.user_id == api.getUserId() ?
+                  {this.props.user_id === api.getUserId() ?
                     <p className="control">
                       <a className={this.getDeleted() ? "button is-info is-small is-static" : "button is-info is-small"} onClick={this.handleEdit}> Edit </a>
                     </p>
                   : ""
                   }
-                  {this.props.user_id == api.getUserId() ?
+                  {this.props.user_id === api.getUserId() ?
                     <p className="control">
                       <a className={this.getDeleted() ? "button is-danger is-small is-static" : "button is-danger is-small"} onClick={this.handleModal} >Delete</a>
                     </p>

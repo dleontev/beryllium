@@ -1,9 +1,9 @@
 import React from "react";
-import profile_image from "../images/blank-profile.png";
-import api from "../api/Api";
-import ReplyCard from "./ReplyCard";
-import ConfirmCard from "./ConfirmCard";
-import {Socket} from "phoenix";
+//import profile_image from "../images/blank-profile.png";
+//import api from "../api/Api";
+//import ReplyCard from "./ReplyCard";
+//import ConfirmCard from "./ConfirmCard";
+//import {Socket} from "phoenix";
 
 
 class EditCommentCard extends React.Component{

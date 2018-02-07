@@ -62,7 +62,7 @@ class Discussion extends Component {
   }
 
   handleViewReplies(true_false){
-    if(true_false == true){
+    if(true_false === true){
       this.retrieveChildren();
     }else{
       this.setState({

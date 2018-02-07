@@ -1,6 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import ConfirmCard from "./ConfirmCard";
 import ReplyCard from "./ReplyCard";
 //import api from "../api/Api";
 

@@ -18,13 +18,13 @@ class ReplyCard extends React.Component{
 
 
 		handleSubmit(event){
-			console.log("SUBMITTED");
+			//console.log("SUBMITTED");
 			if(!this.state.submitted){
 			this.setState({submitted: true});
 			api
 				.post(`/posts/`, this.state.data)
 				.then(response => {
-					console.log("posted");
+					//console.log("posted");
 					this.props.handleSubmit();
 				}).catch(error => {
 					console.log(error);

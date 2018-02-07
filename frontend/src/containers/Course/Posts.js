@@ -9,6 +9,7 @@ class Discussion extends Component {
     super();
     this.handleViewReplies = this.handleViewReplies.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.retrieveChildren = this.retrieveChildren.bind(this);
     this.state = {
       top: null,
       posts: [],
@@ -28,16 +29,6 @@ class Discussion extends Component {
       }).then(()=>{
         this.retrieveChildren();
       });
-      this.initSocket();
-  }
-
-
-  handleSubmit(){
-    this.channel
-			.push("edit_comment", {}, 100000)
-				.receive("ok", (msg) => {console.log("created message", msg)})
-				.receive("error", (reason) => {console.log("create failed", reason)})
-        .receive("timeout", () => {console.log("Networking issue...")});
   }
 
   retrieveChildren(){
@@ -61,6 +52,13 @@ class Discussion extends Component {
       });
   }
 
+
+  handleSubmit(){
+    this.setState({
+      replies: true
+    });
+  }
+
   handleViewReplies(true_false){
     if(true_false === true){
       this.retrieveChildren();
@@ -72,39 +70,6 @@ class Discussion extends Component {
     }
   }
 
-
-  /*
-    NEW
-  */
-  initSocket(){
-    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
-		this.socket.connect();
-    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
-    this.channel.on("new_response", (msg) => {
-      console.log(`GOT UPDATE`);
-      this.handleUpdate();
-		});
-		this.channel.join()
-			.receive("ok", ({messages}) => {
-        console.log("Joined!", messages);
-      })
-			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
-			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
-  }
-
-  componentWillUnmount(){
-    this.channel.leave().receive("ok", () => {
-			console.log("left");
-			this.socket.disconnect();
-		});
-  }
-
-  handleUpdate(){
-    this.retrieveChildren();
-  }
-   /*
-    NEW
-  */
 
   getOpeningPost() {
     if (!this.state.top) return <div className="loading" />;
@@ -118,10 +83,11 @@ class Discussion extends Component {
         updated_at={new Date(this.state.top.updated_at).toLocaleDateString()}
         inserted_at= {new Date(this.state.top.inserted_at).toLocaleDateString()}
         content={this.state.top.content}
+        handleSubmit = {this.handleSubmit}
         handleViewReplies={this.handleViewReplies}
         hasPosts={this.state.posts.length === 0 ? false : true}
-        handleSubmit={this.handleSubmit}
         discussion_id = {this.props.match.params.discussion_id}
+        retrieveChildren = {this.retrieveChildren}
       />
     );
   }

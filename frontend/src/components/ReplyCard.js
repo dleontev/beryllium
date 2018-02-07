@@ -18,6 +18,7 @@ class ReplyCard extends React.Component{
 
 
 		handleSubmit(event){
+			console.log("SUBMITTED");
 			if(!this.state.submitted){
 			this.setState({submitted: true});
 			api
@@ -41,6 +42,7 @@ class ReplyCard extends React.Component{
 
     render(){
         return (
+				<div className="replyBox">
 					<article className="media">
 						<figure className="media-left">
 							<p className="image is-64x64">
@@ -62,6 +64,7 @@ class ReplyCard extends React.Component{
 							</nav>
 						</div>
 					</article>
+				</div>
         );
     }
 }

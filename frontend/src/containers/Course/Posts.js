@@ -34,7 +34,7 @@ class Discussion extends Component {
 
   handleSubmit(){
     this.channel
-			.push("new_comment", {}, 100000)
+			.push("edit_comment", {}, 100000)
 				.receive("ok", (msg) => {console.log("created message", msg)})
 				.receive("error", (reason) => {console.log("create failed", reason)})
         .receive("timeout", () => {console.log("Networking issue...")});

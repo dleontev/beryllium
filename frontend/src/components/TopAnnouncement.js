@@ -95,7 +95,11 @@ class TopAnnouncement extends React.Component {
           </footer>
         {this.state.reply ?
         <div className="random">
-           <ReplyCard handleSubmit={this.handleSubmit} discussion_id={this.props.discussion_id} parent_id={this.props.id} closeReplyBox = {this.closeReplyBox}/>
+           <ReplyCard 
+            handleSubmit={this.handleSubmit} 
+            discussion_id={this.props.discussion_id} 
+            parent_id={this.props.id} 
+            closeReplyBox = {this.closeReplyBox}/>
         </div>
         : ""}
       </div>

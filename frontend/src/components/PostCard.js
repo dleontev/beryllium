@@ -3,6 +3,7 @@ import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
 import ReplyCard from "./ReplyCard";
 import ConfirmCard from "./ConfirmCard";
+import EditCommentCard from "./EditCommentCard";
 import {Socket} from "phoenix";
 
 class PostCard extends React.Component {
@@ -14,6 +15,7 @@ class PostCard extends React.Component {
     this.handleModal = this.handleModal.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.closeReplyBox = this.closeReplyBox.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
 
     this.state = {
       posts: [],
@@ -23,7 +25,8 @@ class PostCard extends React.Component {
       modalState: "modal",
       data: null,
       isLoading: true,
-      isPressed: false
+      isPressed: false,
+      isEdit: false
     };
   }
 
@@ -110,14 +113,16 @@ class PostCard extends React.Component {
   }
   ///////////////////MODAL STUFF////////////////////////////////
 
+
+  ////////////////////EDIT STUFF///////////////////////////
+  handleEdit(){
+    this.setState({isEdit: !this.state.isEdit});
+  }
+
+  ///////////////////EDIT STUFF///////////////////////////
+
   handleSubmit(){
     this.handleRefresh();
-    /*
-    this.setState({
-      reply: false
-    });
-    */
-    //this.getReplies();
     this.setState({
       comments: true
     });
@@ -230,8 +235,9 @@ class PostCard extends React.Component {
                 <img src={profile_image} alt="Profile" />
               </p>
             </figure>
-
             <div className="media-content">
+              {this.state.isEdit == false ?
+              <div>
               <div className="content">
                 <div>
                   <strong> {this.getDeleted() ? "[DELETED]" : this.props.author_name} </strong>
@@ -247,10 +253,17 @@ class PostCard extends React.Component {
                     <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
                   </p>
                   
+
                   {this.props.user_id == api.getUserId() ?
-                  <p className="control">
-                    <a className={this.getDeleted() ? "button is-danger is-small is-static" : "button is-danger is-small"} onClick={this.handleModal} >Delete</a>
-                  </p>
+                    <p className="control">
+                      <a className={this.getDeleted() ? "button is-info is-small is-static" : "button is-info is-small"} onClick={this.handleEdit}> Edit </a>
+                    </p>
+                  : ""
+                  }
+                  {this.props.user_id == api.getUserId() ?
+                    <p className="control">
+                      <a className={this.getDeleted() ? "button is-danger is-small is-static" : "button is-danger is-small"} onClick={this.handleModal} >Delete</a>
+                    </p>
                   : ""
                   }
 
@@ -273,6 +286,11 @@ class PostCard extends React.Component {
                 </div>
                 <br />
               </div>
+              </div>
+              : <EditCommentCard
+                handleCancelEdit = {this.handleEdit}
+                content = {this.getContent()}
+              />}
               {this.state.reply ? <ReplyCard 
                                       handleSubmit={this.handleSubmit} 
                                       discussion_id={this.props.discussion_id} 

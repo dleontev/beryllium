@@ -3,6 +3,7 @@ import api from "../../api/Api";
 import GroupCard from "../../components/GroupCard";
 import UserListCard from "../../components/UserListCard";
 import NewGroupDialog from "../../components/Form/NewGroupDialog";
+import { Link } from "react-router-dom";
 import $ from "jquery";
 
 class Groups extends React.Component {
@@ -96,7 +97,18 @@ class Groups extends React.Component {
     }
 
     return members.map((member, index) => (
-      <UserListCard key={member.id} name={member.name} />
+      <UserListCard
+        key={member.id}
+        name={
+          <Link
+            to={`/courses/${this.props.match.params.id}/users/${
+              member.id
+            }`}
+          >
+            {member.name}
+          </Link>
+        }
+      />
     ));
   }
 

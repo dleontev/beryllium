@@ -33,9 +33,9 @@ class PostCard extends React.Component {
   }
 
   handleClick(event) {
-    if(!this.state.comments === true){
+    if (!this.state.comments === true) {
       this.getReplies();
-    }else{
+    } else {
       this.setState({
         comments: !this.state.comments,
         isLoading: true
@@ -43,7 +43,7 @@ class PostCard extends React.Component {
     }
   }
 
-  handleReply(event){
+  handleReply(event) {
     this.setState({
       reply: !this.state.reply
     });
@@ -59,14 +59,14 @@ class PostCard extends React.Component {
 
   handleDelete() {
     this.handleModal();
-    this.setState({isPressed: true});
-    if(!this.state.isPressed){
-      if(!this.getDeleted()){
+    this.setState({ isPressed: true });
+    if (!this.state.isPressed) {
+      if (!this.getDeleted()) {
         api
-          .put(`/posts/${this.props.id}`, {post: {is_deleted: true}})
+          .put(`/posts/${this.props.id}`, { post: { is_deleted: true } })
           .then(() => {
             this.handleRefresh();
-            this.setState({isPressed: false});
+            this.setState({ isPressed: false });
           })
           .catch(error => {
             console.log(error);
@@ -74,18 +74,17 @@ class PostCard extends React.Component {
       }
     }
   }
-
 
   handleEdited(newContent) {
     this.handleEdit();
-    this.setState({isPressed: true});
-    if(!this.state.isPressed){
-      if(!this.getDeleted()){
+    this.setState({ isPressed: true });
+    if (!this.state.isPressed) {
+      if (!this.getDeleted()) {
         api
-          .put(`/posts/${this.props.id}`, {post: {content: newContent}})
+          .put(`/posts/${this.props.id}`, { post: { content: newContent } })
           .then(() => {
             this.handleRefresh();
-            this.setState({isPressed: false});
+            this.setState({ isPressed: false });
           })
           .catch(error => {
             console.log(error);
@@ -94,11 +93,11 @@ class PostCard extends React.Component {
     }
   }
 
-  handleRefresh(){
+  handleRefresh() {
     socket.pushChannel(this.sock.channel, "edit_comment", {}, 100000);
   }
 
-  getUpdate(){
+  getUpdate() {
     api
       .get(`/posts/discussions/self/${this.props.id}`)
       .then(result => {
@@ -107,12 +106,12 @@ class PostCard extends React.Component {
         });
         console.log(`GOT RESPONSE ${this.state.data.is_deleted}`);
       })
-      .catch(error =>{
+      .catch(error => {
         console.log(error);
       });
   }
 
-/*
+  /*
   getAuthor(){
     return this.state.data == null ? this.props.author_name : this.state.data.author_name;
   }
@@ -122,45 +121,48 @@ class PostCard extends React.Component {
   }
 */
 
-  getContent(){
-    return this.state.data == null ? this.props.content : this.state.data.content;
+  getContent() {
+    return this.state.data == null
+      ? this.props.content
+      : this.state.data.content;
   }
 
-  getDeleted(){
-    return this.state.data == null ? this.props.is_deleted : this.state.data.is_deleted;
+  getDeleted() {
+    return this.state.data == null
+      ? this.props.is_deleted
+      : this.state.data.is_deleted;
   }
   ///////////////////MODAL STUFF////////////////////////////////
 
-
   ////////////////////EDIT STUFF///////////////////////////
-  handleEdit(){
-    this.setState({isEdit: !this.state.isEdit});
+  handleEdit() {
+    this.setState({ isEdit: !this.state.isEdit });
   }
 
   ///////////////////EDIT STUFF///////////////////////////
 
-  handleSubmit(){
+  handleSubmit() {
     //this.handleRefresh();
     this.setState({
       comments: true
     });
   }
 
-  closeReplyBox(){
+  closeReplyBox() {
     this.setState({
       reply: false
     });
   }
 
-  handleUpdate(){  
+  handleUpdate() {
     this.getReplies();
   }
 
-  getReplies(){
+  getReplies() {
     api
       .get(`/posts/discussions/children/${this.props.id}`)
       .then(response => {
-        console.log(response.data.data)
+        console.log(response.data.data);
         this.setState({
           posts: response.data.data,
           length: response.data.data.length,
@@ -172,9 +174,9 @@ class PostCard extends React.Component {
         console.log(error);
         return false;
       });
-      this.setState({
-        comments: true
-      })
+    this.setState({
+      comments: true
+    });
   }
 
   componentWillMount() {
@@ -182,11 +184,11 @@ class PostCard extends React.Component {
     this.getReplies();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     socket.leaveChannel(this.sock.channel, this.sock.socket);
   }
 
-  initSocket(){
+  initSocket() {
     this.sock = socket.initSocket(`notifications:replies${this.props.id}`, {});
     socket.onEvent(this.sock.channel, "new_response", this.handleUpdate);
     socket.onEvent(this.sock.channel, "edit_response", this.getUpdate);
@@ -210,9 +212,9 @@ class PostCard extends React.Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={false}
-          discussion_id = {this.props.discussion_id}
-          section_id = {this.props.section_id}
-          isLoading = {this.state.isLoading}
+          discussion_id={this.props.discussion_id}
+          section_id={this.props.section_id}
+          isLoading={this.state.isLoading}
         />
       ));
   }
@@ -225,85 +227,127 @@ class PostCard extends React.Component {
           onClick={() => this.handleDelete()}
           onCancel={() => this.handleModal()}
         />
-        {this.props.isLoading
-        ?
-        <div><div className="loading"></div> <br/> </div>
-        :
-        <div className={this.props.box ? "box" : ""}>
-          <article className="media">
-            <figure className="media-left">
-              <p className="image is-64x64">
-                <img src={profile_image} alt="Profile" />
-              </p>
-            </figure>
-            <div className="media-content">
-              {this.state.isEdit === false ?
-              <div>
-              <div className="content">
-                <div>
-                  <strong> {this.getDeleted() ? "[DELETED]" : this.props.author_name} </strong>
-                  <div className="timestamp">{this.props.inserted_at}</div>
-                  <div>{this.getDeleted() ? "[DELETED]" : this.getContent()}</div>
-                </div>
-              </div>
+        {this.props.isLoading ? (
+          <div>
+            <div className="loading" /> <br />{" "}
+          </div>
+        ) : (
+          <div className={this.props.box ? "box" : ""}>
+            <article className="media">
+              <figure className="media-left">
+                <p className="image is-64x64">
+                  <img src={profile_image} alt="Profile" />
+                </p>
+              </figure>
+              <div className="media-content">
+                {this.state.isEdit === false ? (
+                  <div>
+                    <div className="content">
+                      <div>
+                        <strong>
+                          {" "}
+                          {this.getDeleted()
+                            ? "[DELETED]"
+                            : this.props.author_name}{" "}
+                        </strong>
+                        <div className="timestamp">
+                          {this.props.inserted_at}
+                        </div>
+                        <div>
+                          {this.getDeleted() ? "[DELETED]" : this.getContent()}
+                        </div>
+                      </div>
+                    </div>
 
-              <div className="level-left">
-                <div className="field is-grouped">
+                    <div className="level-left">
+                      <div className="field is-grouped">
+                        <p className="control">
+                          <a
+                            className="button is-info is-small"
+                            onClick={this.handleReply.bind(this)}
+                          >
+                            Reply
+                          </a>
+                        </p>
 
-                  <p className="control">
-                    <a className="button is-info is-small" onClick={this.handleReply.bind(this)}>Reply</a>
-                  </p>
-                  
+                        {this.props.user_id === api.getUserId() ? (
+                          <p className="control">
+                            <a
+                              className={
+                                this.getDeleted()
+                                  ? "button is-info is-small is-static"
+                                  : "button is-info is-small"
+                              }
+                              onClick={this.handleEdit}
+                            >
+                              {" "}
+                              Edit{" "}
+                            </a>
+                          </p>
+                        ) : (
+                          ""
+                        )}
+                        {this.props.user_id === api.getUserId() ? (
+                          <p className="control">
+                            <a
+                              className={
+                                this.getDeleted()
+                                  ? "button is-danger is-small is-static"
+                                  : "button is-danger is-small"
+                              }
+                              onClick={this.handleModal}
+                            >
+                              Delete
+                            </a>
+                          </p>
+                        ) : (
+                          ""
+                        )}
 
-                  {this.props.user_id === api.getUserId() ?
-                    <p className="control">
-                      <a className={this.getDeleted() ? "button is-info is-small is-static" : "button is-info is-small"} onClick={this.handleEdit}> Edit </a>
-                    </p>
-                  : ""
-                  }
-                  {this.props.user_id === api.getUserId() ?
-                    <p className="control">
-                      <a className={this.getDeleted() ? "button is-danger is-small is-static" : "button is-danger is-small"} onClick={this.handleModal} >Delete</a>
-                    </p>
-                  : ""
-                  }
-
-                  <div className="control">
-                    <div
-                      className={
-                        this.state.length === 0
-                          ? "button is-primary is-small is-static"
-                          : "button is-primary is-small"
-                      }
-                      onClick={this.handleClick.bind(this)}
-                    >
-                      <span>{this.state.comments ? "Collapse" : "Expand"}</span>
-                      <span className="icon">
-                        <i className="fa fa-reply" />
-                      </span>
-                      <span>{this.state.length}</span>
+                        <div className="control">
+                          <div
+                            className={
+                              this.state.length === 0
+                                ? "button is-primary is-small is-static"
+                                : "button is-primary is-small"
+                            }
+                            onClick={this.handleClick.bind(this)}
+                          >
+                            <span>
+                              {this.state.comments ? "Collapse" : "Expand"}
+                            </span>
+                            <span className="icon">
+                              <i className="fa fa-reply" />
+                            </span>
+                            <span>{this.state.length}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
                     </div>
                   </div>
-                </div>
-                <br />
+                ) : (
+                  <EditCommentCard
+                    handleCancelEdit={this.handleEdit}
+                    handleEdited={this.handleEdited}
+                    content={this.getContent()}
+                  />
+                )}
+                {this.state.reply ? (
+                  <ReplyCard
+                    handleSubmit={this.handleSubmit}
+                    discussion_id={this.props.discussion_id}
+                    parent_id={this.props.id}
+                    closeReplyBox={this.closeReplyBox}
+                  />
+                ) : (
+                  ""
+                )}
+                {this.state.comments ? this.getComments() : ""}
               </div>
-              </div>
-              : <EditCommentCard
-                handleCancelEdit = {this.handleEdit}
-                handleEdited = {this.handleEdited}
-                content = {this.getContent()}
-              />}
-              {this.state.reply ? <ReplyCard 
-                                      handleSubmit={this.handleSubmit} 
-                                      discussion_id={this.props.discussion_id} 
-                                      parent_id = {this.props.id}
-                                      closeReplyBox = {this.closeReplyBox}/>
-                                      : ""}
-              {this.state.comments ? this.getComments() : ""}
-            </div>
-          </article>
-        </div>
-        }
+            </article>
+          </div>
+        )}
       </div>
     );
   }

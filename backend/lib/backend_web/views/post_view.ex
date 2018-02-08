@@ -32,20 +32,76 @@ defmodule BackendWeb.PostView do
     %{data: render_one(post, PostView, "post_is_deleted.json")}
   end
 
-  def render("post_base.json", %{post: %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}}) do
-    %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}
+  def render("post_base.json", %{
+        post: %{
+          id: id,
+          content: content,
+          inserted_at: inserted_at,
+          updated_at: updated_at,
+          parent_id: parent_id,
+          is_deleted: is_deleted
+        }
+      }) do
+    %{
+      id: id,
+      content: content,
+      inserted_at: inserted_at,
+      updated_at: updated_at,
+      parent_id: parent_id,
+      is_deleted: is_deleted
+    }
   end
 
-  def render("post.json", %{post: [%{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}]}) do
-    %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, author_name: author_name}
+  def render("post.json", %{
+        post: [
+          %{
+            id: id,
+            content: content,
+            inserted_at: inserted_at,
+            updated_at: updated_at,
+            parent_id: parent_id,
+            author_name: author_name
+          }
+        ]
+      }) do
+    %{
+      id: id,
+      content: content,
+      inserted_at: inserted_at,
+      updated_at: updated_at,
+      parent_id: parent_id,
+      author_name: author_name
+    }
   end
 
-  def render("post_is_deleted.json", %{post: %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}}) do
-    %{id: id, content: content, inserted_at: inserted_at, updated_at: updated_at, parent_id: parent_id, is_deleted: is_deleted}
+  def render("post_is_deleted.json", %{
+        post: %{
+          id: id,
+          content: content,
+          inserted_at: inserted_at,
+          updated_at: updated_at,
+          parent_id: parent_id,
+          is_deleted: is_deleted
+        }
+      }) do
+    %{
+      id: id,
+      content: content,
+      inserted_at: inserted_at,
+      updated_at: updated_at,
+      parent_id: parent_id,
+      is_deleted: is_deleted
+    }
   end
 
   def render("post_single.json", %{post: post}) do
-     %{id: post.id, content: post.content, inserted_at: post.inserted_at, updated_at: post.updated_at, parent_id: post.parent_id}
+    %{
+      id: post.id,
+      content: post.content,
+      inserted_at: post.inserted_at,
+      updated_at: post.updated_at,
+      parent_id: post.parent_id
+    }
   end
 
   def render("post_detailed.json", %{post: post}) do

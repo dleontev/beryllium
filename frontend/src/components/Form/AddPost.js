@@ -19,9 +19,11 @@ class AddPost extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    api.post(`/posts/`, this.state.data).then(response => {
-      this.setState({ finish: true });
-    });
+    if (this.state.title.length !== 0 && this.state.message.length !== 0) {
+      api.post(`/posts/`, this.state.data).then(response => {
+        this.setState({ finish: true });
+      });
+    }
   }
 
   handleTitle(event) {
@@ -44,7 +46,9 @@ class AddPost extends React.Component {
   render() {
     if (this.state.finish) {
       if (this.props.is_discussion) {
-        return <Redirect to={`/courses/${this.props.section_id}/discussions`} />;
+        return (
+          <Redirect to={`/courses/${this.props.section_id}/discussions`} />
+        );
       } else {
         return (
           <Redirect to={`/courses/${this.props.section_id}/announcements`} />

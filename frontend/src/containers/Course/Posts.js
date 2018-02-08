@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import api from "../../api/Api";
 import PostCard from "../../components/PostCard";
 import TopAnnouncement from "../../components/TopAnnouncement";
-import {Socket} from "phoenix";
 
 class Discussion extends Component {
   constructor() {
@@ -17,7 +16,7 @@ class Discussion extends Component {
       isLoading: true
     };
   }
-  
+
   componentWillMount() {
     api
       .get(`/posts/${this.props.match.params.discussion_id}`)
@@ -26,15 +25,16 @@ class Discussion extends Component {
           console.log(response.data.data);
           this.setState({ top: response.data.data });
         }
-      }).then(()=>{
+      })
+      .then(() => {
         this.retrieveChildren();
       });
   }
 
-  retrieveChildren(){
+  retrieveChildren() {
     api
       .get(`/posts/discussions/children/${this.state.top.id}`)
-      .then(response =>{
+      .then(response => {
         console.log("---------------------------");
         console.log(response);
         console.log("---------------------------");
@@ -43,33 +43,32 @@ class Discussion extends Component {
           isLoading: false
         });
         return true;
-      }).catch(error => {
+      })
+      .catch(error => {
         console.log(error);
         return false;
       });
-      this.setState({
-        replies: true
-      });
-  }
-
-
-  handleSubmit(){
     this.setState({
       replies: true
     });
   }
 
-  handleViewReplies(true_false){
-    if(true_false === true){
+  handleSubmit() {
+    this.setState({
+      replies: true
+    });
+  }
+
+  handleViewReplies(true_false) {
+    if (true_false === true) {
       this.retrieveChildren();
-    }else{
+    } else {
       this.setState({
         replies: true_false,
         isLoading: true
       });
     }
   }
-
 
   getOpeningPost() {
     if (!this.state.top) return <div className="loading" />;
@@ -81,13 +80,13 @@ class Discussion extends Component {
         id={this.state.top.id}
         author_name={this.state.top.author_name}
         updated_at={new Date(this.state.top.updated_at).toLocaleDateString()}
-        inserted_at= {new Date(this.state.top.inserted_at).toLocaleDateString()}
+        inserted_at={new Date(this.state.top.inserted_at).toLocaleDateString()}
         content={this.state.top.content}
-        handleSubmit = {this.handleSubmit}
+        handleSubmit={this.handleSubmit}
         handleViewReplies={this.handleViewReplies}
         hasPosts={this.state.posts.length === 0 ? false : true}
-        discussion_id = {this.props.match.params.discussion_id}
-        retrieveChildren = {this.retrieveChildren}
+        discussion_id={this.props.match.params.discussion_id}
+        retrieveChildren={this.retrieveChildren}
       />
     );
   }
@@ -110,9 +109,9 @@ class Discussion extends Component {
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
           content={post.content}
           box={true}
-          discussion_id = {this.props.match.params.discussion_id}
-          section_id = {this.props.match.params.id}
-          isLoading = {this.state.isLoading}
+          discussion_id={this.props.match.params.discussion_id}
+          section_id={this.props.match.params.id}
+          isLoading={this.state.isLoading}
         />
       ));
   }

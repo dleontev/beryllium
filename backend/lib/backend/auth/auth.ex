@@ -1080,16 +1080,20 @@ defmodule Backend.Auth do
   end
 
   def list_posts_by_parent(post_id) do
-    query = from p in Post,
-    join: u in User,
-    on: p.user_id == u.id,
-    where: p.parent_id == ^post_id,
-    order_by: p.inserted_at,
-    select: {
-      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id, :user_id, :is_deleted]),
-      map(u, [:name])
-    }
-    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info_with_user_id(x) | acc] end)
+    query =
+      from(
+        p in Post,
+        join: u in User,
+        on: p.user_id == u.id,
+        where: p.parent_id == ^post_id,
+        order_by: p.inserted_at,
+        select: {
+          map(p, [:id, :inserted_at, :updated_at, :content, :parent_id, :user_id, :is_deleted]),
+          map(u, [:name])
+        }
+      )
+
+    Enum.reduce(Repo.all(query), [], fn x, acc -> [extract_post_info_with_user_id(x) | acc] end)
   end
 
   defp extract_post_info({
@@ -1111,7 +1115,6 @@ defmodule Backend.Auth do
       author_name: author_name
     }
   end
-
 
   defp extract_post_info_with_user_id({
          %{
@@ -1168,21 +1171,28 @@ defmodule Backend.Auth do
 
   def get_post_by_discussion_id(discussion_id) do
     query =
-    from p in Post,
-    join: u in User,
-    on: p.user_id == u.id,
-    where: p.discussion_id == ^discussion_id and is_nil(p.parent_id),
-    select: {
-      map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
-      map(u, [:name])
-    }
-    Enum.reduce(Repo.all(query), [], fn(x, acc) -> [extract_post_info(x) | acc] end)
+      from(
+        p in Post,
+        join: u in User,
+        on: p.user_id == u.id,
+        where: p.discussion_id == ^discussion_id and is_nil(p.parent_id),
+        select: {
+          map(p, [:id, :inserted_at, :updated_at, :content, :parent_id]),
+          map(u, [:name])
+        }
+      )
+
+    Enum.reduce(Repo.all(query), [], fn x, acc -> [extract_post_info(x) | acc] end)
   end
 
   def get_children_of_discussion(discussion_id) do
-    query = from p in Post,
-    where: p.discussion_id == ^discussion_id and not is_nil(p.parent_id),
-    select: count(p.id)
+    query =
+      from(
+        p in Post,
+        where: p.discussion_id == ^discussion_id and not is_nil(p.parent_id),
+        select: count(p.id)
+      )
+
     Repo.all(query)
   end
 
@@ -1249,100 +1259,6 @@ defmodule Backend.Auth do
   """
   def change_post(%Post{} = post) do
     Post.changeset(post, %{})
-  end
-
-  @doc """
-  Returns the list of membership.
-
-  ## Examples
-
-      iex> list_membership()
-      [%Memberships{}, ...]
-
-  """
-  def list_membership do
-    Repo.all(Membership)
-  end
-
-  @doc """
-  Gets a single memberships.
-
-  Raises `Ecto.NoResultsError` if the Memberships does not exist.
-
-  ## Examples
-
-      iex> get_memberships!(123)
-      %Memberships{}
-
-      iex> get_memberships!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_memberships!(id), do: Repo.get!(Membership, id)
-
-  @doc """
-  Creates a memberships.
-
-  ## Examples
-
-      iex> create_memberships(%{field: value})
-      {:ok, %Memberships{}}
-
-      iex> create_memberships(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_memberships(attrs \\ %{}) do
-    %Membership{}
-    |> Membership.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a memberships.
-
-  ## Examples
-
-      iex> update_memberships(memberships, %{field: new_value})
-      {:ok, %Memberships{}}
-
-      iex> update_memberships(memberships, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_memberships(%Membership{} = memberships, attrs) do
-    memberships
-    |> Membership.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Memberships.
-
-  ## Examples
-
-      iex> delete_memberships(memberships)
-      {:ok, %Memberships{}}
-
-      iex> delete_memberships(memberships)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_memberships(%Membership{} = memberships) do
-    Repo.delete(memberships)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking memberships changes.
-
-  ## Examples
-
-      iex> change_memberships(memberships)
-      %Ecto.Changeset{source: %Memberships{}}
-
-  """
-  def change_memberships(%Membership{} = memberships) do
-    Membership.changeset(memberships, %{})
   end
 
   @doc """
@@ -1437,5 +1353,117 @@ defmodule Backend.Auth do
   """
   def change_discussion(%Discussion{} = discussion) do
     Discussion.changeset(discussion, %{})
+  end
+
+  @doc """
+  Returns the list of memberships.
+
+  ## Examples
+
+      iex> list_memberships()
+      [%Membership{}, ...]
+
+  """
+  def list_memberships do
+    Repo.all(Membership)
+  end
+
+  @doc """
+  Gets a single membership.
+
+  Raises `Ecto.NoResultsError` if the Membership does not exist.
+
+  ## Examples
+
+      iex> get_membership!(123)
+      %Membership{}
+
+      iex> get_membership!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_membership!(id), do: Repo.get!(Membership, id)
+
+  @doc """
+  Gets a single membership.
+
+  Raises `Ecto.NoResultsError` if the Membership does not exist.
+
+  ## Examples
+
+      iex> get_membership!(123)
+      %Membership{}
+
+      iex> get_membership!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_membership!(user_id, section_id, group_id) do
+    Repo.get_by!(Membership, user_id: user_id, section_id: section_id, group_id: group_id)
+  end
+
+  @doc """
+  Creates a membership.
+
+  ## Examples
+
+      iex> create_membership(%{field: value})
+      {:ok, %Membership{}}
+
+      iex> create_membership(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_membership(attrs \\ %{}) do
+    %Membership{}
+    |> Membership.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a membership.
+
+  ## Examples
+
+      iex> update_membership(membership, %{field: new_value})
+      {:ok, %Membership{}}
+
+      iex> update_membership(membership, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_membership(%Membership{} = membership, attrs) do
+    membership
+    |> Membership.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Membership.
+
+  ## Examples
+
+      iex> delete_membership(membership)
+      {:ok, %Membership{}}
+
+      iex> delete_membership(membership)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_membership(%Membership{} = membership) do
+    Repo.delete(membership)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking membership changes.
+
+  ## Examples
+
+      iex> change_membership(membership)
+      %Ecto.Changeset{source: %Membership{}}
+
+  """
+  def change_membership(%Membership{} = membership) do
+    Membership.changeset(membership, %{})
   end
 end

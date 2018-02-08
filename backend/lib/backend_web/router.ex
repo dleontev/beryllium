@@ -28,8 +28,12 @@ defmodule BackendWeb.Router do
     resources "/schools", SchoolController, except: [:edit, :show]
     resources "/sections", SectionController, except: [:edit, :show] 
     resources "/discussions", DiscussionController 
+
     resources "/posts", PostController, except: [:new, :edit] 
     resources "/users", UserController, except: [:new, :edit, :show] 
+
+    resources "/memberships", MembershipController 
+    delete "/memberships/", MembershipController, :delete
 
     get "/posts/discussions/:discussion_id", PostController, :show_all
     get "/posts/discussions/children/:post_id", PostController, :show_children

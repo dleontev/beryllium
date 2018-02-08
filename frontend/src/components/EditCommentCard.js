@@ -21,7 +21,7 @@ class EditCommentCard extends React.Component{
 		}
 
 		handleSubmit(event){
-			console.log("Submitting edit");
+			this.props.handleEdited(this.state.data);
 		}
 
     render(){
@@ -40,7 +40,7 @@ class EditCommentCard extends React.Component{
 								</p>
 
 								<p className="control">
-									<a className="button is-success is-small" >Save</a>
+									<a className="button is-success is-small" onClick={this.handleSubmit.bind(this)} >Save</a>
 								</p>
 
 							</div>

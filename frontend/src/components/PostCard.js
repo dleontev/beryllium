@@ -16,6 +16,7 @@ class PostCard extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.closeReplyBox = this.closeReplyBox.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleEdited = this.handleEdited.bind(this);
 
     this.state = {
       posts: [],
@@ -64,6 +65,26 @@ class PostCard extends React.Component {
           .put(`/posts/${this.props.id}`, {post: {is_deleted: true}})
           .then(() => {
             this.handleRefresh();
+            this.setState({isPressed: false});
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    }
+  }
+
+
+  handleEdited(newContent) {
+    this.handleEdit();
+    this.setState({isPressed: true});
+    if(!this.state.isPressed){
+      if(!this.getDeleted()){
+        api
+          .put(`/posts/${this.props.id}`, {post: {content: newContent}})
+          .then(() => {
+            this.handleRefresh();
+            this.setState({isPressed: false});
           })
           .catch(error => {
             console.log(error);
@@ -289,6 +310,7 @@ class PostCard extends React.Component {
               </div>
               : <EditCommentCard
                 handleCancelEdit = {this.handleEdit}
+                handleEdited = {this.handleEdited}
                 content = {this.getContent()}
               />}
               {this.state.reply ? <ReplyCard 

@@ -101,9 +101,7 @@ class Groups extends React.Component {
         key={member.id}
         name={
           <Link
-            to={`/courses/${this.props.match.params.id}/users/${
-              member.id
-            }`}
+            to={`/courses/${this.props.match.params.id}/users/${member.id}`}
           >
             {member.name}
           </Link>

@@ -9,7 +9,7 @@ class DiscussionTableCard extends React.Component {
     this.incrementResponses = this.incrementResponses.bind(this);
     this.setReplies = this.setReplies.bind(this);
     this.state = {
-      totalReplies: ""
+      totalReplies: null
     };
   }
   

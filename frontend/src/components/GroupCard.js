@@ -2,8 +2,6 @@ import React from "react";
 
 class GroupCard extends React.Component {
   getActionButton() {
-    var disabled = false ? "true" : "false";
-
     return (
       <div>
         {this.props.allowedToLeave ? (
@@ -47,7 +45,9 @@ class GroupCard extends React.Component {
         <div className="level">
           <div className="level-left">
             <h2>
-              {this.props.name} ::: {this.props.groupset_name}{" "}
+              <p>
+                <b>{this.props.name}</b> <sup>{this.props.groupset_name}</sup>
+              </p>
             </h2>
           </div>
 

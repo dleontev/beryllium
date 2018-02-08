@@ -4,7 +4,7 @@ import api from "../api/Api";
 import ReplyCard from "./ReplyCard";
 import ConfirmCard from "./ConfirmCard";
 import EditCommentCard from "./EditCommentCard";
-import {Socket} from "phoenix";
+import socket from "../api/Socket";
 
 class PostCard extends React.Component {
   constructor() {
@@ -17,6 +17,7 @@ class PostCard extends React.Component {
     this.closeReplyBox = this.closeReplyBox.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
     this.handleEdited = this.handleEdited.bind(this);
+    this.getUpdate = this.getUpdate.bind(this);
 
     this.state = {
       posts: [],
@@ -94,11 +95,7 @@ class PostCard extends React.Component {
   }
 
   handleRefresh(){
-    this.channel
-			.push("edit_comment", {}, 100000)
-				.receive("ok", (msg) => {console.log("created message", msg)})
-				.receive("error", (reason) => {console.log("create failed", reason)})
-        .receive("timeout", () => {console.log("Networking issue...")});
+    socket.pushChannel(this.sock.channel, "edit_comment", {}, 100000);
   }
 
   getUpdate(){
@@ -186,30 +183,13 @@ class PostCard extends React.Component {
   }
 
   componentWillUnmount(){
-    this.channel.leave().receive("ok", () => {
-			console.log("left");
-			this.socket.disconnect();
-		});
+    socket.leaveChannel(this.sock.channel, this.sock.socket);
   }
 
   initSocket(){
-    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
-		this.socket.connect();
-    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
-    this.channel.on("new_response", (msg) => {
-      console.log(`GOT UPDATE`);
-      this.handleUpdate();
-    });
-    this.channel.on("edit_response", (msg) => {
-      console.log(`GOT UPDATE`);
-      this.getUpdate();
-		});
-		this.channel.join()
-			.receive("ok", ({messages}) => {
-        console.log("Joined!", messages);
-      })
-			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
-			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
+    this.sock = socket.initSocket(`notifications:replies${this.props.id}`, {});
+    socket.onEvent(this.sock.channel, "new_response", this.handleUpdate);
+    socket.onEvent(this.sock.channel, "edit_response", this.getUpdate);
   }
 
   getComments() {

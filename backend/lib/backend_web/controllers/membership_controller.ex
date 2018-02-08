@@ -36,13 +36,8 @@ defmodule BackendWeb.MembershipController do
   def delete(conn, %{"section_id" => section_id, "group_id" => group_id}) do
     %{id: user_id} = Guardian.Plug.current_resource(conn)
 
-    IO.puts(section_id)
-    IO.puts(user_id)
-    IO.puts(group_id)
-
     membership = Auth.get_membership!(user_id, section_id, group_id)
-    send_resp(conn, :no_content, "")
-
+6
     with {:ok, %Membership{}} <- Auth.delete_membership(membership) do
       send_resp(conn, :no_content, "")
     end

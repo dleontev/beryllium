@@ -19,7 +19,12 @@ class AddPost extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.state.title.length !== 0 && this.state.message.length !== 0) {
+    if (
+      this.state.data.title.length === 0 &&
+      this.state.data.message.length === 0
+    ) {
+      // TODO: Display an error.
+    } else {
       api.post(`/posts/`, this.state.data).then(response => {
         this.setState({ finish: true });
       });

@@ -1,6 +1,7 @@
 import React from "react";
 import ReplyCard from "./ReplyCard";
-import {Socket} from "phoenix";
+import socket from "../api/Socket";
+//import {Socket} from "phoenix";
 //import api from "../api/Api";
 
 class TopAnnouncement extends React.Component {
@@ -8,6 +9,8 @@ class TopAnnouncement extends React.Component {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.closeReplyBox = this.closeReplyBox.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    //this.getUpdate = this.getUpdate.bind(this);
     this.state = {
       data: false,
       reply: false
@@ -19,23 +22,9 @@ class TopAnnouncement extends React.Component {
   }
 
   initSocket(){
-    this.socket = new Socket("ws://localhost:4000/socket", {token: localStorage.getItem("token")});
-		this.socket.connect();
-    this.channel = this.socket.channel(`notifications:replies${this.props.id}`, {});
-    this.channel.on("new_response", (msg) => {
-      console.log(`GOT UPDATE TOP ANNOUNCEMENT`);
-      this.handleUpdate();
-    });
-    this.channel.on("edit_response", (msg) => {
-      console.log(`GOT UPDATE`);
-      this.getUpdate();
-		});
-		this.channel.join()
-			.receive("ok", ({messages}) => {
-        console.log("TOP ANNOUNCEMENT JOINED", messages);
-      })
-			.receive("error", ({reason}) => {console.log("Failed to join!", reason)})
-			.receive("timeout", () => {console.log("Networking issue. Still waiting...")});
+    this.sock = socket.initSocket(`notifications:replies${this.props.id}`, {});
+    socket.onEvent(this.sock.channel, "new_response", this.handleUpdate);
+    //socket.onEvent(this.sock.channel, "edit_response", this.getUpdate);
   }
 
   handleUpdate(){

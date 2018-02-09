@@ -3,7 +3,7 @@ import React from "react";
 class CourseHome extends React.Component {
   constructor() {
     super();
-    this.state = { page: null };
+    this.state = { page: -1 };
   }
 
   componentWillMount() {
@@ -12,6 +12,9 @@ class CourseHome extends React.Component {
 
   getHomePage() {
     if (!this.state.page) return <div className="loading" />;
+
+    if (this.state.page === -1)
+      return <div>This course doesn't have a main page setup.</div>;
   }
 
   render() {

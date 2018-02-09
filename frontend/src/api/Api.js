@@ -50,11 +50,12 @@ export default {
     });
   },
 
-  delete(url) {
+  delete(url, data = null) {
     return axios({
       method: "DELETE",
       headers: headers(),
-      url: `${API}${url}`
+      url: `${API}${url}`,
+      data: data
     }).catch(function(error) {
       if (error.response) {
         // The request was made and the server responded with a status code

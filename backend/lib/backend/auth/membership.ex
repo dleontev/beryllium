@@ -3,7 +3,7 @@ defmodule Backend.Auth.Membership do
   import Ecto.Changeset
   alias Backend.Auth.Membership
 
-  @primary_key {:id, :binary_id, autogenerate: false}
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "memberships" do
     field(:user_id, :binary_id, null: false)
     field(:group_id, :binary_id, null: false)
@@ -13,7 +13,7 @@ defmodule Backend.Auth.Membership do
   @doc false
   def changeset(%Membership{} = memberships, attrs) do
     memberships
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:user_id, :group_id, :section_id])
+    |> validate_required([:user_id, :group_id, :section_id])
   end
 end

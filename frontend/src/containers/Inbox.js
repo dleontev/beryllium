@@ -15,7 +15,7 @@ class Inbox extends React.Component {
     if (this.state.messages === null) return <div className="loading" />;
 
     if (this.state.messages.length === 0) {
-      return "No groups found.";
+      return "No messages found.";
     }
 
     // TODO: Display messages.

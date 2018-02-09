@@ -13,7 +13,7 @@ import Login from "./Login";
 import Register from "./Register";
 import Dashboard from "./Dashboard";
 import Groups from "./Groups";
-import Inbox from "./Inbox";
+// import Inbox from "./Inbox";
 import Courses from "./Courses";
 import Course from "./Course";
 import Account from "./Account";

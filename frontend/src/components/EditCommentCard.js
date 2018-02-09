@@ -5,51 +5,67 @@ import React from "react";
 //import ConfirmCard from "./ConfirmCard";
 //import {Socket} from "phoenix";
 
+class EditCommentCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: this.props.content
+    };
+  }
 
-class EditCommentCard extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-					data: this.props.content
-        }
-    }
+  handleText(event) {
+    this.setState({
+      data: event.target.value
+    });
+  }
 
-		handleText(event){
-			this.setState({
-				data: event.target.value
-			});
-		}
+  handleSubmit(event) {
+	if(this.state.data.length === 0) {
+		// TODO: Display an error message: "Message can not be empty".
+	}
+	else{
+		this.props.handleEdited(this.state.data);
+	}
+  }
 
-		handleSubmit(event){
-			this.props.handleEdited(this.state.data);
-		}
+  render() {
+    return (
+      <div>
+        <div className="field">
+          <p className="control">
+            <textarea
+              autoFocus
+              className="textarea"
+              onChange={this.handleText.bind(this)}
+              value={this.state.data}
+            />
+          </p>
+        </div>
+        <div className="level-left">
+          <div className="field is-grouped">
+            <p className="control">
+              <a
+                className="button is-info is-small"
+                onClick={this.props.handleCancelEdit}
+              >
+                Cancel
+              </a>
+            </p>
 
-    render(){
-			return(
-					<div>
-						<div className="field">
-							<p className="control">
-								<textarea autoFocus className="textarea" onChange={this.handleText.bind(this)} value={this.state.data}></textarea>
-							</p>
-						</div>
-						<div className="level-left">  {/* */}
-							<div className="field is-grouped">
-
-								<p className="control">
-									<a className="button is-info is-small" onClick={this.props.handleCancelEdit}>Cancel</a>
-								</p>
-
-								<p className="control">
-									<a className="button is-success is-small" onClick={this.handleSubmit.bind(this)} >Save</a>
-								</p>
-
-							</div>
-							<br />
-						</div> {/* */}
-					</div>
-			);
-    }
+            <p className="control">
+              <a
+                className="button is-success is-small"
+                onClick={this.handleSubmit.bind(this)}
+              >
+                Save
+              </a>
+            </p>
+          </div>
+          <br />
+        </div>
+      </div>
+    );
+  }
 }
-
 
 export default EditCommentCard;

@@ -17,20 +17,19 @@ class TopAnnouncement extends React.Component {
     };
   }
 
-  componentWillMount(){
+  componentWillMount() {
     this.initSocket();
   }
 
-  initSocket(){
+  initSocket() {
     this.sock = socket.initSocket(`notifications:replies${this.props.id}`, {});
     socket.onEvent(this.sock.channel, "new_response", this.handleUpdate);
     //socket.onEvent(this.sock.channel, "edit_response", this.getUpdate);
   }
 
-  handleUpdate(){
+  handleUpdate() {
     this.props.retrieveChildren();
   }
-
 
   handleClick() {
     this.setState({
@@ -39,7 +38,6 @@ class TopAnnouncement extends React.Component {
     this.props.handleViewReplies(this.state.data);
   }
 
-
   handleReply() {
     console.log("Reply");
     this.setState({
@@ -47,15 +45,13 @@ class TopAnnouncement extends React.Component {
     });
   }
 
-
-  closeReplyBox(){
+  closeReplyBox() {
     this.setState({
       reply: !this.state.reply
     });
   }
 
-
-  handleSubmit(){
+  handleSubmit() {
     this.setState({
       data: false
     });
@@ -71,25 +67,18 @@ class TopAnnouncement extends React.Component {
           <br />
           {this.props.content}
         </div>
-          <footer className="card-footer">
-            <p className="card-footer-item">
-              <span>
-                <button
-                  className="button"
-                  onClick={this.handleReply.bind(this)}
-                >
-                  <span className="icon">
-                    <i
-                      className="fa fa-reply"
-                    />
-                  </span>
-                  <span>
-                    Reply
-                  </span>
-                </button>
-              </span>
-            </p>
-            {this.props.hasPosts === true ? (
+        <footer className="card-footer">
+          <p className="card-footer-item">
+            <span>
+              <button className="button" onClick={this.handleReply.bind(this)}>
+                <span className="icon">
+                  <i className="fa fa-reply" />
+                </span>
+                <span>Reply</span>
+              </button>
+            </span>
+          </p>
+          {this.props.hasPosts === true ? (
             <p className="card-footer-item">
               <span>
                 <button
@@ -107,17 +96,18 @@ class TopAnnouncement extends React.Component {
                 </button>
               </span>
             </p>
-            ) : null}
-          </footer>
-        {this.state.reply ?
-        <div className="random">
-           <ReplyCard 
-            handleSubmit={this.handleSubmit} 
-            discussion_id={this.props.discussion_id} 
-            parent_id={this.props.id} 
-            closeReplyBox = {this.closeReplyBox}/>
-        </div>
-        : ""}
+          ) : null}
+        </footer>
+        {this.state.reply && (
+          <div className="random">
+            <ReplyCard
+              handleSubmit={this.handleSubmit}
+              discussion_id={this.props.discussion_id}
+              parent_id={this.props.id}
+              closeReplyBox={this.closeReplyBox}
+            />
+          </div>
+        )}
       </div>
     );
   }

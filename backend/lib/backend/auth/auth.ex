@@ -455,7 +455,7 @@ defmodule Backend.Auth do
         order_by: [desc: gs.name, desc: g.name],
         select: {
           map(g, [:id, :name, :groupset_id, :max_members]),
-          map(gs, [:name])
+          map(gs, [:name, :is_selfsignup])
         }
       )
 
@@ -463,12 +463,21 @@ defmodule Backend.Auth do
   end
 
   defp extract_section_group_info({
-         %{id: id, name: name, groupset_id: groupset_id, max_members: max_members},
-         %{name: groupset_name}
+         %{
+           id: id,
+           name: name,
+           groupset_id: groupset_id,
+           max_members: max_members
+         },
+         %{
+           name: groupset_name,
+           is_selfsignup: is_selfsignup
+         }
        }) do
     %{
       id: id,
       name: name,
+      is_selfsignup: is_selfsignup,
       groupset_id: groupset_id,
       groupset_name: groupset_name,
       max_members: max_members

@@ -1,18 +1,19 @@
 import React from "react";
-import api from "../../api/Api";
-import GroupCard from "../../components/GroupCard";
-import UserListCard from "../../components/UserListCard";
-import NewGroupDialog from "../../components/Form/NewGroupDialog";
+import api from "../../../api/Api";
+import GroupCard from "../../../components/GroupCard";
+import UserListCard from "../../../components/UserListCard";
+import NewGroupDialog from "../../../components/Form/NewGroupDialog";
 import { Link } from "react-router-dom";
 import $ from "jquery";
 
-class Groups extends React.Component {
-  constructor() {
-    super();
+class StudentView extends React.Component {
+  constructor(props) {
+    super(props);
     this.state = {
       members: null,
       groups: null,
-      isNewGroupDialogActive: false
+      isNewGroupDialogActive: false,
+      sectionId: this.props.sectionId
     };
   }
 
@@ -21,6 +22,8 @@ class Groups extends React.Component {
     console.log("Creating group....");
     console.log("Name:" + name);
     console.log("Joinlevel:" + joinLevel);
+
+    // TODO: Api post to create a group and join the user.
   }
 
   handleLeave(groupId) {
@@ -28,7 +31,7 @@ class Groups extends React.Component {
     api
       .delete("/memberships/", {
         group_id: groupId,
-        section_id: this.props.match.params.id
+        section_id: this.state.sectionId
       })
       .then(() => {
         this.retrieveGroupData();
@@ -42,7 +45,7 @@ class Groups extends React.Component {
         membership: {
           user_id: api.getUserId(),
           group_id: groupId,
-          section_id: this.props.match.params.id
+          section_id: this.state.sectionId
         }
       })
       .then(() => {
@@ -55,7 +58,7 @@ class Groups extends React.Component {
     api
       .delete("/memberships/", {
         group_id: oldGroupId,
-        section_id: this.props.match.params.id
+        section_id: this.state.sectionId
       })
       .then(() => {
         this.handleJoin(newGroupId);
@@ -63,13 +66,13 @@ class Groups extends React.Component {
   }
 
   retrieveGroupData() {
-    api.get(`/groups/sections/${this.props.match.params.id}`).then(response => {
+    api.get(`/groups/sections/${this.state.sectionId}`).then(response => {
       if (typeof response !== "undefined" && response.data.data !== undefined) {
         this.setState({ groups: response.data.data });
       }
     });
 
-    api.get(`/groups/users/${this.props.match.params.id}`).then(response => {
+    api.get(`/groups/users/${this.state.sectionId}`).then(response => {
       if (typeof response !== "undefined" && response.data.data !== undefined) {
         this.setState({ members: response.data.data });
         $(":button").prop("disabled", false);
@@ -100,9 +103,7 @@ class Groups extends React.Component {
       <UserListCard
         key={member.id}
         name={
-          <Link
-            to={`/courses/${this.props.match.params.id}/users/${member.id}`}
-          >
+          <Link to={`/courses/${this.state.sectionId}/users/${member.id}`}>
             {member.name}
           </Link>
         }
@@ -137,14 +138,16 @@ class Groups extends React.Component {
       });
 
       const allowedToLeave =
-        members.find(x => x.id === currentUserId) !== undefined;
+        members.find(x => x.id === currentUserId) !== undefined &&
+        group.is_selfsignup;
 
       var memberOfGroupset = currentUserGroupsets
         .map(x => x.groupset_id)
         .includes(group.groupset_id);
 
       var isGroupUnlocked =
-        members.length < group.max_members || group.max_members === 0;
+        (members.length < group.max_members || group.max_members === 0) &&
+        group.is_selfsignup;
 
       const allowedToJoin =
         !allowedToLeave && !memberOfGroupset && isGroupUnlocked;
@@ -218,4 +221,4 @@ class Groups extends React.Component {
   }
 }
 
-export default Groups;
+export default StudentView;

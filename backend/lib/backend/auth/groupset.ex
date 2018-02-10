@@ -7,6 +7,7 @@ defmodule Backend.Auth.Groupset do
   schema "groupsets" do
     field(:section_id, :binary_id, null: false)
     field(:name, :string, null: false)
+    field(:is_selfsignup, :boolean, null: false)
   end
 
   @doc false

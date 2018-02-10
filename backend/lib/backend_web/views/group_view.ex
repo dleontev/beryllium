@@ -32,7 +32,8 @@ defmodule BackendWeb.GroupView do
       name: group.name,
       groupset_id: group.groupset_id,
       groupset_name: group.groupset_name,
-      max_members: group.max_members
+      max_members: group.max_members,
+      is_selfsignup: group.is_selfsignup
     }
   end
 

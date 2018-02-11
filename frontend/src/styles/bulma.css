@@ -6021,7 +6021,7 @@ a.dropdown-item.is-active {
   background-color: whitesmoke;
   border-radius: 3px;
   font-size: 1rem;
-  padding-bottom: 15px
+  margin-bottom: 10px
 }
 
 .message:not(:last-child) {

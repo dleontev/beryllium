@@ -18,7 +18,7 @@ import Files from "./Course/Files";
 import Discussions from "./Course/Discussions";
 import Pages from "./Course/Pages";
 import Users from "./Course/Users";
-import Groups from "./Course/Groups";
+import Groups from "./Course/Groups/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
 

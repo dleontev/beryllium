@@ -11,12 +11,13 @@ defmodule Backend.Auth.Assignment do
     field(:content, :string, null: false)
     field(:is_published, :boolean)
     field(:points_possible, :integer, null: false)
+    field(:title, :string, null: false)
   end
 
   @doc false
   def changeset(%Assignment{} = assignment, attrs) do
     assignment
-    |> cast(attrs, [:id, :section_id, :due_at, :type, :content, :is_published, :points_possible])
+    |> cast(attrs, [:id, :section_id, :due_at, :type, :content, :is_published, :points_possible, :title])
     |> validate_required([:id, :section_id, :content])
   end
 end

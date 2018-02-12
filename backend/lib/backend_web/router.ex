@@ -29,6 +29,10 @@ defmodule BackendWeb.Router do
     resources "/sections", SectionController, except: [:edit, :show] 
     resources "/discussions", DiscussionController 
     resources "/assignments", AssignmentController
+    resources "/quizzes", QuizController
+    resources "/questions", QuestionController
+    resources "/answers", AnswerController
+    
 
     resources "/posts", PostController, except: [:new, :edit] 
     resources "/users", UserController, except: [:new, :edit, :show] 
@@ -36,6 +40,7 @@ defmodule BackendWeb.Router do
     resources "/memberships", MembershipController 
     delete "/memberships/", MembershipController, :delete
 
+  
     get "/posts/discussions/:discussion_id", PostController, :show_all
     get "/posts/discussions/children/:post_id", PostController, :show_children
     get "/posts/discussions/self/:post_id", PostController, :show_self
@@ -55,7 +60,9 @@ defmodule BackendWeb.Router do
     get "/groups/users/:section_id", UserController, :show_members_by_section
 
     delete "/sessions", SessionController, :delete
-    post "/sessions/refresh", SessionController, :refresh    
+    post "/sessions/refresh", SessionController, :refresh
+
+    get "/assignments/sections/:section_id", AssignmentController, :assignments_by_section
   end
   
 end

@@ -25,6 +25,10 @@ defmodule BackendWeb.AssignmentController do
     render(conn, "show.json", assignment: assignment)
   end
 
+  def assignments_by_section(conn, %{"section_id" => section_id}) do
+    {:ok}
+  end
+
   def update(conn, %{"id" => id, "assignment" => assignment_params}) do
     assignment = Auth.get_assignment!(id)
 

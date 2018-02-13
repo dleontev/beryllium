@@ -11,7 +11,7 @@ class ConfirmDeleteCard extends React.Component {
             <div className="level">
               <div className="level-item">
                 <button
-                  className="button is-success"
+                  className="button"
                   onClick={() => this.props.onCancel()}
                 >
                   Cancel

@@ -5,7 +5,8 @@ class GroupSelectionCard extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			data: []
+			data: [],
+			loading: true
 		}
 	}
 
@@ -13,7 +14,8 @@ class GroupSelectionCard extends React.Component{
 		api.get(`/groupsets/sections/${this.props.section_id}`)
 			.then((response) => {
 				this.setState({
-					data: response.data.data
+					data: response.data.data,
+					loading: false
 				});
 			})
 			.catch((error) =>{
@@ -45,13 +47,20 @@ class GroupSelectionCard extends React.Component{
 
 	render(){
 		return (
-			<div className="control">
-				<label className="label">Assign to</label>
-				<div className="select is-multiple">
-					<select multiple size="4" onChange={this.handleChange.bind(this)}>
-						{this.displayGroupSets()}
-					</select>
+			<div>
+				{this.state.loading === true ?
+				<div className="loading">
 				</div>
+				:
+				<div className="control">
+					<label className="label">Assign to</label>
+					<div className="select is-multiple">
+						<select multiple size="4" onChange={this.handleChange.bind(this)}>
+							{this.displayGroupSets()}
+						</select>
+					</div>
+				</div>
+				}
 			</div>
 		);
 	}

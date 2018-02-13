@@ -1103,4 +1103,120 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_quiz(quiz)
     end
   end
+
+  describe "assignments_to_groupsets" do
+    alias Backend.Auth.Assignment_to_groupset
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def assignment_to_groupset_fixture(attrs \\ %{}) do
+      {:ok, assignment_to_groupset} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_assignment_to_groupset()
+
+      assignment_to_groupset
+    end
+
+    test "list_assignments_to_groupsets/0 returns all assignments_to_groupsets" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert Auth.list_assignments_to_groupsets() == [assignment_to_groupset]
+    end
+
+    test "get_assignment_to_groupset!/1 returns the assignment_to_groupset with given id" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert Auth.get_assignment_to_groupset!(assignment_to_groupset.id) == assignment_to_groupset
+    end
+
+    test "create_assignment_to_groupset/1 with valid data creates a assignment_to_groupset" do
+      assert {:ok, %Assignment_to_groupset{} = assignment_to_groupset} = Auth.create_assignment_to_groupset(@valid_attrs)
+    end
+
+    test "create_assignment_to_groupset/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_assignment_to_groupset(@invalid_attrs)
+    end
+
+    test "update_assignment_to_groupset/2 with valid data updates the assignment_to_groupset" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert {:ok, assignment_to_groupset} = Auth.update_assignment_to_groupset(assignment_to_groupset, @update_attrs)
+      assert %Assignment_to_groupset{} = assignment_to_groupset
+    end
+
+    test "update_assignment_to_groupset/2 with invalid data returns error changeset" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_assignment_to_groupset(assignment_to_groupset, @invalid_attrs)
+      assert assignment_to_groupset == Auth.get_assignment_to_groupset!(assignment_to_groupset.id)
+    end
+
+    test "delete_assignment_to_groupset/1 deletes the assignment_to_groupset" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert {:ok, %Assignment_to_groupset{}} = Auth.delete_assignment_to_groupset(assignment_to_groupset)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_assignment_to_groupset!(assignment_to_groupset.id) end
+    end
+
+    test "change_assignment_to_groupset/1 returns a assignment_to_groupset changeset" do
+      assignment_to_groupset = assignment_to_groupset_fixture()
+      assert %Ecto.Changeset{} = Auth.change_assignment_to_groupset(assignment_to_groupset)
+    end
+  end
+
+  describe "pages" do
+    alias Backend.Auth.Page
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+    
+    def page_fixture(attrs \\ %{}) do
+      {:ok, page} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_page()
+
+      page
+    end
+
+    test "list_pages/0 returns all pages" do
+      page = page_fixture()
+      assert Auth.list_pages() == [page]
+    end
+
+    test "get_page!/1 returns the page with given id" do
+      page = page_fixture()
+      assert Auth.get_page!(page.id) == page
+    end
+
+    test "create_page/1 with valid data creates a page" do
+      assert {:ok, %Page{} = page} = Auth.create_page(@valid_attrs)
+    end
+
+    test "create_page/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_page(@invalid_attrs)
+    end
+
+    test "update_page/2 with valid data updates the page" do
+      page = page_fixture()
+      assert {:ok, page} = Auth.update_page(page, @update_attrs)
+      assert %Page{} = page
+    end
+
+    test "update_page/2 with invalid data returns error changeset" do
+      page = page_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_page(page, @invalid_attrs)
+      assert page == Auth.get_page!(page.id)
+    end
+
+    test "delete_page/1 deletes the page" do
+      page = page_fixture()
+      assert {:ok, %Page{}} = Auth.delete_page(page)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_page!(page.id) end
+    end
+
+    test "change_page/1 returns a page changeset" do
+      page = page_fixture()
+      assert %Ecto.Changeset{} = Auth.change_page(page)
+    end
+  end
 end

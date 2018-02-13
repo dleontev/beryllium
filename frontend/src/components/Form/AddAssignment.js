@@ -1,4 +1,5 @@
 import React from "react";
+import GroupSelectionCard from "../GroupSelectionCard";
 
 class AddAssignment extends React.Component {
   constructor(props){
@@ -79,6 +80,14 @@ class AddAssignment extends React.Component {
     console.log(`${event.target.value} + PM(${this.state.pm})`);
   }
 
+  handlePoints(event){
+    var data = Object.assign({}, this.state.data);
+    data.points_possible = parseInt(event.target.value, 10);
+    this.setState({ 
+      data 
+    });
+  }
+
   convertToMilitary(){
     let val = 0;
     let currentHours = parseInt(this.state.hours, 10);
@@ -102,7 +111,11 @@ class AddAssignment extends React.Component {
   }
 
   handleCreate(event){
-    console.log(this.convertToMilitary());
+    var data = Object.assign({}, this.state.data);
+    data.due_at = this.convertToMilitary();
+    this.setState({ 
+      data 
+    });
   }
 
   render() {
@@ -142,7 +155,7 @@ class AddAssignment extends React.Component {
               min="0"
               max="59"
               text="0"
-              name="hours"
+              name="minutes"
               placeholder="0"
               onChange={this.handleMinutes.bind(this)}
             />
@@ -156,9 +169,9 @@ class AddAssignment extends React.Component {
           </div>
         </div>
 
-        <div className="field">
-          <label className="label">Type</label>
+        <div className="field is-grouped">
           <div className="control">
+            <label className="label">Type</label>
             <div className="select" onChange={this.handleType.bind(this)}>
               <select>
                 <option>Short answer</option>
@@ -167,8 +180,24 @@ class AddAssignment extends React.Component {
               </select>
             </div>
           </div>
+          <div className="control">
+            <label className="label">Points possible</label>
+            <input
+              className="input"
+              type="number"
+              min="0"
+              text="0"
+              name="pointsPossible"
+              placeholder="0"
+              onChange={this.handlePoints.bind(this)}
+            />
+          </div>
         </div>
 
+        <div className="field">
+          <GroupSelectionCard section_id = {this.props.match.params.id}/>
+        </div>
+        
         <div className="field">
           <label className="label">Description</label>
           <div className="control">

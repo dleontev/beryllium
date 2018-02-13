@@ -615,6 +615,14 @@ defmodule Backend.Auth do
     Repo.all(Groupset)
   end
 
+
+  def get_groupsets_by_section_id(section_id) do
+    query = from g in Groupset,
+      where: g.section_id == ^section_id,
+      select: [:id, :name]
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single groupset.
 
@@ -1858,5 +1866,101 @@ defmodule Backend.Auth do
   """
   def change_quiz(%Quiz{} = quiz) do
     Quiz.changeset(quiz, %{})
+  end
+
+  alias Backend.Auth.Assignment_to_groupset
+
+  @doc """
+  Returns the list of assignments_to_groupsets.
+
+  ## Examples
+
+      iex> list_assignments_to_groupsets()
+      [%Assignment_to_groupset{}, ...]
+
+  """
+  def list_assignments_to_groupsets do
+    Repo.all(Assignment_to_groupset)
+  end
+
+  @doc """
+  Gets a single assignment_to_groupset.
+
+  Raises `Ecto.NoResultsError` if the Assignment to groupset does not exist.
+
+  ## Examples
+
+      iex> get_assignment_to_groupset!(123)
+      %Assignment_to_groupset{}
+
+      iex> get_assignment_to_groupset!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_assignment_to_groupset!(id), do: Repo.get!(Assignment_to_groupset, id)
+
+  @doc """
+  Creates a assignment_to_groupset.
+
+  ## Examples
+
+      iex> create_assignment_to_groupset(%{field: value})
+      {:ok, %Assignment_to_groupset{}}
+
+      iex> create_assignment_to_groupset(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_assignment_to_groupset(attrs \\ %{}) do
+    %Assignment_to_groupset{}
+    |> Assignment_to_groupset.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a assignment_to_groupset.
+
+  ## Examples
+
+      iex> update_assignment_to_groupset(assignment_to_groupset, %{field: new_value})
+      {:ok, %Assignment_to_groupset{}}
+
+      iex> update_assignment_to_groupset(assignment_to_groupset, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_assignment_to_groupset(%Assignment_to_groupset{} = assignment_to_groupset, attrs) do
+    assignment_to_groupset
+    |> Assignment_to_groupset.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Assignment_to_groupset.
+
+  ## Examples
+
+      iex> delete_assignment_to_groupset(assignment_to_groupset)
+      {:ok, %Assignment_to_groupset{}}
+
+      iex> delete_assignment_to_groupset(assignment_to_groupset)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_assignment_to_groupset(%Assignment_to_groupset{} = assignment_to_groupset) do
+    Repo.delete(assignment_to_groupset)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking assignment_to_groupset changes.
+
+  ## Examples
+
+      iex> change_assignment_to_groupset(assignment_to_groupset)
+      %Ecto.Changeset{source: %Assignment_to_groupset{}}
+
+  """
+  def change_assignment_to_groupset(%Assignment_to_groupset{} = assignment_to_groupset) do
+    Assignment_to_groupset.changeset(assignment_to_groupset, %{})
   end
 end

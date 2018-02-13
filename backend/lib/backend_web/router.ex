@@ -32,6 +32,7 @@ defmodule BackendWeb.Router do
     resources "/quizzes", QuizController
     resources "/questions", QuestionController
     resources "/answers", AnswerController
+    resources "/assignments_to_groupsets", Assignment_to_groupsetController
     
 
     resources "/posts", PostController, except: [:new, :edit] 
@@ -58,6 +59,8 @@ defmodule BackendWeb.Router do
     get "/groups/user/all", GroupController, :show_all
     get "/groups/sections/:section_id", GroupController, :show_by_section
     get "/groups/users/:section_id", UserController, :show_members_by_section
+
+    get "/groupsets/sections/:section_id", GroupsetController, :show_by_section
 
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh

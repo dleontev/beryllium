@@ -7,7 +7,7 @@ class AnnouncementCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalState: "modal",
+      modalState: "modal"
     };
 
     this.handleModal = this.handleModal.bind(this);
@@ -65,7 +65,10 @@ class AnnouncementCard extends React.Component {
             <div className="level-left">
               <div className="field is-grouped">
                 <p className="control is-small">
-                  {this.props.is_locked ? "Locked" : "Unlocked"}{" "}
+                  <div className="tooltip">
+                    {this.props.is_locked && <i className="fa fa-lock" />}
+                    <span className="tooltiptext">Locked</span>
+                  </div>
                 </p>
                 <p className="control">
                   <a
@@ -73,7 +76,10 @@ class AnnouncementCard extends React.Component {
                     onClick={() => this.handleModal()}
                   >
                     <span className="icon">
-                      <i className="fa fa-trash-o fa-lg" />
+                      <div className="tooltip">
+                        <i className="fa fa-trash-o fa-lg" />
+                        <span className="tooltiptext">Delete announcement</span>
+                      </div>
                     </span>
                   </a>
                 </p>
@@ -81,9 +87,19 @@ class AnnouncementCard extends React.Component {
                   <a className="button" onClick={() => this.handleLock()}>
                     <span className="icon">
                       {this.props.is_locked ? (
-                        <i className="fa fa-unlock fa-lg" />
+                        <div className="tooltip">
+                          <i className="fa fa-unlock fa-lg" />
+                          <span className="tooltiptext">
+                            Unlock announcement
+                          </span>
+                        </div>
                       ) : (
-                        <i className="fa fa-lock fa-lg" />
+                        <div className="tooltip">
+                          <i className="fa fa-lock fa-lg" />
+                          <span className="tooltiptext">
+                            Lock announcement
+                          </span>
+                        </div>
                       )}
                     </span>
                   </a>

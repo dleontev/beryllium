@@ -41,7 +41,6 @@ defmodule BackendWeb.Router do
     resources "/memberships", MembershipController 
     delete "/memberships/", MembershipController, :delete
 
-  
     get "/posts/discussions/:discussion_id", PostController, :show_all
     get "/posts/discussions/children/:post_id", PostController, :show_children
     get "/posts/discussions/self/:post_id", PostController, :show_self
@@ -55,6 +54,8 @@ defmodule BackendWeb.Router do
 
     get "/courses/sections/:section_id", CourseController, :show
     get "/courses/user/all", CourseController, :show_all
+
+    get "/courses/:section_id/home", PageController, :show
 
     get "/groups/user/all", GroupController, :show_all
     get "/groups/sections/:section_id", GroupController, :show_by_section

@@ -2,7 +2,7 @@ import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import DiscussionTableCard from "../../components/DiscussionTableCard";
-
+import 'bulma-tooltip';
 
 class Discussions extends React.Component {
   constructor() {
@@ -24,7 +24,7 @@ class Discussions extends React.Component {
     if (!this.state.discussions) return <div className="loading" />;
 
     if (this.state.discussions.length === 0)
-      return "There are no dicsussions to show.";
+      return "There are no discussions to show in this section.";
 
     return (
       <div className="column is-fullhd">
@@ -52,6 +52,7 @@ class Discussions extends React.Component {
         }
         inserted_at={new Date(discussion.inserted_at).toLocaleDateString()}
         updated_at={new Date(discussion.updated_at).toLocaleDateString()}
+        is_locked={discussion.is_locked}
       />
     ));
   }
@@ -68,7 +69,7 @@ class Discussions extends React.Component {
           <div className="navbar-end">
             <div className="control">
               <Link to="discussions/new">
-                <button className="button is-link">
+                <button className="button is-link" data-tooltip="Tooltip Text">
                   <span className="icon">
                     <i className="fa fa-plus-circle" />
                   </span>

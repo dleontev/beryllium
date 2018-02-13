@@ -55,7 +55,6 @@ class Profile extends React.Component {
     );
   }
 
-  ///////////////// INCOMPLETE BUTTONS ////////////
   handleLogout(event) {
     event.preventDefault();
 
@@ -64,11 +63,6 @@ class Profile extends React.Component {
       this.props.history.push("/login");
     });
   }
-
-  handleEdit(event) {
-    console.log("PRESSED EDIT");
-  }
-  ////////////////////////////////////////////////
 
   render() {
     return (
@@ -81,17 +75,6 @@ class Profile extends React.Component {
         <div>
           <div className="level-right">
             <div className="field is-grouped">
-              <div className="control">
-                <button
-                  className="button is-link"
-                  onClick={this.handleEdit.bind(this)}
-                >
-                  <span className="icon">
-                    <i className="fa fa-pencil" />
-                  </span>
-                  <span>Edit Profile</span>
-                </button>
-              </div>
               <div className="control">
                 <button
                   className="button is-link"

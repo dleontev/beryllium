@@ -62,7 +62,7 @@ class NewGroupCard extends React.Component {
                 />
               </div>
 
-              <div className="field is-grouped">
+              {/* <div className="field is-grouped">
                 <div className="control">
                   <label>Joining</label>
                 </div>
@@ -80,7 +80,7 @@ class NewGroupCard extends React.Component {
                     Membership by invitation only
                   </option>
                 </select>
-              </div>
+              </div> */}
             </section>
 
             <footer className="modal-card-foot">

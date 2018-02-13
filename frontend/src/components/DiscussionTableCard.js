@@ -12,7 +12,7 @@ class DiscussionTableCard extends React.Component {
       totalReplies: null
     };
   }
-  
+
   componentWillMount() {
     this.initSocket();
   }
@@ -53,7 +53,11 @@ class DiscussionTableCard extends React.Component {
       <article className="post">
         <h4>{this.props.title}</h4>
         <span className="pull-right has-text-grey-light">
-          <i className="fa fa-comments" /> {this.state.totalReplies}
+          <div className="tooltip">
+            {this.props.is_locked && <i className="fa fa-lock" />}
+            <span className="tooltiptext">Locked</span>
+          </div>{" "}
+          <i className="fa fa-comments" />{" "}{this.state.totalReplies}
         </span>
         <div className="media">
           <div className="media-content">

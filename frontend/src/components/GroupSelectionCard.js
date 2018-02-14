@@ -6,7 +6,8 @@ class GroupSelectionCard extends React.Component{
 		super();
 		this.state = {
 			data: [],
-			loading: true
+			loading: true,
+			selected: []
 		}
 	}
 
@@ -35,14 +36,12 @@ class GroupSelectionCard extends React.Component{
 	handleChange(event){
 		var options = event.target.options;
 		var value = [];
-		console.log(`EVENT\n`);
 		for(let i = 0, l = options.length; i < l; ++i){
 			if(options[i].selected){
 				value.push(options[i].id)
-				console.log(`\n${options[i].id} | `);
 			}
 		}
-		//console.log(`CHANGED ${event.target.value}`);
+		this.props.handleSelect(value);
 	}
 
 	render(){
@@ -55,7 +54,7 @@ class GroupSelectionCard extends React.Component{
 				<div className="control">
 					<label className="label">Assign to</label>
 					<div className="select is-multiple">
-						<select multiple size="4" onChange={this.handleChange.bind(this)}>
+						<select multiple size="4" onChange={this.handleChange.bind(this)} defaultValue={[]}>
 							{this.displayGroupSets()}
 						</select>
 					</div>

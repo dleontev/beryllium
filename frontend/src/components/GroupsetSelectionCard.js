@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../api/Api";
 
-class GroupSelectionCard extends React.Component{
+class GroupsetSelectionCard extends React.Component{
 	constructor(){
 		super();
 		this.state = {
@@ -12,13 +12,12 @@ class GroupSelectionCard extends React.Component{
 	}
 
 	componentWillMount(){
-		api.get(`/groups/sections/${this.props.section_id}`)
+		api.get(`/groupsets/sections/${this.props.section_id}`)
 			.then((response) => {
 				this.setState({
 					data: response.data.data,
 					loading: false
 				});
-				this.props.handleStoreGroups(response.data.data);
 			})
 			.catch((error) =>{
 				console.log(error);
@@ -26,10 +25,10 @@ class GroupSelectionCard extends React.Component{
 	}
 
 
-	displayGroups(){
-		return this.state.data.map((group, index) => (
-			<option key={group.id} id={group.id}>
-				{group.name}
+	displayGroupSets(){
+		return this.state.data.map((groupset, index) => (
+			<option key={groupset.id} id={groupset.id}>
+				{groupset.name}
 			</option>
 		));
 	}
@@ -53,10 +52,10 @@ class GroupSelectionCard extends React.Component{
 				</div>
 				:
 				<div className="control">
-					<label className="label">Groups</label>
+					<label className="label">Groupsets</label>
 					<div className="select is-multiple">
-						<select multiple size="4" id="GroupSelectionCard" onChange={this.handleChange.bind(this)} defaultValue={[]}>
-							{this.displayGroups()}
+						<select multiple size="4" id="GroupsetSelectionCard" onChange={this.handleChange.bind(this)} defaultValue={[]}>
+							{this.displayGroupSets()}
 						</select>
 					</div>
 				</div>
@@ -67,4 +66,4 @@ class GroupSelectionCard extends React.Component{
 }
 
 
-export default GroupSelectionCard;
+export default GroupsetSelectionCard;

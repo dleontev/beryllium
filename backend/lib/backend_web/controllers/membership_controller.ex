@@ -25,6 +25,12 @@ defmodule BackendWeb.MembershipController do
     render(conn, "show.json", membership: membership)
   end
 
+  def show_by_section(conn, %{"section_id" => section_id}) do
+    memberships = Auth.get_memberships_by_section(section_id)
+    IO.inspect(memberships)
+    render(conn, "index_by_section.json", memberships: memberships)
+  end
+
   def update(conn, %{"id" => id, "membership" => membership_params}) do
     membership = Auth.get_membership!(id)
 

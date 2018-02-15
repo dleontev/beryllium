@@ -3,6 +3,7 @@ defmodule Backend.Auth.Enrollment do
   import Ecto.Changeset
   alias Backend.Auth.Enrollment
 
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "enrollments" do
     field(:user_id, :binary_id, null: false)
     field(:section_id, :binary_id, null: false)

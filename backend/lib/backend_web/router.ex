@@ -51,6 +51,8 @@ defmodule BackendWeb.Router do
     get "/users/:id", UserController, :show_by_id
     get "/account/", UserController, :show
 
+    get "/enrollments/user/:section_id", EnrollmentController, :show
+
     get "/discussions/sections/:section_id/:is_discussion", DiscussionController, :show_all
 
     get "/courses/sections/:section_id", CourseController, :show

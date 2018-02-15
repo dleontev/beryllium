@@ -4,7 +4,7 @@ defmodule BackendWeb.PageController do
   alias Backend.Auth
   alias Backend.Auth.Page
 
-  action_fallback BackendWeb.FallbackController
+  action_fallback(BackendWeb.FallbackController)
 
   def index(conn, _params) do
     pages = Auth.list_pages()
@@ -25,6 +25,19 @@ defmodule BackendWeb.PageController do
     render(conn, "show.json", page: page)
   end
 
+  def show(conn, %{"section_id" => section_id}) do
+    section = Auth.get_section!(section_id)
+
+    page =
+      if section.homepage_id do
+        Auth.get_page!(section.homepage_id)
+      else
+        %{content: ""}
+      end
+
+    render(conn, "show.json", page: page)
+  end
+
   def update(conn, %{"id" => id, "page" => page_params}) do
     page = Auth.get_page!(id)
 
@@ -35,6 +48,7 @@ defmodule BackendWeb.PageController do
 
   def delete(conn, %{"id" => id}) do
     page = Auth.get_page!(id)
+
     with {:ok, %Page{}} <- Auth.delete_page(page) do
       send_resp(conn, :no_content, "")
     end

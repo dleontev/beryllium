@@ -1,5 +1,5 @@
 import React from "react";
-import api from "../../api/Api";
+//import api from "../../api/Api";
 import { Link } from "react-router-dom";
 
 class Assignments extends React.Component {
@@ -9,13 +9,13 @@ class Assignments extends React.Component {
   }
 
   componentWillMount() {
-    api
-      .get(`/assignments/sections/${this.props.match.params.id}`)
-      .then(response => {
-        if (typeof response !== "undefined") {
-          this.setState({ assignments: response.data.data });
-        }
-      });
+    // api
+    //   .get(`/assignments/sections/${this.props.section_id}`)
+    //   .then(response => {
+    //     if (typeof response !== "undefined") {
+    //       this.setState({ assignments: response.data.data });
+    //     }
+    //   });
   }
 
   getAssignmentTable() {
@@ -42,6 +42,21 @@ class Assignments extends React.Component {
     // TODO: Get assignment list.
   }
 
+  getAddAssignmentButton() {
+    return (
+      <div className="control">
+        <Link to="assignments/new">
+          <button className="button is-link">
+            <span className="icon">
+              <i className="fa fa-plus-circle" />
+            </span>
+            <span>Assignment</span>
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -52,16 +67,7 @@ class Assignments extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
-              <Link to="assignments/new">
-                <button className="button is-link">
-                  <span className="icon">
-                    <i className="fa fa-plus-circle" />
-                  </span>
-                  <span>Assignment</span>
-                </button>
-              </Link>
-            </div>
+            {this.props.isTeacher && this.getAddAssignmentButton()}
           </div>
         </nav>
 

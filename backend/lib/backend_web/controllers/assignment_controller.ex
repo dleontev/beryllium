@@ -60,6 +60,8 @@ defmodule BackendWeb.AssignmentController do
   end
 
   def assignments_by_section(conn, %{"section_id" => section_id}) do
+    IO.inspect(conn)
+    IO.inspect(section_id)
     {:ok}
   end
 

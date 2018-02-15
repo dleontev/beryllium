@@ -25,6 +25,12 @@ defmodule BackendWeb.EnrollmentController do
     render(conn, "show.json", enrollment: enrollment)
   end
 
+  def show(conn, %{"section_id" => section_id}) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    enrollment = Auth.get_enrollment!(user_id, section_id)
+    render(conn, "show.json", enrollment: enrollment)
+  end
+
   def update(conn, %{"id" => id, "enrollment" => enrollment_params}) do
     enrollment = Auth.get_enrollment!(id)
 

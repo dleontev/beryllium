@@ -3,39 +3,13 @@ import StudentView from "../Groups/StudentView";
 import TeacherView from "../Groups/TeacherView";
 
 class Groups extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      userType: "teacher"
-    };
-  }
-
   render() {
-    return (
-      <div>
+    if (this.props.isTeacher === null) return <div />;
 
-        {/* FOR DEBUGGING */}
-        <div style={{border: '5px solid red'}}>
-        <p>Current View: {this.state.userType}</p>
-        <button
-          onClick={() =>
-            this.setState({
-              userType:
-                this.state.userType === "teacher" ? "student" : "teacher"
-            })
-          }
-        >
-          Switch Student/Teacher View
-        </button>
-        </div>
-        {/*--------------*/}
-
-        {this.state.userType === "teacher" ? (
-          <TeacherView sectionId={this.props.match.params.id} />
-        ) : (
-          <StudentView sectionId={this.props.match.params.id} />
-        )}
-      </div>
+    return this.props.isTeacher === true ? (
+      <TeacherView sectionId={this.props.section_id} />
+    ) : (
+      <StudentView sectionId={this.props.section_id} ref="Student" />
     );
   }
 }

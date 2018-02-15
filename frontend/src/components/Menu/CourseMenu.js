@@ -2,6 +2,19 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 class CourseMenu extends React.Component {
+  getSettingsNav() {
+    return (
+      <li>
+        <NavLink
+          to={`/courses/${this.props.id}/settings`}
+          activeClassName="is-active"
+        >
+          Settings
+        </NavLink>
+      </li>
+    );
+  }
+
   render() {
     return (
       <aside className="menu">
@@ -71,14 +84,7 @@ class CourseMenu extends React.Component {
               Groups
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to={`/courses/${this.props.id}/settings`}
-              activeClassName="is-active"
-            >
-              Settings
-            </NavLink>
-          </li>
+          {this.props.isTeacher && this.getSettingsNav()}
         </ul>
       </aside>
     );

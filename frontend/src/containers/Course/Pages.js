@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import api from "../../api/Api";
+//import api from "../../api/Api";
 
 class Pages extends React.Component {
   constructor() {
@@ -9,11 +9,11 @@ class Pages extends React.Component {
   }
 
   componentWillMount() {
-    api.get(`/pages/sections/${this.props.match.params.id}`).then(response => {
-      if (typeof response !== "undefined") {
-        this.setState({ assignments: response.data.data });
-      }
-    });
+    // api.get(`/pages/sections/${this.props.match.params.id}`).then(response => {
+    //   if (typeof response !== "undefined") {
+    //     this.setState({ assignments: response.data.data });
+    //   }
+    // });
   }
 
   getPages() {
@@ -23,6 +23,7 @@ class Pages extends React.Component {
       return "There are no pages to show.";
     }
 
+    // TODO: Get list of pages.
     return (
       <table className="table is-fullwidth is-striped is-hoverable">
         <thead>
@@ -31,8 +32,23 @@ class Pages extends React.Component {
             <th>Name</th>
           </tr>
         </thead>
-        <tbody>TODO</tbody>
+        <tbody />
       </table>
+    );
+  }
+
+  getAddPageButton() {
+    return (
+      <div className="control">
+        <Link to="pages/new">
+          <button className="button is-link">
+            <span className="icon">
+              <i className="fa fa-plus-circle" />
+            </span>
+            <span>Page</span>
+          </button>
+        </Link>
+      </div>
     );
   }
 
@@ -45,17 +61,8 @@ class Pages extends React.Component {
           </div>
           <div className="navbar-menu" />
 
-          <div className="navbar-end">
-            <div className="control">
-              <Link to="pages/new">
-                <button className="button is-link">
-                  <span className="icon">
-                    <i className="fa fa-plus-circle" />
-                  </span>
-                  <span>Page</span>
-                </button>
-              </Link>
-            </div>
+          <div className="navbar-end" >
+          {this.props.isTeacher && this.getAddPageButton()}
           </div>
         </nav>
 

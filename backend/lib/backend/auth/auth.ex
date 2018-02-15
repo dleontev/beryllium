@@ -312,6 +312,10 @@ defmodule Backend.Auth do
   """
   def get_enrollment!(id), do: Repo.get!(Enrollment, id)
 
+  def get_enrollment!(user_id, section_id) do
+    Repo.get_by!(Enrollment, user_id: user_id, section_id: section_id)
+  end
+
   @doc """
   Creates a enrollment.
 
@@ -615,11 +619,14 @@ defmodule Backend.Auth do
     Repo.all(Groupset)
   end
 
-
   def get_groupsets_by_section_id(section_id) do
-    query = from g in Groupset,
-      where: g.section_id == ^section_id,
-      select: [:id, :name]
+    query =
+      from(
+        g in Groupset,
+        where: g.section_id == ^section_id,
+        select: [:id, :name]
+      )
+
     Repo.all(query)
   end
 
@@ -1385,11 +1392,14 @@ defmodule Backend.Auth do
     Repo.all(Membership)
   end
 
-
   def get_memberships_by_section(section_id) do
-    query = from m in Membership, 
-      where: m.section_id == ^section_id,
-      select: [:id, :user_id, :group_id]
+    query =
+      from(
+        m in Membership,
+        where: m.section_id == ^section_id,
+        select: [:id, :user_id, :group_id]
+      )
+
     Repo.all(query)
   end
 
@@ -1924,6 +1934,7 @@ defmodule Backend.Auth do
     |> Assignment_to_groupset.changeset(attrs)
     |> Repo.insert()
   end
+
   alias Backend.Auth.Page
 
   @doc """
@@ -1990,6 +2001,7 @@ defmodule Backend.Auth do
     |> Assignment_to_groupset.changeset(attrs)
     |> Repo.update()
   end
+
   @doc """
   Updates a page.
 

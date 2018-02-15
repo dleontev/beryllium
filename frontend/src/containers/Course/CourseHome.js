@@ -8,9 +8,9 @@ class CourseHome extends React.Component {
   }
 
   componentWillMount() {
-    api.get(`/courses/${this.props.match.params.id}/home`).then(response => {
+    api.get(`/courses/${this.props.section_id}/home`).then(response => {
       if (typeof response !== "undefined") {
-        this.setState({ user: response.data.data });
+        this.setState({ page: response.data.data });
       }
     });
   }
@@ -24,6 +24,24 @@ class CourseHome extends React.Component {
     return this.state.page;
   }
 
+  handleEdit() {
+    console.log("Edit pressed");
+    // TODO: Edit the course home page.
+  }
+
+  getEditControl() {
+    return (
+      <div className="control">
+        <button className="button is-link" onClick={this.handleEdit.bind(this)}>
+          <span className="icon">
+            <i className="fa fa-pencil" />
+          </span>
+          <span>Edit</span>
+        </button>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -34,14 +52,7 @@ class CourseHome extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
-              <button className="button is-link">
-                <span className="icon">
-                  <i className="fa fa-pencil" />
-                </span>
-                <span>Edit</span>
-              </button>
-            </div>
+            {this.props.isTeacher && this.getEditControl()}
           </div>
         </nav>
 

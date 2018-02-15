@@ -11,6 +11,6 @@ defmodule BackendWeb.EnrollmentView do
   end
 
   def render("enrollment.json", %{enrollment: enrollment}) do
-    %{id: enrollment.id}
+    %{role_id: enrollment.role_id}
   end
 end

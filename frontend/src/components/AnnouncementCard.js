@@ -44,6 +44,43 @@ class AnnouncementCard extends React.Component {
       });
   }
 
+  getDelete() {
+    return (
+      <div className="control">
+        <a className="button" onClick={() => this.handleLock()}>
+          <span className="icon">
+            {this.props.is_locked ? (
+              <div className="tooltip">
+                <i className="fa fa-unlock fa-lg" />
+                <span className="tooltiptext">Unlock announcement</span>
+              </div>
+            ) : (
+              <div className="tooltip">
+                <i className="fa fa-lock fa-lg" />
+                <span className="tooltiptext">Lock announcement</span>
+              </div>
+            )}
+          </span>
+        </a>
+      </div>
+    );
+  }
+
+  getLock() {
+    return (
+      <div className="control">
+        <a className="button is-danger" onClick={() => this.handleModal()}>
+          <span className="icon">
+            <div className="tooltip">
+              <i className="fa fa-trash-o fa-lg" />
+              <span className="tooltiptext">Delete announcement</span>
+            </div>
+          </span>
+        </a>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -64,49 +101,18 @@ class AnnouncementCard extends React.Component {
             </div>
             <div className="level-left">
               <div className="field is-grouped">
-                <p className="control is-small">
+                <div className="control is-small">
                   <div className="tooltip">
                     {this.props.is_locked && <i className="fa fa-lock" />}
                     <span className="tooltiptext">Locked</span>
                   </div>
-                </p>
-                <p className="control">
-                  <a
-                    className="button is-danger"
-                    onClick={() => this.handleModal()}
-                  >
-                    <span className="icon">
-                      <div className="tooltip">
-                        <i className="fa fa-trash-o fa-lg" />
-                        <span className="tooltiptext">Delete announcement</span>
-                      </div>
-                    </span>
-                  </a>
-                </p>
-                <p className="control">
-                  <a className="button" onClick={() => this.handleLock()}>
-                    <span className="icon">
-                      {this.props.is_locked ? (
-                        <div className="tooltip">
-                          <i className="fa fa-unlock fa-lg" />
-                          <span className="tooltiptext">
-                            Unlock announcement
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="tooltip">
-                          <i className="fa fa-lock fa-lg" />
-                          <span className="tooltiptext">
-                            Lock announcement
-                          </span>
-                        </div>
-                      )}
-                    </span>
-                  </a>
-                </p>
+                </div>
+                {this.props.showControls && this.getDelete()}
+                {this.props.showControls && this.getLock()}
               </div>
             </div>
           </div>
+
           <div className="message-body">
             <p>
               <strong>{this.props.author}</strong>{" "}

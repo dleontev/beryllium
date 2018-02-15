@@ -13,6 +13,21 @@ class Files extends React.Component {
     if (!this.state.files) return <div className="loading" />;
   }
 
+  getUploadButton() {
+    return (
+      <div className="control">
+        <Link to="files/new">
+          <button className="button is-link">
+            <span className="icon">
+              <i className="fa fa-upload" />
+            </span>
+            <span>Upload</span>
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -23,16 +38,7 @@ class Files extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
-              <Link to="files/new">
-                <button className="button is-link">
-                  <span className="icon">
-                    <i className="fa fa-upload" />
-                  </span>
-                  <span>Upload</span>
-                </button>
-              </Link>
-            </div>
+            {this.props.isTeacher && this.getUploadButton()}
           </div>
         </nav>
 

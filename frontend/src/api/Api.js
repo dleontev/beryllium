@@ -15,21 +15,37 @@ function headers() {
 export default {
   getUserId() {
     var token = localStorage.getItem("token");
-    
+
     if (token) {
       var base64Url = token.split(".")[1];
       var base64 = base64Url.replace("-", "+").replace("_", "/");
-      return JSON.parse(window.atob(base64)).aud.split(':')[1];
+      return JSON.parse(window.atob(base64)).aud.split(":")[1];
     }
 
     return null;
   },
 
-  get(url) {
+  isTeacher(courseId) {
+    var promise = Promise.resolve(
+      this.get(`/enrollments/user/${courseId}`).then(response => {
+        if (typeof response !== "undefined") {
+          return (
+            response.data.data.role_id ===
+            "40d5d24b-5bfb-492b-99f9-4801a21ccee2"
+          );
+        }
+      })
+    );
+
+    return promise;
+  },
+
+  get(url, data = null) {
     return axios({
       method: "GET",
       headers: headers(),
-      url: `${API}${url}`
+      url: `${API}${url}`,
+      data: data
     }).catch(function(error) {
       if (error.response) {
         // The request was made and the server responded with a status code

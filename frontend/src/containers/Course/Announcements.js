@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import AnnouncementCard from "../../components/AnnouncementCard";
 
 class Announcements extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.refreshAnnouncements = this.refreshAnnouncements.bind(this);
-    this.state = { announcements: null };
+    this.state = {
+      announcements: null,
+    };
   }
 
   refreshAnnouncements() {
@@ -20,7 +22,7 @@ class Announcements extends React.Component {
 
   apiCall() {
     api
-      .get(`/discussions/sections/${this.props.match.params.id}/false`)
+      .get(`/discussions/sections/${this.props.section_id}/false`)
       .then(response => {
         if (typeof response !== "undefined") {
           this.setState({ announcements: response.data.data });
@@ -28,16 +30,31 @@ class Announcements extends React.Component {
       });
   }
 
+  getAddAnnouncementButton() {
+    return (
+      <div className="control">
+        <Link to="announcements/new">
+          <button className="button is-link">
+            <span className="icon">
+              <i className="fa fa-plus-circle" />
+            </span>
+            <span>Announcement</span>
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
   getAnnouncements() {
     if (!this.state.announcements) return <div className="loading" />;
 
     if (this.state.announcements.length === 0)
-      return "There are no assignments to show.";
+      return "There are no announcements to show.";
 
     return this.state.announcements.map((announcement, index) => (
       <AnnouncementCard
         refresh={this.refreshAnnouncements}
-        section_id={this.props.match.params.id}
+        section_id={this.props.section_id}
         key={index}
         title={announcement.title}
         id={announcement.id}
@@ -50,6 +67,7 @@ class Announcements extends React.Component {
             : announcement.content
         }
         is_locked={announcement.is_locked}
+        showControls={this.props.isTeacher}
       />
     ));
   }
@@ -64,16 +82,7 @@ class Announcements extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
-              <Link to="announcements/new">
-                <button className="button is-link">
-                  <span className="icon">
-                    <i className="fa fa-plus-circle" />
-                  </span>
-                  <span>Announcement</span>
-                </button>
-              </Link>
-            </div>
+            {this.props.isTeacher && this.getAddAnnouncementButton()}
           </div>
         </nav>
 

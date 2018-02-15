@@ -11,6 +11,6 @@ defmodule BackendWeb.PageView do
   end
 
   def render("page.json", %{page: page}) do
-    %{id: page.id}
+    page.content
   end
 end

@@ -1,9 +1,17 @@
 import React from "react";
+import GroupsetSelectionCard from "../GroupsetSelectionCard";
 import GroupSelectionCard from "../GroupSelectionCard";
+import UserSelectionCard from "../UserSelectionCard";
+import { Redirect } from "react-router-dom";
+import api from "../../api/Api";
 
 class AddAssignment extends React.Component {
   constructor(props){
     super(props);
+    this.handleSelectGroupset = this.handleSelectGroupset.bind(this);
+    this.handleSelectGroup = this.handleSelectGroup.bind(this);
+    this.handleSelectUser = this.handleSelectUser.bind(this);
+    this.handleStoreGroups = this.handleStoreGroups.bind(this);
     this.state = {
       data: {
         section_id: this.props.match.params.id,
@@ -12,7 +20,10 @@ class AddAssignment extends React.Component {
         due_at: "",
         type: 0,
         is_published: false, 
-        points_possible: ""
+        points_possible: "",
+        //groupsets: [],
+        //groups: [],
+        users: []
       },
       type: {
         "Short answer": 0,
@@ -23,10 +34,35 @@ class AddAssignment extends React.Component {
       hours: 23,
       minutes: 59,
       hoursCurrent: 0,
-      pm: false
+      pm: false,
+      redirect: false,
+      membershipData: [],
+      groupData: []
     }
   }
 
+
+
+  componentWillMount(){
+    api.get(`/memberships/sections/${this.props.match.params.id}`)
+      .then((result) =>{
+        this.setState({membershipData: result.data.data});
+        console.log(result.data.data);
+      })
+      .catch((error) =>{
+        console.log(`AddAssignment.js: ${error}`);
+      });
+  }
+
+  postAssignment(){
+    api.post("/assignments/", this.state.data)
+      .then((response)=>{
+        this.setState({redirect: true});
+      })
+      .catch((error)=>{
+        console.log(`AddAssignment ${error}`);
+      });
+  }
 
   handleTitle(event){
     var data = Object.assign({}, this.state.data);
@@ -88,6 +124,14 @@ class AddAssignment extends React.Component {
     });
   }
 
+  handleContent(event){
+    var data = Object.assign({}, this.state.data);
+    data.content = event.target.value;
+    this.setState({ 
+      data 
+    });
+  }
+
   convertToMilitary(){
     let val = 0;
     let currentHours = parseInt(this.state.hours, 10);
@@ -107,18 +151,155 @@ class AddAssignment extends React.Component {
     let hourString = val > 9 ? `${val}` : `0${val}`;
     let minuteString = this.state.minutes > 9 ? `${this.state.minutes}` : `0${this.state.minutes}`;
     let finalString = `${this.state.dateString} ${hourString}:${minuteString}:00`;
+    console.log(`Final String is ${finalString}\n`);
     return finalString;
+  }
+
+  handleStoreGroups(groups){
+    this.setState({
+      groupData: groups
+    });
+  }
+
+  /*
+  handleSelectGroupset(values){
+    var data = Object.assign({}, this.state.data);
+    data.groupsets = values;
+    this.setState({
+      data
+    });
+  }
+
+  handleSelectGroup(values){
+    var data = Object.assign({}, this.state.data);
+    data.groups = values;
+    this.setState({
+      data
+    });
+  }
+
+  handleSelectUser(values){
+    var data = Object.assign({}, this.state.data);
+    data.users = values;
+    this.setState({
+      data
+    });
+  }
+  */
+
+  clearUsers(){
+
+  }
+  clearGroups(){
+    var select = document.getElementById('GroupSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      select.options[i].selected = false;
+    }
+  }
+  clearGroupsets(){
+    var select = document.getElementById('GroupsetSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      select.options[i].selected = false;
+    }
+  }
+
+  handleSelectGroupset(values){
+    console.log(`hit handleSelectGroupset`);
+    this.findGroups(values);
+  }
+
+  handleSelectGroup(values){
+    this.clearGroupsets();
+    this.findUsers(values);
+  }
+
+  handleSelectUser(values){
+    this.clearGroups();
+    this.clearGroupsets();
+    var data = Object.assign({}, this.state.data);
+    data.users = values;
+    this.setState({
+      data
+    });
+  }
+
+  findGroups(groupsets){
+    //console.log(`Groupsets ${groupsets}`);
+    console.log(`hit findGroups`);
+    console.log(this.state.groupData);
+    var accumulator = [];
+    for(let i = 0; i < groupsets.length; ++i){
+      for(let j = 0; j < this.state.groupData.length; ++j){
+        //console.log(`${groupsets[i]} == ${this.state.groupData[j].groupset_id}\n`);
+        if(groupsets[i] === this.state.groupData[j].groupset_id){
+          accumulator.push(this.state.groupData[j].id);
+          this.setGroupSelected(this.state.groupData[j].id);
+          //findUsers(this.state.groupData[j].id);
+        }
+      }
+    }
+    console.log(accumulator);
+    this.findUsers(accumulator);
+  }
+
+  findUsers(groups){
+    console.log(`hit findUsers`);
+    for(let i = 0; i < groups.length; ++i){
+      for(let j = 0; j < this.state.membershipData.length; ++j){
+        if(this.state.membershipData[j].group_id === groups[i]){
+          this.setUserSelected(this.state.membershipData[j].user_id);
+        }
+      }
+    }
+  }
+
+
+  
+  setGroupSelected(group_id){
+    console.log(`hit setGroupSelected`);
+    var select = document.getElementById('GroupSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      if(select.options[i].id === group_id){
+        select.options[i].selected = 'selected';
+      }
+    }
+  }
+  
+  setUserSelected(user_id){
+    console.log(`hit setUserSelected`);
+    var select = document.getElementById('UserSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      if(select.options[i].id === user_id){
+        select.options[i].selected = 'selected';
+      }
+    }
+  }
+
+  gatherSelectedUsers(){
+    var select = document.getElementById("UserSelectionCard");
+    var accumulator = [];
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      if(select.options[i].selected){
+        accumulator.push(select.options[i].id);
+      }
+    }
+    return accumulator;
   }
 
   handleCreate(event){
     var data = Object.assign({}, this.state.data);
     data.due_at = this.convertToMilitary();
+    data.users = this.gatherSelectedUsers();
     this.setState({ 
       data 
-    });
+    },
+    this.postAssignment);
   }
 
   render() {
+    if(this.state.redirect === true){
+      return <Redirect to={`/courses/${this.props.match.params.id}/assignments`}/>
+    }
     return (
       <div>
         <div className="field">
@@ -194,14 +375,16 @@ class AddAssignment extends React.Component {
           </div>
         </div>
 
-        <div className="field">
-          <GroupSelectionCard section_id = {this.props.match.params.id}/>
+        <div className="field is-grouped">
+            <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
+            <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups}/>
+            <UserSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectUser}/>
         </div>
         
         <div className="field">
           <label className="label">Description</label>
           <div className="control">
-            <textarea className="textarea" placeholder="Describe the assignment"></textarea>
+            <textarea className="textarea" placeholder="Describe the assignment" onChange={this.handleContent.bind(this)}></textarea>
           </div>
         </div>
 

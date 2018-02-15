@@ -40,6 +40,7 @@ defmodule BackendWeb.Router do
 
     resources "/memberships", MembershipController 
     delete "/memberships/", MembershipController, :delete
+    get "/memberships/sections/:section_id", MembershipController, :show_by_section
 
     get "/posts/discussions/:discussion_id", PostController, :show_all
     get "/posts/discussions/children/:post_id", PostController, :show_children

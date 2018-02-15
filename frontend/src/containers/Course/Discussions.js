@@ -2,7 +2,7 @@ import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import DiscussionTableCard from "../../components/DiscussionTableCard";
-import 'bulma-tooltip';
+//import 'bulma-tooltip';
 
 class Discussions extends React.Component {
   constructor() {

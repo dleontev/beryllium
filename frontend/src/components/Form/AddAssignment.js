@@ -1,9 +1,12 @@
 import React from "react";
 import GroupSelectionCard from "../GroupSelectionCard";
+import { Redirect } from "react-router-dom";
+import api from "../../api/Api";
 
 class AddAssignment extends React.Component {
   constructor(props){
     super(props);
+    this.handleSelect = this.handleSelect.bind(this);
     this.state = {
       data: {
         section_id: this.props.match.params.id,
@@ -12,7 +15,8 @@ class AddAssignment extends React.Component {
         due_at: "",
         type: 0,
         is_published: false, 
-        points_possible: ""
+        points_possible: "",
+        groupsets: []
       },
       type: {
         "Short answer": 0,
@@ -23,10 +27,21 @@ class AddAssignment extends React.Component {
       hours: 23,
       minutes: 59,
       hoursCurrent: 0,
-      pm: false
+      pm: false,
+      redirect: false
     }
   }
 
+
+  postAssignment(){
+    api.post("/assignments/", this.state.data)
+      .then((response)=>{
+        this.setState({redirect: true});
+      })
+      .catch((error)=>{
+        console.log(`AddAssignment ${error}`);
+      });
+  }
 
   handleTitle(event){
     var data = Object.assign({}, this.state.data);
@@ -88,6 +103,14 @@ class AddAssignment extends React.Component {
     });
   }
 
+  handleContent(event){
+    var data = Object.assign({}, this.state.data);
+    data.content = event.target.value;
+    this.setState({ 
+      data 
+    });
+  }
+
   convertToMilitary(){
     let val = 0;
     let currentHours = parseInt(this.state.hours, 10);
@@ -107,7 +130,17 @@ class AddAssignment extends React.Component {
     let hourString = val > 9 ? `${val}` : `0${val}`;
     let minuteString = this.state.minutes > 9 ? `${this.state.minutes}` : `0${this.state.minutes}`;
     let finalString = `${this.state.dateString} ${hourString}:${minuteString}:00`;
+    console.log(`Final String is ${finalString}\n`);
     return finalString;
+  }
+
+
+  handleSelect(values){
+    var data = Object.assign({}, this.state.data);
+    data.groupsets = values;
+    this.setState({
+      data
+    });
   }
 
   handleCreate(event){
@@ -115,10 +148,14 @@ class AddAssignment extends React.Component {
     data.due_at = this.convertToMilitary();
     this.setState({ 
       data 
-    });
+    },
+    this.postAssignment);
   }
 
   render() {
+    if(this.state.redirect === true){
+      return <Redirect to={`/courses/${this.props.match.params.id}/assignments`}/>
+    }
     return (
       <div>
         <div className="field">
@@ -195,13 +232,13 @@ class AddAssignment extends React.Component {
         </div>
 
         <div className="field">
-          <GroupSelectionCard section_id = {this.props.match.params.id}/>
+          <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelect}/>
         </div>
         
         <div className="field">
           <label className="label">Description</label>
           <div className="control">
-            <textarea className="textarea" placeholder="Describe the assignment"></textarea>
+            <textarea className="textarea" placeholder="Describe the assignment" onChange={this.handleContent.bind(this)}></textarea>
           </div>
         </div>
 

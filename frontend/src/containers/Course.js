@@ -25,10 +25,16 @@ import NotFound from "./NotFound";
 class Dashboard extends React.Component {
   constructor() {
     super();
-    this.state = { course: [] };
+    this.state = { course: [], isTeacher: null };
   }
 
   componentWillMount() {
+    if (this.state.isTeacher === null) {
+      api.isTeacher(this.props.match.params.id).then(response => {
+        this.setState({ isTeacher: response });
+      });
+    }
+
     api
       .get("/courses/sections/" + this.props.match.params.id)
       .then(response => {
@@ -65,7 +71,10 @@ class Dashboard extends React.Component {
         <div className="columns">
           <div className="column is-narrow">
             <div className="box" style={{ width: "200px" }}>
-              <CourseMenu id={this.getCourseId()} />
+              <CourseMenu
+                id={this.getCourseId()}
+                isTeacher={this.state.isTeacher}
+              />
             </div>
           </div>
           <div className="column">
@@ -75,7 +84,12 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/announcements"
-                    component={Announcements}
+                    render={props => (
+                      <Announcements
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
                   />
 
                   <Route
@@ -121,7 +135,12 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/assignments"
-                    component={Assignments}
+                    render={props => (
+                      <Assignments
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
                   />
 
                   <Route
@@ -142,9 +161,27 @@ class Dashboard extends React.Component {
                     component={Settings}
                   />
 
-                  <Route exact path="/courses/:id/groups" component={Groups} />
+                  <Route
+                    exact
+                    path="/courses/:id/groups"
+                    render={props => (
+                      <Groups
+                        isTeacher={this.state.isTeacher}
+                        section_id={this.props.match.params.id}
+                      />
+                    )}
+                  />
 
-                  <Route exact path="/courses/:id/pages" component={Pages} />
+                  <Route
+                    exact
+                    path="/courses/:id/pages"
+                    render={props => (
+                      <Pages
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
+                  />
 
                   <Route exact path="/courses/:id/users" component={Users} />
 
@@ -154,9 +191,27 @@ class Dashboard extends React.Component {
                     component={Profile}
                   />
 
-                  <Route exact path="/courses/:id/files" component={Files} />
+                  <Route
+                    exact
+                    path="/courses/:id/files"
+                    render={props => (
+                      <Files
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
+                  />
 
-                  <Route exact path="/courses/:id/" component={CourseHome} />
+                  <Route
+                    exact
+                    path="/courses/:id/"
+                    render={props => (
+                      <CourseHome
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
+                  />
 
                   <Route component={NotFound} />
                 </Switch>

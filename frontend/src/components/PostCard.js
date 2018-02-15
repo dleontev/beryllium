@@ -111,16 +111,6 @@ class PostCard extends React.Component {
       });
   }
 
-  /*
-  getAuthor(){
-    return this.state.data == null ? this.props.author_name : this.state.data.author_name;
-  }
-
-  getInsertedAt(){
-    return this.state.data == null ? new Date(this.props.inserted_at).toLocaleDateString() : new Date(this.state.data.inserted_at).toLocaleDateString();
-  }
-*/
-
   getContent() {
     return this.state.data == null
       ? this.props.content
@@ -132,14 +122,10 @@ class PostCard extends React.Component {
       ? this.props.is_deleted
       : this.state.data.is_deleted;
   }
-  ///////////////////MODAL STUFF////////////////////////////////
 
-  ////////////////////EDIT STUFF///////////////////////////
   handleEdit() {
     this.setState({ isEdit: !this.state.isEdit });
   }
-
-  ///////////////////EDIT STUFF///////////////////////////
 
   handleSubmit() {
     //this.handleRefresh();

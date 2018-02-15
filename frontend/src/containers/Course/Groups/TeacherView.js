@@ -75,7 +75,7 @@ class TeacherView extends React.Component {
           </div>
         </nav>
 
-        <div>content</div>
+        <div></div>
       </div>
     );
   }

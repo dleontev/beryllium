@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../api/Api";
 
-class GroupSelectionCard extends React.Component{
+class UserSelectionCard extends React.Component{
 	constructor(){
 		super();
 		this.state = {
@@ -12,13 +12,12 @@ class GroupSelectionCard extends React.Component{
 	}
 
 	componentWillMount(){
-		api.get(`/groups/sections/${this.props.section_id}`)
+		api.get(`/users/sections/${this.props.section_id}`)
 			.then((response) => {
 				this.setState({
 					data: response.data.data,
 					loading: false
 				});
-				this.props.handleStoreGroups(response.data.data);
 			})
 			.catch((error) =>{
 				console.log(error);
@@ -26,10 +25,10 @@ class GroupSelectionCard extends React.Component{
 	}
 
 
-	displayGroups(){
-		return this.state.data.map((group, index) => (
-			<option key={group.id} id={group.id}>
-				{group.name}
+	displayUsers(){
+		return this.state.data.map((user, index) => (
+			<option key={user.user_id} id={user.user_id}>
+				{user.name}
 			</option>
 		));
 	}
@@ -53,10 +52,10 @@ class GroupSelectionCard extends React.Component{
 				</div>
 				:
 				<div className="control">
-					<label className="label">Groups</label>
+					<label className="label">Users</label>
 					<div className="select is-multiple">
-						<select multiple size="4" id="GroupSelectionCard" onChange={this.handleChange.bind(this)} defaultValue={[]}>
-							{this.displayGroups()}
+						<select multiple id="UserSelectionCard" size="4" onChange={this.handleChange.bind(this)} defaultValue={[]}>
+							{this.displayUsers()}
 						</select>
 					</div>
 				</div>
@@ -67,4 +66,4 @@ class GroupSelectionCard extends React.Component{
 }
 
 
-export default GroupSelectionCard;
+export default UserSelectionCard;

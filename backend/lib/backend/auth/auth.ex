@@ -1385,6 +1385,14 @@ defmodule Backend.Auth do
     Repo.all(Membership)
   end
 
+
+  def get_memberships_by_section(section_id) do
+    query = from m in Membership, 
+      where: m.section_id == ^section_id,
+      select: [:id, :user_id, :group_id]
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single membership.
 

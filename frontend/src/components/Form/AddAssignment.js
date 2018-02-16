@@ -187,9 +187,7 @@ class AddAssignment extends React.Component {
   }
   */
 
-  clearUsers(){
 
-  }
   clearGroups(){
     var select = document.getElementById('GroupSelectionCard');
     for(let i = 0, l = select.options.length; i < l; ++i){
@@ -204,56 +202,79 @@ class AddAssignment extends React.Component {
   }
 
   handleSelectGroupset(values){
-    console.log(`hit handleSelectGroupset`);
-    this.findGroups(values);
+    console.log(this.state.groupData);
+    console.log(`hit handleSelectGroup`);
+    var selectGroupset = document.getElementById("GroupsetSelectionCard");
+    var selectGroup = document.getElementById("GroupSelectionCard");
+    var accumulator = [];
+    for(let i = 0; i < selectGroupset.options.length; ++i){
+      if(selectGroupset.options[i].selected){
+        for(let j = 0; j < this.state.groupData.length; ++j){
+          if(selectGroupset.options[i].id === this.state.groupData[j].groupset_id){
+            accumulator.push(this.state.groupData[j].id);
+          }
+        }
+      }
+    }
+    var found;
+    for(let i = 0; i < selectGroup.options.length; ++i){
+      found = false;
+      for(let j = 0; j < accumulator.length; ++j){
+        if(selectGroup.options[i].id === accumulator[j]){
+          found = true;
+          break;
+        }
+      }
+      if(found === true){
+        selectGroup.options[i].selected = 'selected';
+      }else{
+        selectGroup.options[i].selected = false;
+      }
+    }
+    this.matchGroupsWithUsers();
   }
+
 
   handleSelectGroup(values){
     this.clearGroupsets();
-    this.findUsers(values);
+    this.matchGroupsWithUsers();
   }
 
   handleSelectUser(values){
-    this.clearGroups();
     this.clearGroupsets();
-    var data = Object.assign({}, this.state.data);
-    data.users = values;
-    this.setState({
-      data
-    });
+    this.clearGroups();
   }
 
-  findGroups(groupsets){
-    //console.log(`Groupsets ${groupsets}`);
-    console.log(`hit findGroups`);
-    console.log(this.state.groupData);
+  matchGroupsWithUsers(){
+    var selectGroup = document.getElementById("GroupSelectionCard");
+    var selectUser = document.getElementById("UserSelectionCard");
     var accumulator = [];
-    for(let i = 0; i < groupsets.length; ++i){
-      for(let j = 0; j < this.state.groupData.length; ++j){
-        //console.log(`${groupsets[i]} == ${this.state.groupData[j].groupset_id}\n`);
-        if(groupsets[i] === this.state.groupData[j].groupset_id){
-          accumulator.push(this.state.groupData[j].id);
-          this.setGroupSelected(this.state.groupData[j].id);
-          //findUsers(this.state.groupData[j].id);
+    for(let i = 0; i < selectGroup.options.length; ++i){
+      if(selectGroup.options[i].selected){
+        for(let j = 0; j < this.state.membershipData.length; ++j){
+          if(selectGroup.options[i].id === this.state.membershipData[j].group_id){
+            accumulator.push(this.state.membershipData[j].user_id);
+          }
         }
       }
     }
-    console.log(accumulator);
-    this.findUsers(accumulator);
-  }
 
-  findUsers(groups){
-    console.log(`hit findUsers`);
-    for(let i = 0; i < groups.length; ++i){
-      for(let j = 0; j < this.state.membershipData.length; ++j){
-        if(this.state.membershipData[j].group_id === groups[i]){
-          this.setUserSelected(this.state.membershipData[j].user_id);
+    var found;
+    for(let i = 0; i < selectUser.options.length; ++i){
+      found = false;
+      for(let j = 0; j < accumulator.length; ++j){
+        if(selectUser.options[i].id === accumulator[j]){
+          found = true;
+          break;
         }
+      }
+      if(found === true){
+        selectUser.options[i].selected = 'selected';
+      }else{
+        selectUser.options[i].selected = false;
       }
     }
   }
-
-
   
   setGroupSelected(group_id){
     console.log(`hit setGroupSelected`);

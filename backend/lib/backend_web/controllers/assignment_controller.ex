@@ -2,6 +2,9 @@ defmodule BackendWeb.AssignmentController do
   use BackendWeb, :controller
 
   alias Backend.Auth
+  alias Backend.Repo
+  alias Backend.Auth.AssignmentToGroup
+  alias Backend.Auth.AssignmentToUser
   alias Backend.Auth.Assignment
 
   action_fallback BackendWeb.FallbackController
@@ -44,14 +47,12 @@ defmodule BackendWeb.AssignmentController do
                           title: title
                         }
     with {:ok, %Assignment{} = assignment} <- Auth.create_assignment(assignment_params) do
-      for n <- assigned_to do
-        if(is_groups == true) do
-          params = %{id: Ecto.UUID.generate(), assignment_id: id, group_id: n}
-          Auth.create_assignment_to_group(params)
-        else
-          params = %{id: Ecto.UUID.generate(), assignment_id: id, user_id: n}
-          Auth.create_assignment_to_user(params)
-        end
+      if(is_groups == true) do
+        bulk_insert = Auth.parse_bulk_group(id, assigned_to, [])
+        Repo.insert_all(AssignmentToGroup, bulk_insert)
+      else
+        bulk_insert = Auth.parse_bulk_user(id, assigned_to, [])
+        Repo.insert_all(AssignmentToUser, bulk_insert)
       end
       conn
       |> put_status(:created)

@@ -362,7 +362,7 @@ class AddAssignment extends React.Component {
       noGroupsSelected: noGroupsSelected,
       noUsersSelected: noUsersSelected
     }, ()=>{
-      if(this.state.noGroupsSelected === true && this.state.noUsersSelected === true){
+      if(this.state.noGroupsSelected === false && this.state.noUsersSelected === false){
         var data = Object.assign({}, this.state.data);
         data.due_at = this.convertToMilitary();
         data.assigned_to = temp;

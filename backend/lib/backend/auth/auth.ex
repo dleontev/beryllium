@@ -2026,6 +2026,24 @@ defmodule Backend.Auth do
     |> Repo.insert()
   end
 
+  def parse_bulk_user(assignment_id, [head | tail], accumulator) do
+    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, user_id: head} | accumulator]
+    if(length(tail) != 0) do
+      parse_bulk_user(assignment_id, tail, result)
+    else
+      result
+    end
+  end
+
+    def parse_bulk_group(assignment_id, [head | tail], accumulator) do
+    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, group_id: head} | accumulator]
+    if(length(tail) != 0) do
+      parse_bulk_group(assignment_id, tail, result)
+    else
+      result
+    end
+  end
+
   @doc """
   Updates a assignment_to_group.
 

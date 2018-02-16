@@ -10,7 +10,6 @@ defmodule Backend.Auth do
   alias Backend.Auth.Enrollment
   alias Backend.Auth.Group
   alias Backend.Auth.Groupset
-  alias Backend.Auth.Role
   alias Backend.Auth.School
   alias Backend.Auth.Section
   alias Backend.Auth.Course
@@ -53,14 +52,12 @@ defmodule Backend.Auth do
         on: e.section_id == s.id and s.id == ^section_id,
         join: c in Course,
         on: s.course_id == c.id,
-        join: r in Role,
-        on: e.role_id == r.id,
         order_by: [desc: u.name],
         select: {
           map(s, [:name]),
           map(u, [:id, :name]),
           map(c, [:code]),
-          map(r, [:name])
+          map(e, [:role])
         }
       )
 
@@ -71,7 +68,7 @@ defmodule Backend.Auth do
          %{name: section_name},
          %{id: user_id, name: name},
          %{code: code},
-         %{name: role_name}
+         %{role: role_name}
        }) do
     %{
       section_name: section_name,
@@ -711,102 +708,6 @@ defmodule Backend.Auth do
     Groupset.changeset(groupset, %{})
   end
 
-  alias Backend.Auth.Role
-
-  @doc """
-  Returns the list of roles.
-
-  ## Examples
-
-      iex> list_roles()
-      [%Role{}, ...]
-
-  """
-  def list_roles do
-    Repo.all(Role)
-  end
-
-  @doc """
-  Gets a single role.
-
-  Raises `Ecto.NoResultsError` if the Role does not exist.
-
-  ## Examples
-
-      iex> get_role!(123)
-      %Role{}
-
-      iex> get_role!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_role!(id), do: Repo.get!(Role, id)
-
-  @doc """
-  Creates a role.
-
-  ## Examples
-
-      iex> create_role(%{field: value})
-      {:ok, %Role{}}
-
-      iex> create_role(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_role(attrs \\ %{}) do
-    %Role{}
-    |> Role.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a role.
-
-  ## Examples
-
-      iex> update_role(role, %{field: new_value})
-      {:ok, %Role{}}
-
-      iex> update_role(role, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_role(%Role{} = role, attrs) do
-    role
-    |> Role.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Role.
-
-  ## Examples
-
-      iex> delete_role(role)
-      {:ok, %Role{}}
-
-      iex> delete_role(role)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_role(%Role{} = role) do
-    Repo.delete(role)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking role changes.
-
-  ## Examples
-
-      iex> change_role(role)
-      %Ecto.Changeset{source: %Role{}}
-
-  """
-  def change_role(%Role{} = role) do
-    Role.changeset(role, %{})
-  end
-
   alias Backend.Auth.School
 
   @doc """
@@ -1012,13 +913,11 @@ defmodule Backend.Auth do
         on: e.section_id == s.id,
         join: c in Course,
         on: s.course_id == c.id,
-        join: r in Role,
-        on: e.role_id == r.id,
         order_by: [desc: c.code],
         select: {
           map(s, [:name, :id, :published]),
           map(c, [:id, :code, :name, :start_date, :end_date]),
-          map(r, [:name])
+          map(e, [:role])
         }
       )
 
@@ -1028,7 +927,7 @@ defmodule Backend.Auth do
   defp extract_course_info({
          %{name: section_name, id: section_id, published: published},
          %{id: id, end_date: end_date, code: code, name: name, start_date: start_date},
-         %{name: role_name}
+         %{role: role_name}
        }) do
     %{
       section_name: section_name,
@@ -2076,5 +1975,215 @@ defmodule Backend.Auth do
   """
   def change_page(%Page{} = page) do
     Page.changeset(page, %{})
+  end
+
+  alias Backend.Auth.AssignmentToGroup
+
+  @doc """
+  Returns the list of assignments_to_groups.
+
+  ## Examples
+
+      iex> list_assignments_to_groups()
+      [%AssignmentToGroup{}, ...]
+
+  """
+  def list_assignments_to_groups do
+    Repo.all(AssignmentToGroup)
+  end
+
+  @doc """
+  Gets a single assignment_to_group.
+
+  Raises `Ecto.NoResultsError` if the Assignment to group does not exist.
+
+  ## Examples
+
+      iex> get_assignment_to_group!(123)
+      %AssignmentToGroup{}
+
+      iex> get_assignment_to_group!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_assignment_to_group!(id), do: Repo.get!(AssignmentToGroup, id)
+
+  @doc """
+  Creates a assignment_to_group.
+
+  ## Examples
+
+      iex> create_assignment_to_group(%{field: value})
+      {:ok, %AssignmentToGroup{}}
+
+      iex> create_assignment_to_group(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_assignment_to_group(attrs \\ %{}) do
+    %AssignmentToGroup{}
+    |> AssignmentToGroup.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def parse_bulk_user(assignment_id, [head | tail], accumulator) do
+    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, user_id: head} | accumulator]
+    if(length(tail) != 0) do
+      parse_bulk_user(assignment_id, tail, result)
+    else
+      result
+    end
+  end
+
+    def parse_bulk_group(assignment_id, [head | tail], accumulator) do
+    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, group_id: head} | accumulator]
+    if(length(tail) != 0) do
+      parse_bulk_group(assignment_id, tail, result)
+    else
+      result
+    end
+  end
+
+  @doc """
+  Updates a assignment_to_group.
+
+  ## Examples
+
+      iex> update_assignment_to_group(assignment_to_group, %{field: new_value})
+      {:ok, %AssignmentToGroup{}}
+
+      iex> update_assignment_to_group(assignment_to_group, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_assignment_to_group(%AssignmentToGroup{} = assignment_to_group, attrs) do
+    assignment_to_group
+    |> AssignmentToGroup.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a AssignmentToGroup.
+
+  ## Examples
+
+      iex> delete_assignment_to_group(assignment_to_group)
+      {:ok, %AssignmentToGroup{}}
+
+      iex> delete_assignment_to_group(assignment_to_group)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_assignment_to_group(%AssignmentToGroup{} = assignment_to_group) do
+    Repo.delete(assignment_to_group)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking assignment_to_group changes.
+
+  ## Examples
+
+      iex> change_assignment_to_group(assignment_to_group)
+      %Ecto.Changeset{source: %AssignmentToGroup{}}
+
+  """
+  def change_assignment_to_group(%AssignmentToGroup{} = assignment_to_group) do
+    AssignmentToGroup.changeset(assignment_to_group, %{})
+  end
+
+  alias Backend.Auth.AssignmentToUser
+
+  @doc """
+  Returns the list of assignments_to_users.
+
+  ## Examples
+
+      iex> list_assignments_to_users()
+      [%AssignmentToUser{}, ...]
+
+  """
+  def list_assignments_to_users do
+    Repo.all(AssignmentToUser)
+  end
+
+  @doc """
+  Gets a single assignment_to_user.
+
+  Raises `Ecto.NoResultsError` if the Assignment to user does not exist.
+
+  ## Examples
+
+      iex> get_assignment_to_user!(123)
+      %AssignmentToUser{}
+
+      iex> get_assignment_to_user!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_assignment_to_user!(id), do: Repo.get!(AssignmentToUser, id)
+
+  @doc """
+  Creates a assignment_to_user.
+
+  ## Examples
+
+      iex> create_assignment_to_user(%{field: value})
+      {:ok, %AssignmentToUser{}}
+
+      iex> create_assignment_to_user(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_assignment_to_user(attrs \\ %{}) do
+    %AssignmentToUser{}
+    |> AssignmentToUser.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a assignment_to_user.
+
+  ## Examples
+
+      iex> update_assignment_to_user(assignment_to_user, %{field: new_value})
+      {:ok, %AssignmentToUser{}}
+
+      iex> update_assignment_to_user(assignment_to_user, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_assignment_to_user(%AssignmentToUser{} = assignment_to_user, attrs) do
+    assignment_to_user
+    |> AssignmentToUser.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a AssignmentToUser.
+
+  ## Examples
+
+      iex> delete_assignment_to_user(assignment_to_user)
+      {:ok, %AssignmentToUser{}}
+
+      iex> delete_assignment_to_user(assignment_to_user)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_assignment_to_user(%AssignmentToUser{} = assignment_to_user) do
+    Repo.delete(assignment_to_user)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking assignment_to_user changes.
+
+  ## Examples
+
+      iex> change_assignment_to_user(assignment_to_user)
+      %Ecto.Changeset{source: %AssignmentToUser{}}
+
+  """
+  def change_assignment_to_user(%AssignmentToUser{} = assignment_to_user) do
+    AssignmentToUser.changeset(assignment_to_user, %{})
   end
 end

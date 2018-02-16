@@ -1219,4 +1219,120 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_page(page)
     end
   end
+
+  describe "assignments_to_groups" do
+    alias Backend.Auth.AssignmentToGroup
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def assignment_to_group_fixture(attrs \\ %{}) do
+      {:ok, assignment_to_group} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_assignment_to_group()
+
+      assignment_to_group
+    end
+
+    test "list_assignments_to_groups/0 returns all assignments_to_groups" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert Auth.list_assignments_to_groups() == [assignment_to_group]
+    end
+
+    test "get_assignment_to_group!/1 returns the assignment_to_group with given id" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert Auth.get_assignment_to_group!(assignment_to_group.id) == assignment_to_group
+    end
+
+    test "create_assignment_to_group/1 with valid data creates a assignment_to_group" do
+      assert {:ok, %AssignmentToGroup{} = assignment_to_group} = Auth.create_assignment_to_group(@valid_attrs)
+    end
+
+    test "create_assignment_to_group/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_assignment_to_group(@invalid_attrs)
+    end
+
+    test "update_assignment_to_group/2 with valid data updates the assignment_to_group" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert {:ok, assignment_to_group} = Auth.update_assignment_to_group(assignment_to_group, @update_attrs)
+      assert %AssignmentToGroup{} = assignment_to_group
+    end
+
+    test "update_assignment_to_group/2 with invalid data returns error changeset" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_assignment_to_group(assignment_to_group, @invalid_attrs)
+      assert assignment_to_group == Auth.get_assignment_to_group!(assignment_to_group.id)
+    end
+
+    test "delete_assignment_to_group/1 deletes the assignment_to_group" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert {:ok, %AssignmentToGroup{}} = Auth.delete_assignment_to_group(assignment_to_group)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_assignment_to_group!(assignment_to_group.id) end
+    end
+
+    test "change_assignment_to_group/1 returns a assignment_to_group changeset" do
+      assignment_to_group = assignment_to_group_fixture()
+      assert %Ecto.Changeset{} = Auth.change_assignment_to_group(assignment_to_group)
+    end
+  end
+
+  describe "assignments_to_users" do
+    alias Backend.Auth.AssignmentToUser
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def assignment_to_user_fixture(attrs \\ %{}) do
+      {:ok, assignment_to_user} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_assignment_to_user()
+
+      assignment_to_user
+    end
+
+    test "list_assignments_to_users/0 returns all assignments_to_users" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert Auth.list_assignments_to_users() == [assignment_to_user]
+    end
+
+    test "get_assignment_to_user!/1 returns the assignment_to_user with given id" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert Auth.get_assignment_to_user!(assignment_to_user.id) == assignment_to_user
+    end
+
+    test "create_assignment_to_user/1 with valid data creates a assignment_to_user" do
+      assert {:ok, %AssignmentToUser{} = assignment_to_user} = Auth.create_assignment_to_user(@valid_attrs)
+    end
+
+    test "create_assignment_to_user/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_assignment_to_user(@invalid_attrs)
+    end
+
+    test "update_assignment_to_user/2 with valid data updates the assignment_to_user" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert {:ok, assignment_to_user} = Auth.update_assignment_to_user(assignment_to_user, @update_attrs)
+      assert %AssignmentToUser{} = assignment_to_user
+    end
+
+    test "update_assignment_to_user/2 with invalid data returns error changeset" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_assignment_to_user(assignment_to_user, @invalid_attrs)
+      assert assignment_to_user == Auth.get_assignment_to_user!(assignment_to_user.id)
+    end
+
+    test "delete_assignment_to_user/1 deletes the assignment_to_user" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert {:ok, %AssignmentToUser{}} = Auth.delete_assignment_to_user(assignment_to_user)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_assignment_to_user!(assignment_to_user.id) end
+    end
+
+    test "change_assignment_to_user/1 returns a assignment_to_user changeset" do
+      assignment_to_user = assignment_to_user_fixture()
+      assert %Ecto.Changeset{} = Auth.change_assignment_to_user(assignment_to_user)
+    end
+  end
 end

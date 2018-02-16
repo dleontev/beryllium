@@ -2,6 +2,9 @@ defmodule BackendWeb.AssignmentController do
   use BackendWeb, :controller
 
   alias Backend.Auth
+  alias Backend.Repo
+  alias Backend.Auth.AssignmentToGroup
+  alias Backend.Auth.AssignmentToUser
   alias Backend.Auth.Assignment
 
   action_fallback BackendWeb.FallbackController
@@ -24,8 +27,9 @@ defmodule BackendWeb.AssignmentController do
   %{
     "content" => content, 
     "due_at" => due_at, 
-    "groupsets" => groupsets, 
-    "is_published" => is_published, 
+    "assigned_to" => assigned_to, 
+    "is_published" => is_published,
+    "is_groups" => is_groups,
     "points_possible" => points_possible,
     "section_id" => section_id,
     "title" => title,
@@ -43,9 +47,12 @@ defmodule BackendWeb.AssignmentController do
                           title: title
                         }
     with {:ok, %Assignment{} = assignment} <- Auth.create_assignment(assignment_params) do
-      for n <- groupsets do
-        params = %{id: Ecto.UUID.generate(), assignment_id: id, groupset_id: n}
-        Auth.create_assignment_to_groupset(params)
+      if(is_groups == true) do
+        bulk_insert = Auth.parse_bulk_group(id, assigned_to, [])
+        Repo.insert_all(AssignmentToGroup, bulk_insert)
+      else
+        bulk_insert = Auth.parse_bulk_user(id, assigned_to, [])
+        Repo.insert_all(AssignmentToUser, bulk_insert)
       end
       conn
       |> put_status(:created)

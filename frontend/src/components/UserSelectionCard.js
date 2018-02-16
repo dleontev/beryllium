@@ -53,8 +53,8 @@ class UserSelectionCard extends React.Component{
 				:
 				<div className="control">
 					<label className="label">Users</label>
-					<div className="select is-multiple">
-						<select multiple id="UserSelectionCard" size="4" onChange={this.handleChange.bind(this)} defaultValue={[]}>
+					<div className={`select is-multiple ${this.props.selected === false ? "" : "is-danger"}`}>
+						<select disabled = {this.props.is_groups ? true : false} multiple id="UserSelectionCard" size="4" onChange={this.handleChange.bind(this)} defaultValue={[]}>
 							{this.displayUsers()}
 						</select>
 					</div>

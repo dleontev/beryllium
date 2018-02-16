@@ -29,9 +29,9 @@ export default {
     var promise = Promise.resolve(
       this.get(`/enrollments/user/${courseId}`).then(response => {
         if (typeof response !== "undefined") {
+          console.log(response.data.data.role);
           return (
-            response.data.data.role_id ===
-            "40d5d24b-5bfb-492b-99f9-4801a21ccee2"
+            response.data.data.role === "teacher"
           );
         }
       })

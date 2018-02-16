@@ -19,11 +19,10 @@ class AddAssignment extends React.Component {
         title: "",
         due_at: "",
         type: 0,
-        is_published: false, 
+        is_published: false,
+        is_groups: false,
         points_possible: "",
-        //groupsets: [],
-        //groups: [],
-        users: []
+        assigned_to: []
       },
       type: {
         "Short answer": 0,
@@ -37,7 +36,9 @@ class AddAssignment extends React.Component {
       pm: false,
       redirect: false,
       membershipData: [],
-      groupData: []
+      groupData: [],
+      noGroupsSelected: false,
+      noUsersSelected: false
     }
   }
 
@@ -106,6 +107,15 @@ class AddAssignment extends React.Component {
       data 
     });
     console.log(`Published: ${data.is_published}`);
+  }
+
+  handleAssignToGroups(event){
+    var data = Object.assign({}, this.state.data);
+    data.is_groups = !data.is_groups;
+    this.setState({ 
+      data 
+    });
+    console.log(`Is groups: ${data.is_groups}`);
   }
 
 
@@ -187,9 +197,7 @@ class AddAssignment extends React.Component {
   }
   */
 
-  clearUsers(){
 
-  }
   clearGroups(){
     var select = document.getElementById('GroupSelectionCard');
     for(let i = 0, l = select.options.length; i < l; ++i){
@@ -204,56 +212,79 @@ class AddAssignment extends React.Component {
   }
 
   handleSelectGroupset(values){
-    console.log(`hit handleSelectGroupset`);
-    this.findGroups(values);
+    console.log(this.state.groupData);
+    console.log(`hit handleSelectGroup`);
+    var selectGroupset = document.getElementById("GroupsetSelectionCard");
+    var selectGroup = document.getElementById("GroupSelectionCard");
+    var accumulator = [];
+    for(let i = 0; i < selectGroupset.options.length; ++i){
+      if(selectGroupset.options[i].selected){
+        for(let j = 0; j < this.state.groupData.length; ++j){
+          if(selectGroupset.options[i].id === this.state.groupData[j].groupset_id){
+            accumulator.push(this.state.groupData[j].id);
+          }
+        }
+      }
+    }
+    var found;
+    for(let i = 0; i < selectGroup.options.length; ++i){
+      found = false;
+      for(let j = 0; j < accumulator.length; ++j){
+        if(selectGroup.options[i].id === accumulator[j]){
+          found = true;
+          break;
+        }
+      }
+      if(found === true){
+        selectGroup.options[i].selected = 'selected';
+      }else{
+        selectGroup.options[i].selected = false;
+      }
+    }
+    this.matchGroupsWithUsers();
   }
+
 
   handleSelectGroup(values){
     this.clearGroupsets();
-    this.findUsers(values);
+    this.matchGroupsWithUsers();
   }
 
   handleSelectUser(values){
-    this.clearGroups();
     this.clearGroupsets();
-    var data = Object.assign({}, this.state.data);
-    data.users = values;
-    this.setState({
-      data
-    });
+    this.clearGroups();
   }
 
-  findGroups(groupsets){
-    //console.log(`Groupsets ${groupsets}`);
-    console.log(`hit findGroups`);
-    console.log(this.state.groupData);
+  matchGroupsWithUsers(){
+    var selectGroup = document.getElementById("GroupSelectionCard");
+    var selectUser = document.getElementById("UserSelectionCard");
     var accumulator = [];
-    for(let i = 0; i < groupsets.length; ++i){
-      for(let j = 0; j < this.state.groupData.length; ++j){
-        //console.log(`${groupsets[i]} == ${this.state.groupData[j].groupset_id}\n`);
-        if(groupsets[i] === this.state.groupData[j].groupset_id){
-          accumulator.push(this.state.groupData[j].id);
-          this.setGroupSelected(this.state.groupData[j].id);
-          //findUsers(this.state.groupData[j].id);
+    for(let i = 0; i < selectGroup.options.length; ++i){
+      if(selectGroup.options[i].selected){
+        for(let j = 0; j < this.state.membershipData.length; ++j){
+          if(selectGroup.options[i].id === this.state.membershipData[j].group_id){
+            accumulator.push(this.state.membershipData[j].user_id);
+          }
         }
       }
     }
-    console.log(accumulator);
-    this.findUsers(accumulator);
-  }
 
-  findUsers(groups){
-    console.log(`hit findUsers`);
-    for(let i = 0; i < groups.length; ++i){
-      for(let j = 0; j < this.state.membershipData.length; ++j){
-        if(this.state.membershipData[j].group_id === groups[i]){
-          this.setUserSelected(this.state.membershipData[j].user_id);
+    var found;
+    for(let i = 0; i < selectUser.options.length; ++i){
+      found = false;
+      for(let j = 0; j < accumulator.length; ++j){
+        if(selectUser.options[i].id === accumulator[j]){
+          found = true;
+          break;
         }
+      }
+      if(found === true){
+        selectUser.options[i].selected = 'selected';
+      }else{
+        selectUser.options[i].selected = false;
       }
     }
   }
-
-
   
   setGroupSelected(group_id){
     console.log(`hit setGroupSelected`);
@@ -275,6 +306,18 @@ class AddAssignment extends React.Component {
     }
   }
 
+
+  gatherSelectedGroups(){
+    var select = document.getElementById("GroupSelectionCard");
+    var accumulator = [];
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      if(select.options[i].selected){
+        accumulator.push(select.options[i].id);
+      }
+    }
+    return accumulator;
+  }
+
   gatherSelectedUsers(){
     var select = document.getElementById("UserSelectionCard");
     var accumulator = [];
@@ -286,14 +329,49 @@ class AddAssignment extends React.Component {
     return accumulator;
   }
 
+  
+  validateForm(){
+    
+  }
+  
   handleCreate(event){
-    var data = Object.assign({}, this.state.data);
-    data.due_at = this.convertToMilitary();
-    data.users = this.gatherSelectedUsers();
-    this.setState({ 
-      data 
-    },
-    this.postAssignment);
+    var temp;
+    var noGroupsSelected;
+    var noUsersSelected;
+
+    if(this.state.data.is_groups){
+      temp = this.gatherSelectedGroups();
+      if(temp.length === 0){
+        noGroupsSelected = true;
+        noUsersSelected = false;
+      }else {
+        noGroupsSelected = false;
+        noUsersSelected = false;
+      }
+    }else{
+      temp = this.gatherSelectedUsers();
+      if(temp.length === 0){
+        noUsersSelected = true;
+        noGroupsSelected = false;
+      }else{
+        noUsersSelected = false;
+        noGroupsSelected = false;
+      }
+    }
+    this.setState({
+      noGroupsSelected: noGroupsSelected,
+      noUsersSelected: noUsersSelected
+    }, ()=>{
+      if(this.state.noGroupsSelected === false && this.state.noUsersSelected === false){
+        var data = Object.assign({}, this.state.data);
+        data.due_at = this.convertToMilitary();
+        data.assigned_to = temp;
+        this.setState({ 
+          data 
+        },
+        this.postAssignment);
+      }
+    });
   }
 
   render() {
@@ -377,8 +455,8 @@ class AddAssignment extends React.Component {
 
         <div className="field is-grouped">
             <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
-            <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups}/>
-            <UserSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectUser}/>
+            <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups} selected={this.state.noGroupsSelected}/>
+            <UserSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectUser} is_groups={this.state.data.is_groups} selected={this.state.noUsersSelected}/>
         </div>
         
         <div className="field">
@@ -388,11 +466,17 @@ class AddAssignment extends React.Component {
           </div>
         </div>
 
-        <div className="field">
+        <div className="field is-grouped">
           <div className="control">
             <label className="checkbox">
               <input type="checkbox" onChange={this.handlePublish.bind(this)}/>
               Publish
+            </label>
+          </div>
+          <div className="control">
+            <label className="checkbox">
+              <input type="checkbox" onChange={this.handleAssignToGroups.bind(this)}/>
+              Assign to Groups
             </label>
           </div>
         </div>
@@ -405,6 +489,8 @@ class AddAssignment extends React.Component {
             <button className="button is-text">Cancel</button>
           </div>
         </div>
+        {this.state.noGroupsSelected ? <p class="help is-danger">Please select at least one group...</p> : ""}
+        {this.state.noUsersSelected ?   <p class="help is-danger">Please select at least one users...</p> : ""}
       </div>
     );
   }

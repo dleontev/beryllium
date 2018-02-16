@@ -33,6 +33,8 @@ defmodule BackendWeb.Router do
     resources "/questions", QuestionController
     resources "/answers", AnswerController
     resources "/assignments_to_groupsets", Assignment_to_groupsetController
+    resources "/assignments_to_groups", AssignmentToGroupController
+    resources "/assignments_to_users", AssignmentToUserController
     
 
     resources "/posts", PostController, except: [:new, :edit] 

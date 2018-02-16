@@ -24,8 +24,9 @@ defmodule BackendWeb.AssignmentController do
   %{
     "content" => content, 
     "due_at" => due_at, 
-    "groupsets" => groupsets, 
-    "is_published" => is_published, 
+    "assigned_to" => assigned_to, 
+    "is_published" => is_published,
+    "is_groups" => is_groups,
     "points_possible" => points_possible,
     "section_id" => section_id,
     "title" => title,
@@ -43,9 +44,14 @@ defmodule BackendWeb.AssignmentController do
                           title: title
                         }
     with {:ok, %Assignment{} = assignment} <- Auth.create_assignment(assignment_params) do
-      for n <- groupsets do
-        params = %{id: Ecto.UUID.generate(), assignment_id: id, groupset_id: n}
-        Auth.create_assignment_to_groupset(params)
+      for n <- assigned_to do
+        if(is_groups == true) do
+          params = %{id: Ecto.UUID.generate(), assignment_id: id, group_id: n}
+          Auth.create_assignment_to_group(params)
+        else
+          params = %{id: Ecto.UUID.generate(), assignment_id: id, user_id: n}
+          Auth.create_assignment_to_user(params)
+        end
       end
       conn
       |> put_status(:created)

@@ -1428,15 +1428,15 @@ defmodule Backend.Auth do
         where: a.section_id == ^section_id,
         select: [:id, :due_at, :type, :content, :points_possible, :title, :is_published]
       else
-        from au in AssignmentToUser,
-        where: au.user_id == ^user_id,
-        join: ag in AssignmentToGroup,
-        join: m in Membership,
-        on: ag.group_id == m.group_id,
-        where: m.user_id == ^user_id,
-        join: a in Assignment,
-        on: au.assignment_id == a.id or ag.assignment_id == a.id,
-        distinct: [a.id, a.due_at, a.type, a.content, a.points_possible, a.title, a.is_published],
+        from a in Assignment,
+        where: a.section_id == ^section_id,
+        left_join: au in AssignmentToUser,
+        on: a.id == au.assignment_id and au.user_id == ^user_id,
+        left_join: ag in AssignmentToGroup,
+        on: a.id == ag.assignment_id,
+        left_join: m in Membership,
+        on: m.group_id == ag.group_id and m.user_id == ^user_id,
+        where: not is_nil(m.user_id) or au.user_id == ^user_id,
         select: %{id: a.id, due_at: a.due_at, type: a.type, content: a.content, points_possible: a.points_possible, title: a.title, is_published: a.is_published}
       end
     result = Repo.all(query)

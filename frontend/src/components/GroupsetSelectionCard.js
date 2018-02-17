@@ -6,8 +6,7 @@ class GroupsetSelectionCard extends React.Component{
 		super();
 		this.state = {
 			data: [],
-			loading: true,
-			selected: []
+			loading: true
 		}
 	}
 

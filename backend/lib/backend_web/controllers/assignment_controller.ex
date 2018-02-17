@@ -67,9 +67,8 @@ defmodule BackendWeb.AssignmentController do
   end
 
   def assignments_by_section(conn, %{"section_id" => section_id}) do
-    IO.inspect(conn)
-    IO.inspect(section_id)
-    {:ok}
+    assignments = Auth.list_assignments_by_section(section_id, conn)
+    render(conn, "show_by_section.json", assignments: assignments)
   end
 
   def update(conn, %{"id" => id, "assignment" => assignment_params}) do

@@ -10,7 +10,23 @@ defmodule BackendWeb.AssignmentView do
     %{data: render_one(assignment, AssignmentView, "assignment.json")}
   end
 
+  def render("show_by_section.json", %{assignments: assignments}) do
+    %{data: render_many(assignments, AssignmentView, "assignment_by_section.json")}
+  end
+
   def render("assignment.json", %{assignment: assignment}) do
     %{id: assignment.id}
+  end
+
+  def render("assignment_by_section.json", %{assignment: assignment}) do
+    %{
+      id: assignment.id, 
+      due_at: assignment.due_at,
+      type: assignment.type,
+      content: assignment.content,
+      is_published: assignment.is_published,
+      points_possible: assignment.points_possible,
+      title: assignment.title
+    }
   end
 end

@@ -19,6 +19,8 @@ defmodule Backend.Auth do
   alias Backend.Auth.Membership
   alias Backend.Auth.Post
   alias Backend.Auth.Discussion
+  alias Backend.Auth.AssignmentToUser
+  alias Backend.Auth.AssignmentToGroup
 
   @doc """
   Returns the list of users.
@@ -1436,6 +1438,40 @@ defmodule Backend.Auth do
     Repo.all(Assignment)
   end
 
+  def list_assignments_by_section(section_id, conn) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    [head | tail] = check_if_teacher(section_id, conn, user_id)
+
+    query = 
+      if(head == "teacher") do
+        from a in Assignment,
+        where: a.section_id == ^section_id,
+        select: [:id, :due_at, :type, :content, :points_possible, :title, :is_published]
+      else
+        from a in Assignment,
+        where: a.section_id == ^section_id,
+        left_join: au in AssignmentToUser,
+        on: a.id == au.assignment_id and au.user_id == ^user_id,
+        left_join: ag in AssignmentToGroup,
+        on: a.id == ag.assignment_id,
+        left_join: m in Membership,
+        on: m.group_id == ag.group_id and m.user_id == ^user_id,
+        where: not is_nil(m.user_id) or au.user_id == ^user_id,
+        select: %{id: a.id, due_at: a.due_at, type: a.type, content: a.content, points_possible: a.points_possible, title: a.title, is_published: a.is_published}
+      end
+    result = Repo.all(query)
+    IO.inspect(result)
+  end
+
+  def check_if_teacher(section_id, conn, user_id) do
+    query = from u in User,
+      join: e in Enrollment,
+      on: u.id == e.user_id,
+      where: u.id == ^user_id and e.section_id == ^section_id,
+      select: e.role
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single assignment.
 
@@ -1997,8 +2033,6 @@ defmodule Backend.Auth do
     Page.changeset(page, %{})
   end
 
-  alias Backend.Auth.AssignmentToGroup
-
   @doc """
   Returns the list of assignments_to_groups.
 
@@ -2116,8 +2150,6 @@ defmodule Backend.Auth do
   def change_assignment_to_group(%AssignmentToGroup{} = assignment_to_group) do
     AssignmentToGroup.changeset(assignment_to_group, %{})
   end
-
-  alias Backend.Auth.AssignmentToUser
 
   @doc """
   Returns the list of assignments_to_users.

@@ -10,7 +10,7 @@ defmodule Backend.Auth.Assignment do
     field(:type, :integer, null: false)
     field(:content, :string, null: false)
     field(:is_published, :boolean)
-    field(:points_possible, :integer, null: false)
+    field(:points_possible, :decimal, null: false)
     field(:title, :string, null: false)
   end
 

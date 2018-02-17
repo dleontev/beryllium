@@ -29,10 +29,7 @@ export default {
     var promise = Promise.resolve(
       this.get(`/enrollments/user/${courseId}`).then(response => {
         if (typeof response !== "undefined") {
-          console.log(response.data.data.role);
-          return (
-            response.data.data.role === "teacher"
-          );
+          return response.data.data.role === "teacher";
         }
       })
     );

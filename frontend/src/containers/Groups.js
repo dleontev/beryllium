@@ -21,7 +21,7 @@ class Groups extends React.Component {
     if (this.state.groups === null) return <div className="loading" />;
 
     if (this.state.groups.length === 0) {
-      return "No groups found.";
+      return "You do not belong to any group.";
     }
 
     return (

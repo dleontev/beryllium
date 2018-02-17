@@ -23,6 +23,13 @@ class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
+    if(this.state.email === "") {
+      return;
+    }
+    else if(this.state.password === "") {
+      return;
+    }
+
     api
       .post(`/sessions/`, {
         email: this.state.email,

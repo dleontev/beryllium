@@ -7,7 +7,8 @@ class NewGroupSetDialog extends React.Component {
       name: "",
       allowSelfSignup: false,
       groupCount: 0,
-      autoGenerateGroups: null
+      autoGenerateGroups: null,
+      sectionId: this.props.sectionId
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -24,7 +25,6 @@ class NewGroupSetDialog extends React.Component {
   }
 
   handleFormSubmit(e) {
-    console.log(this.state.autoGenerateGroups);
     e.preventDefault();
     if (this.state.name.length === 0) {
       console.log("ERROR: Empty name.");
@@ -38,7 +38,8 @@ class NewGroupSetDialog extends React.Component {
         this.state.name,
         this.state.allowSelfSignup,
         this.state.groupCount,
-        this.state.autoGenerateGroups
+        this.state.autoGenerateGroups,
+        this.props.sectionId
       );
       this.props.closeDialog(e);
     }
@@ -92,8 +93,9 @@ class NewGroupSetDialog extends React.Component {
                   </label>
                 </div>
               </div>
-              <hr />
-              <span className="label">Group Structure</span>
+              {/*<hr />
+
+               <span className="label">Group Structure</span>
 
               <div className="field">
                 <label className="radio">
@@ -129,8 +131,8 @@ class NewGroupSetDialog extends React.Component {
                   />{" "}
                   I'll create groups manually
                 </label>
-              </div>
-            </section>
+              </div>*/}
+            </section> 
 
             <footer className="modal-card-foot">
               <button

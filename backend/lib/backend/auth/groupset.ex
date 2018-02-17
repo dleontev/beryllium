@@ -3,7 +3,7 @@ defmodule Backend.Auth.Groupset do
   import Ecto.Changeset
   alias Backend.Auth.Groupset
 
-  @primary_key {:id, :binary_id, autogenerate: false}
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "groupsets" do
     field(:section_id, :binary_id, null: false)
     field(:name, :string, null: false)
@@ -13,7 +13,7 @@ defmodule Backend.Auth.Groupset do
   @doc false
   def changeset(%Groupset{} = groupset, attrs) do
     groupset
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:section_id, :name, :is_selfsignup])
+    |> validate_required([:section_id, :name, :is_selfsignup])
   end
 end

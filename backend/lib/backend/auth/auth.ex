@@ -497,14 +497,19 @@ defmodule Backend.Auth do
   def list_members_by_section(section_id) do
     query =
       from(
-        u in User,
-        join: m in Membership,
-        on: u.id == m.user_id,
-        where: m.section_id == ^section_id,
+        e in Enrollment,
+        join: u in User,
+        on: u.id == e.user_id,
+        join: gs in Groupset,
+        on: gs.section_id == ^section_id,
+        left_join: m in Membership,
+        on: m.groupset_id == gs.id and m.user_id == u.id,
+        where: e.section_id == ^section_id and e.role == "student",
         order_by: [desc: u.name],
         select: {
           map(u, [:id, :name]),
-          map(m, [:group_id])
+          map(m, [:group_id]),
+          map(gs, [:id])
         }
       )
 
@@ -513,12 +518,27 @@ defmodule Backend.Auth do
 
   defp extract_group_user_info({
          %{id: id, name: name},
-         %{group_id: group_id}
+         %{group_id: group_id},
+         %{id: groupset_id}
        }) do
     %{
       id: id,
       name: name,
-      group_id: group_id
+      group_id: group_id,
+      groupset_id: groupset_id
+    }
+  end
+
+  defp extract_group_user_info({
+         %{id: id, name: name},
+         nil,
+         %{id: groupset_id}
+       }) do
+    %{
+      id: id,
+      name: name,
+      group_id: nil,
+      groupset_id: groupset_id
     }
   end
 
@@ -2027,17 +2047,23 @@ defmodule Backend.Auth do
   end
 
   def parse_bulk_user(assignment_id, [head | tail], accumulator) do
-    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, user_id: head} | accumulator]
-    if(length(tail) != 0) do
+    result = [
+      %{id: Ecto.UUID.generate(), assignment_id: assignment_id, user_id: head} | accumulator
+    ]
+
+    if length(tail) != 0 do
       parse_bulk_user(assignment_id, tail, result)
     else
       result
     end
   end
 
-    def parse_bulk_group(assignment_id, [head | tail], accumulator) do
-    result = [%{id: Ecto.UUID.generate(), assignment_id: assignment_id, group_id: head} | accumulator]
-    if(length(tail) != 0) do
+  def parse_bulk_group(assignment_id, [head | tail], accumulator) do
+    result = [
+      %{id: Ecto.UUID.generate(), assignment_id: assignment_id, group_id: head} | accumulator
+    ]
+
+    if length(tail) != 0 do
       parse_bulk_group(assignment_id, tail, result)
     else
       result

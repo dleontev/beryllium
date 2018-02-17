@@ -30,7 +30,8 @@ defmodule BackendWeb.UserView do
     %{
       id: user.id,
       name: user.name,
-      group_id: user.group_id
+      group_id: user.group_id,
+      groupset_id: user.groupset_id
     }
   end
 

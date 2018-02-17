@@ -38,13 +38,14 @@ class StudentView extends React.Component {
       });
   }
 
-  handleJoin(groupId) {
+  handleJoin(groupId, groupSetId) {
     $(":button").prop("disabled", true);
     api
       .post("/memberships/", {
         membership: {
           user_id: api.getUserId(),
           group_id: groupId,
+          groupset_id: groupSetId,
           section_id: this.state.sectionId
         }
       })
@@ -53,7 +54,7 @@ class StudentView extends React.Component {
       });
   }
 
-  handleSwitchTo(oldGroupId, newGroupId) {
+  handleSwitchTo(oldGroupId, newGroupId, groupSetId) {
     $(":button").prop("disabled", true);
     api
       .delete("/memberships/", {
@@ -61,7 +62,7 @@ class StudentView extends React.Component {
         section_id: this.state.sectionId
       })
       .then(() => {
-        this.handleJoin(newGroupId);
+        this.handleJoin(newGroupId, groupSetId);
       });
   }
 
@@ -128,17 +129,21 @@ class StudentView extends React.Component {
       })
       .map(x => x.group_id);
 
+    var groups = this.state.groups;
+
+    for (var key in groups) {
+      groups[key].members = this.state.members.filter(function(member) {
+        return member.group_id === groups[key].id;
+      });
+    }
+
     var currentUserGroupsets = this.state.groups.filter(function(group) {
       return currentUserGroups.includes(group.id);
     });
 
-    return this.state.groups.map((group, index) => {
-      const members = this.state.members.filter(function(member) {
-        return member.group_id === group.id;
-      });
-
+    return groups.map((group, index) => {
       const allowedToLeave =
-        members.find(x => x.id === currentUserId) !== undefined &&
+        group.members.find(x => x.id === currentUserId) !== undefined &&
         group.is_selfsignup;
 
       var memberOfGroupset = currentUserGroupsets
@@ -146,7 +151,7 @@ class StudentView extends React.Component {
         .includes(group.groupset_id);
 
       var isGroupUnlocked =
-        (members.length < group.max_members || group.max_members === 0) &&
+        (group.members.length < group.max_members || group.max_members === 0) &&
         group.is_selfsignup;
 
       const allowedToJoin =
@@ -169,15 +174,18 @@ class StudentView extends React.Component {
           key={group.id}
           name={group.name}
           groupset_name={group.groupset_name}
-          members={this.getMembersList(members)}
-          current_members={members.length}
+          groupset_id={group.groupset_id}
+          members={this.getMembersList(group.members)}
+          current_members={group.members.length}
           max_members={group.max_members > 0 ? `/${group.max_members}` : null}
           allowedToLeave={allowedToLeave}
           allowedToJoin={allowedToJoin}
           allowedToSwitch={allowedToSwitch}
           handleLeave={() => this.handleLeave(group.id, true)}
-          handleJoin={() => this.handleJoin(group.id)}
-          handleSwitchTo={() => this.handleSwitchTo(sourceGroup, group.id)}
+          handleJoin={() => this.handleJoin(group.id, group.groupset_id)}
+          handleSwitchTo={() =>
+            this.handleSwitchTo(sourceGroup, group.id, group.groupset_id)
+          }
         />
       );
     });

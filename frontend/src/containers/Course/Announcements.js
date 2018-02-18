@@ -8,7 +8,7 @@ class Announcements extends React.Component {
     super(props);
     this.refreshAnnouncements = this.refreshAnnouncements.bind(this);
     this.state = {
-      announcements: null,
+      announcements: null
     };
   }
 
@@ -61,11 +61,7 @@ class Announcements extends React.Component {
         author={announcement.author_name}
         inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
         updated_at={new Date(announcement.updated_at).toLocaleDateString()}
-        content={
-          announcement.content.length > 100
-            ? announcement.content.substring(0, 100) + "[...]"
-            : announcement.content
-        }
+        content={announcement.content}
         is_locked={announcement.is_locked}
         showControls={this.props.isTeacher}
       />
@@ -86,7 +82,7 @@ class Announcements extends React.Component {
           </div>
         </nav>
 
-        <div>{this.getAnnouncements()}</div>
+        {this.getAnnouncements()}
       </div>
     );
   }

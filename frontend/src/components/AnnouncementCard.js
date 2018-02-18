@@ -46,39 +46,14 @@ class AnnouncementCard extends React.Component {
 
   getDelete() {
     return (
-      <div className="control">
-        <a className="button" onClick={() => this.handleLock()}>
-          <span className="icon">
-            {this.props.is_locked ? (
-              <div className="tooltip">
-                <i className="fa fa-unlock fa-lg" />
-                <span className="tooltiptext">Unlock announcement</span>
-              </div>
-            ) : (
-              <div className="tooltip">
-                <i className="fa fa-lock fa-lg" />
-                <span className="tooltiptext">Lock announcement</span>
-              </div>
-            )}
-          </span>
-        </a>
-      </div>
+      <a onClick={() => this.handleLock()}>
+        {this.props.is_locked ? "Unlock" : "Lock"}
+      </a>
     );
   }
 
   getLock() {
-    return (
-      <div className="control">
-        <a className="button is-danger" onClick={() => this.handleModal()}>
-          <span className="icon">
-            <div className="tooltip">
-              <i className="fa fa-trash-o fa-lg" />
-              <span className="tooltiptext">Delete announcement</span>
-            </div>
-          </span>
-        </a>
-      </div>
-    );
+    return <a onClick={() => this.handleModal()}>Delete</a>;
   }
 
   render() {
@@ -89,38 +64,67 @@ class AnnouncementCard extends React.Component {
           onClick={() => this.handleDelete()}
           onCancel={() => this.handleModal()}
         />
-        <article className="message is-link">
-          <div className="message-header">
-            <div className="levels">
-              <Link
-                to={`announcements/${this.props.id}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div className="level-left">{this.props.title}</div>
-              </Link>
-            </div>
-            <div className="level-left">
-              <div className="field is-grouped">
-                <div className="control is-small">
-                  <div className="tooltip">
-                    {this.props.is_locked && <i className="fa fa-lock" />}
-                    <span className="tooltiptext">Locked</span>
+
+        <div className="panel" style={{ marginBottom: "15px" }}>
+          <div className="panel-heading">
+            <nav className="level">
+              <div className="level-left">
+                <div className="level-item">
+                  <Link
+                    to={`announcements/${this.props.id}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <div className="level-left">{this.props.title}</div>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="level-right">
+                <div className="level-item">
+                  <div className="control is-small">
+                    <div className="tooltip">
+                      {this.props.is_locked && <i className="fa fa-lock" />}
+                      <span className="tooltiptext">
+                        This topic is closed for comments.
+                      </span>
+                    </div>
                   </div>
                 </div>
-                {this.props.showControls && this.getDelete()}
-                {this.props.showControls && this.getLock()}
+                <p className="level-item">
+                  {this.props.showControls && this.getDelete()}
+                </p>
+                <p className="level-item">
+                  {this.props.showControls && this.getLock()}
+                </p>
               </div>
-            </div>
+            </nav>
           </div>
 
-          <div className="message-body">
-            <p>
-              <strong>{this.props.author}</strong>{" "}
-              <small>{this.props.inserted_at}</small>
-            </p>
-            <div>{this.props.content}</div>
+          <div className="panel-block">
+            <table
+              className="table is-fullwidth"
+              style={{ margin: 0, padding: 0 }}
+            >
+              <tbody>
+                <tr>
+                  <td>
+                    <b>{this.props.author}</b>&nbsp;
+                  </td>
+                  <td style={{ textAlign: "right" }}>
+                    {this.props.inserted_at}
+                  </td>
+                </tr>
+                <tr>
+                  <td colSpan="2">
+                    <div className="announcement fade">
+                      <p>{this.props.content}</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </article>
+        </div>
       </div>
     );
   }

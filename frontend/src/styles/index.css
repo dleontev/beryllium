@@ -82,7 +82,7 @@ article.post:last-child {
   text-align: center;
   border-radius: 6px;
   padding: 10px;
-  
+
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
@@ -92,4 +92,32 @@ article.post:last-child {
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.announcement {
+  margin: 0 0 1em 0;
+  overflow: hidden;
+}
+.announcement p {
+  margin: 0;
+}
+
+.fade {
+  position: relative;
+  height: 1.5em; /* exactly three lines */
+}
+
+.fade:after {
+  content: "";
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10%;
+  height: 1.5em;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1) 75%
+  );
 }

@@ -19,12 +19,14 @@ class NewGroupCard extends React.Component {
 
   handleFormSubmit(e) {
     e.preventDefault();
+    
     if (this.state.name.length === 0) {
-      console.log("ERROR: Name is empty.");
-    } else {
-      this.props.createGroup(this.state.name, this.state.joinLevel);
-      this.props.closeDialog(e);
+      alert("Please, enter a valid group name.");
+      return;
     }
+
+    this.props.createGroup(this.state.name, this.state.joinLevel);
+    this.props.closeDialog(e);
   }
 
   handleCancel(e) {

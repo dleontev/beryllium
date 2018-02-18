@@ -15,12 +15,16 @@ defmodule BackendWeb.GroupsetView do
   end
 
   def render("groupset_by_section.json", %{groupset: groupset}) do
-    IO.puts("inspecting groupset: ")
-    IO.inspect(groupset)
-    %{id: groupset.id, name: groupset.name}
+    %{
+      id: groupset.id, 
+      name: groupset.name
+    }
   end
 
   def render("groupset.json", %{groupset: groupset}) do
-    %{id: groupset.id, name: groupset.name}
+    %{
+      id: groupset.id, 
+      name: groupset.name
+    }
   end
 end

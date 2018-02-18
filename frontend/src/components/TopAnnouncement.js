@@ -39,7 +39,6 @@ class TopAnnouncement extends React.Component {
   }
 
   handleReply() {
-    console.log("Reply");
     this.setState({
       reply: !this.state.reply
     });
@@ -61,6 +60,9 @@ class TopAnnouncement extends React.Component {
   render() {
     return (
       <div className="card">
+        <header className="card-header">
+          <p className="card-header-title">discussion_title</p>
+        </header>
         <div className="card-content">
           <strong>{this.props.author_name}</strong>
           <div className="timestamp">{this.props.inserted_at}</div>

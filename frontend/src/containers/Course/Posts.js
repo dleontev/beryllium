@@ -118,11 +118,10 @@ class Discussion extends Component {
 
   render() {
     return (
-      <section className="section">
-        {this.getOpeningPost()}
-        <br />
+      <div>
+        {this.getOpeningPost()} <br />
         {this.state.replies ? this.getReplies() : ""}
-      </section>
+      </div>
     );
   }
 }

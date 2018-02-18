@@ -41,7 +41,7 @@ defmodule BackendWeb.UserView do
       section_name: user.section_name,
       name: user.name,
       course_code: user.course_code,
-      role_name: user.role_name
+      role_name: String.capitalize(user.role_name)
     }
   end
 end

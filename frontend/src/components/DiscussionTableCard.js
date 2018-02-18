@@ -51,13 +51,9 @@ class DiscussionTableCard extends React.Component {
   render() {
     return (
       <article className="post">
-        <h4>{this.props.title}</h4>
-        <span className="pull-right has-text-grey-light">
-          <div className="tooltip">
-            {this.props.is_locked && <i className="fa fa-lock" />}
-            <span className="tooltiptext">Locked</span>
-          </div>{" "}
-          <i className="fa fa-comments" />{" "}{this.state.totalReplies}
+        {this.props.title}
+        <span className="pull-right">
+          <i className="fa fa-comments" />&nbsp;{this.state.totalReplies}
         </span>
         <div className="media">
           <div className="media-content">

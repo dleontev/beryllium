@@ -978,7 +978,7 @@ defmodule Backend.Auth do
         order_by: p.inserted_at,
         where: d.section_id == ^section_id and d.is_discussion == ^is_discussion,
         select: {
-          map(d, [:title, :id, :is_locked]),
+          map(d, [:title, :id, :is_locked, :is_pinned]),
           map(p, [:content, :inserted_at, :updated_at]),
           map(u, [:id, :name])
         }
@@ -988,7 +988,7 @@ defmodule Backend.Auth do
   end
 
   defp extract_discussion_info({
-         %{title: title, id: id, is_locked: is_locked},
+         %{title: title, id: id, is_locked: is_locked, is_pinned: is_pinned},
          %{content: content, inserted_at: inserted_at, updated_at: updated_at},
          %{name: author_name, id: author_id}
        }) do
@@ -997,6 +997,7 @@ defmodule Backend.Auth do
       id: id,
       content: content,
       is_locked: is_locked,
+      is_pinned: is_pinned,
       inserted_at: inserted_at,
       updated_at: updated_at,
       author_name: author_name,

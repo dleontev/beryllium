@@ -25,6 +25,7 @@ defmodule BackendWeb.DiscussionView do
       content: discussion.content, 
       inserted_at: discussion.inserted_at, 
       is_locked: discussion.is_locked,
+      is_pinned: discussion.is_pinned,
       updated_at: discussion.updated_at, 
       author_name: discussion.author_name,
       author_id: discussion.author_id

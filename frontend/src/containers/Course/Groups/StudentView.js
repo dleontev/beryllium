@@ -3,7 +3,6 @@ import api from "../../../api/Api";
 import GroupCard from "../../../components/GroupCard";
 import UserListCard from "../../../components/UserListCard";
 import NewGroupDialog from "../../../components/Form/NewGroupDialog";
-import { Link } from "react-router-dom";
 import $ from "jquery";
 
 class StudentView extends React.Component {
@@ -101,14 +100,7 @@ class StudentView extends React.Component {
     }
 
     return members.map((member, index) => (
-      <UserListCard
-        key={member.id}
-        name={
-          <Link to={`/courses/${this.state.sectionId}/users/${member.id}`}>
-            {member.name}
-          </Link>
-        }
-      />
+      <UserListCard key={member.id} name={member.name} />
     ));
   }
 
@@ -131,10 +123,12 @@ class StudentView extends React.Component {
 
     var groups = this.state.groups;
 
+    function filterMember(member) {
+      return member.group_id === groups[key].id;
+    }
+
     for (var key in groups) {
-      groups[key].members = this.state.members.filter(function(member) {
-        return member.group_id === groups[key].id;
-      });
+      groups[key].members = this.state.members.filter(filterMember);
     }
 
     var currentUserGroupsets = this.state.groups.filter(function(group) {
@@ -201,6 +195,7 @@ class StudentView extends React.Component {
           closeDialog={() => this.closeDialog()}
           createGroup={this.createGroup}
         />
+
         <nav className="navbar is-transparent">
           <div className="navbar-brand">
             <h1 className="is-size-4">Groups</h1>
@@ -223,7 +218,7 @@ class StudentView extends React.Component {
           </div>
         </nav>
 
-        <div>{this.getGroupSets()}</div>
+        {this.getGroupSets()}
       </div>
     );
   }

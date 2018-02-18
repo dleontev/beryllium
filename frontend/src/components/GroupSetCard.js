@@ -10,6 +10,12 @@ class GroupSetCard extends React.Component {
   }
 
   getUserGroupData() {
+    const groups = this.props.groups;
+
+    if (groups.length === 0) {
+      return "There are currently no groups in this group set. Add a group to get started.";
+    }
+
     return this.props.groups.map((group, index) => (
       <DropGroupCard
         key={group.id}
@@ -19,6 +25,7 @@ class GroupSetCard extends React.Component {
         members={this.props.members.filter(function(member) {
           return member.group_id === group.id;
         })}
+        isUnassigned={false}
       />
     ));
   }
@@ -27,7 +34,7 @@ class GroupSetCard extends React.Component {
     var members = this.props.members;
 
     var index = members.findIndex(
-      m => m.id == userId && m.group_id === sourceGroup
+      m => m.id === userId && m.group_id === sourceGroup
     );
 
     if (index !== -1) {
@@ -38,11 +45,6 @@ class GroupSetCard extends React.Component {
   }
 
   handleMove(userId, sourceGroup, targetGroup) {
-    console.log("reached handlemove #2.");
-    console.log("User id" + sourceGroup);
-    console.log("Source group" + sourceGroup);
-    console.log("Target group" + targetGroup);
-
     if (sourceGroup === "-1") {
       this.updateGroup(userId, null, targetGroup);
     } else if (targetGroup === "-1") {
@@ -56,16 +58,67 @@ class GroupSetCard extends React.Component {
     return (
       <DragDropContextProvider backend={HTML5Backend}>
         <div>
-          <DropGroupCard
-            handleMove={this.handleMove}
-            name="Unassigned"
-            members={this.props.members.filter(function(member) {
-              return member.group_id === null;
-            })}
-            id={"-1"}
-          />
+          <nav className="navbar">
+            <div className="navbar-end">
+              <div className="field is-grouped">
+                <div className="control">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      alert("Add group button is pressed.");
+                    }}
+                  >
+                    <span className="icon">
+                      <i className="fa fa-plus-circle" />
+                    </span>
+                    <span>Group</span>
+                  </button>
+                </div>
 
-          {this.getUserGroupData()}
+                <div className="control">
+                  <button
+                    className="button"
+                    onClick={() => {
+                      alert("Edit groupset button is pressed.");
+                    }}
+                  >
+                    <span className="icon">
+                      <i className="fa fa-edit" />
+                    </span>
+                    <span>Edit</span>
+                  </button>
+                </div>
+
+                <div className="control">
+                  <button
+                    className="button is-danger is-outlined"
+                    onClick={() => {
+                      alert("Delete groupset button is pressed.");
+                    }}
+                  >
+                    <span className="icon">
+                      <i className="fa fa-trash" />
+                    </span>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </nav>
+          <div className="columns">
+            <div className="column is-one-third">
+              <DropGroupCard
+                handleMove={this.handleMove}
+                name="Unassigned Students"
+                members={this.props.members.filter(function(member) {
+                  return member.group_id === null;
+                })}
+                id={"-1"}
+                isUnassigned={true}
+              />
+            </div>
+            <div className="column">{this.getUserGroupData()}</div>
+          </div>
         </div>
       </DragDropContextProvider>
     );

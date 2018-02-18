@@ -31,14 +31,13 @@ class GroupMemberCard extends React.Component {
   };
 
   render() {
-    const { isDragging, connectDragSource } = this.props;
+    const { connectDragSource } = this.props;
 
     return connectDragSource(
-      <div className="button is-rounded">
-        <span className="icon">
-          <i className="fa fa-ellipsis-v" />
-        </span>
-        <span>{this.props.name}</span>
+      <div className="control">
+        <div className="tags has-addons">
+          <span className="tag is-medium">{this.props.name}</span>
+        </div>
       </div>
     );
   }

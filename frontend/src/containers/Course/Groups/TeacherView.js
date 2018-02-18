@@ -17,6 +17,8 @@ class TeacherView extends React.Component {
 
       isNewGroupSetDialogActive: false
     };
+
+    this.createGroupSet = this.createGroupSet.bind(this);
   }
 
   createGroupSet(
@@ -26,13 +28,20 @@ class TeacherView extends React.Component {
     autoGenerateGroups,
     sectionId
   ) {
-    api.post(`/groupsets/`, {
-      groupset: {
-        is_selfsignup: allowSelfSignup,
-        name: name,
-        section_id: sectionId
-      }
-    });
+    api
+      .post(`/groupsets/`, {
+        groupset: {
+          is_selfsignup: allowSelfSignup,
+          name: name,
+          section_id: sectionId
+        }
+      })
+      .then(response => {
+        if (typeof response !== "undefined") {
+          this.retrieveGroupsets();
+          this.setState({ activeGroupsetId: response.data.data.id });
+        }
+      });
 
     // TODO: Break down users in groups
     // if (groupCount > 0 && autoGenerateGroups) {
@@ -41,8 +50,6 @@ class TeacherView extends React.Component {
   }
 
   changeActiveGroupset(groupsetId) {
-    console.log("Activating  changeactivegroupset");
-    console.log(groupsetId);
     this.setState({ activeGroupsetId: groupsetId });
   }
 
@@ -50,9 +57,11 @@ class TeacherView extends React.Component {
     api.get(`/groupsets/sections/${this.props.sectionId}`).then(response => {
       if (typeof response !== "undefined") {
         this.setState({
-          groupsets: response.data.data,
-          activeGroupsetId: response.data.data[0].id
+          groupsets: response.data.data
         });
+        if (this.state.activeGroupsetId === null) {
+          this.setState({ activeGroupsetId: response.data.data[0].id });
+        }
       }
     });
 
@@ -105,9 +114,9 @@ class TeacherView extends React.Component {
 
     return (
       <div>
-        <nav className="breadcrumb has-dot-separator" aria-label="breadcrumbs">
+        <div className="tabs is-boxed">
           <ul>{this.getCurrentGroupsetMembers()}</ul>
-        </nav>
+        </div>
         <GroupSetCard
           groups={this.state.groups.filter(
             group => group.groupset_id === this.state.activeGroupsetId
@@ -129,8 +138,9 @@ class TeacherView extends React.Component {
           }
           closeDialog={() => this.closeDialog()}
           createGroupSet={this.createGroupSet}
-          sectionId={this.state.sectionId}
+          sectionId={this.props.sectionId}
         />
+
         <nav className="navbar is-transparent">
           <div className="navbar-brand">
             <h1 className="is-size-4">Groups</h1>
@@ -138,9 +148,8 @@ class TeacherView extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
+            <div className="field is-grouped">
               <button
-                id="Button"
                 className="button is-link"
                 onClick={this.handleNewGroupSetToggle.bind(this)}
               >

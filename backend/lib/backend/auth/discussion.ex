@@ -9,12 +9,13 @@ defmodule Backend.Auth.Discussion do
     field(:title, :string, null: false)
     field(:is_discussion, :boolean, null: false)
     field(:is_locked, :boolean, null: false)
+    field(:is_pinned, :boolean, null: false)
   end
 
   @doc false
   def changeset(%Discussion{} = discussion, attrs) do
     discussion
-    |> cast(attrs, [:id, :section_id, :title, :is_discussion, :is_locked])
-    |> validate_required([:id, :section_id, :title, :is_discussion, :is_locked])
+    |> cast(attrs, [:id, :section_id, :title, :is_discussion, :is_locked, :is_pinned])
+    |> validate_required([:id, :section_id, :title, :is_discussion])
   end
 end

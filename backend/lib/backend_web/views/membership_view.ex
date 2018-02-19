@@ -19,6 +19,10 @@ defmodule BackendWeb.MembershipView do
   end
 
   def render("membership_by_section.json", %{membership: membership}) do
-    %{id: membership.id, user_id: membership.user_id, group_id: membership.group_id}
+    %{
+      id: membership.id, 
+      user_id: membership.user_id, 
+      group_id: membership.group_id
+    }
   end
 end

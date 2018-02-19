@@ -10,10 +10,16 @@ class Files extends React.Component {
   componentWillMount() {}
 
   getFiles() {
+    // TODO: Remove placeholder.
+    return "This feature is currently not available."
+
     if (!this.state.files) return <div className="loading" />;
   }
 
   getUploadButton() {
+    // TODO: Remove placeholder.
+    return;
+
     return (
       <div className="control">
         <Link to="files/new">

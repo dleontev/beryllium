@@ -25,7 +25,7 @@ class CourseHome extends React.Component {
   }
 
   handleEdit() {
-    console.log("Edit pressed");
+    alert("Edit home page is pressed");
     // TODO: Edit the course home page.
   }
 

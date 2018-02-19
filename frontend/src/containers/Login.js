@@ -12,16 +12,24 @@ class Login extends React.Component {
     };
   }
 
-  handleEmail(event) {
-    this.setState({ email: event.target.value });
-  }
+  handleChange(event) {
+    const { name, value } = event.target;
 
-  handlePassword(event) {
-    this.setState({ entered_password: event.target.value });
+    this.setState(() => ({
+      [name]: value
+    }));
   }
 
   handleSubmit(event) {
     event.preventDefault();
+
+    if (this.state.email.length === 0) {
+      alert("Please, enter a valid email.");
+      return;
+    } else if (this.state.entered_password.length === 0) {
+      alert("Please, enter a password.");
+      return;
+    }
 
     api
       .post(`/sessions/`, {
@@ -29,7 +37,6 @@ class Login extends React.Component {
         entered_password: this.state.entered_password
       })
       .then(response => {
-        ///////////////// INCOMPLETE AUTHENTICATION ////////////
         if (
           typeof response !== "undefined" &&
           typeof response.data.meta !== "undefined"
@@ -37,7 +44,6 @@ class Login extends React.Component {
           localStorage.setItem("token", response.data.meta.token);
           this.setState({ redirectToReferrer: true });
         }
-        ////////////////////////////////////////////////////////
       });
   }
 
@@ -46,11 +52,9 @@ class Login extends React.Component {
       from: { pathname: "/account" }
     };
 
-    ///////////////// INCOMPLETE AUTH CHECK ///////////////////////////////
     if (this.state.redirectToReferrer || localStorage.getItem("token")) {
       return <Redirect to={from} />;
     }
-    ///////////////////////////////////////////////////////////////////////
 
     return (
       <div
@@ -74,8 +78,8 @@ class Login extends React.Component {
                 className="input"
                 type="text"
                 placeholder="Email"
-                value={this.state.email}
-                onChange={this.handleEmail.bind(this)}
+                name="email"
+                onChange={this.handleChange.bind(this)}
               />
               <span className="icon is-medium is-left">
                 <i className="fa fa-envelope-o" aria-hidden="true" />
@@ -89,8 +93,8 @@ class Login extends React.Component {
                 className="input"
                 type="password"
                 placeholder="Password"
-                value={this.state.entered_password}
-                onChange={this.handlePassword.bind(this)}
+                name="entered_password"
+                onChange={this.handleChange.bind(this)}
               />
               <span className="icon is-medium is-left">
                 <i className="fa fa-lock" aria-hidden="true" />

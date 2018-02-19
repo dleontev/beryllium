@@ -5550,11 +5550,12 @@ a.tag:hover {
 }
 
 .card-header {
+  background-color: whitesmoke;
   -webkit-box-align: stretch;
       -ms-flex-align: stretch;
           align-items: stretch;
-  -webkit-box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1);
-          box-shadow: 0 1px 2px rgba(10, 10, 10, 0.1);
+  -webkit-box-shadow: 0 1px 0px rgba(10, 10, 10, 0.1);
+          box-shadow: 0 1px 0px rgba(10, 10, 10, 0.1);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -6453,7 +6454,6 @@ a.dropdown-item.is-active {
 }
 
 .navbar {
-  background-color: white;
   min-height: 3.25rem;
   position: relative;
 }
@@ -7724,6 +7724,10 @@ a.navbar-link.is-active {
   font-size: 1rem;
 }
 
+.panel.is-over{
+  background-color: #3273dc;
+}
+
 .panel:not(:last-child) {
   margin-bottom: 1.5rem;
 }
@@ -7746,8 +7750,8 @@ a.navbar-link.is-active {
   background-color: whitesmoke;
   border-radius: 3px 3px 0 0;
   color: #363636;
-  font-size: 1.25em;
-  font-weight: 300;
+  font-weight: 350;
+  font-size: 1.05em;
   line-height: 1.25;
   padding: 0.5em 0.75em;
 }

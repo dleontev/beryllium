@@ -23,16 +23,18 @@ defmodule BackendWeb.Router do
 
     resources "/enrollments", EnrollmentController, except: [:edit, :show]
     resources "/groups", GroupController, except: [:edit]
-    resources "/groupsets", GroupsetController, except: [:edit, :show]
     resources "/roles", RoleController, except: [:edit, :show]
     resources "/schools", SchoolController, except: [:edit, :show]
     resources "/sections", SectionController, except: [:edit, :show] 
+    resources "/groupsets", GroupsetController
     resources "/discussions", DiscussionController 
     resources "/assignments", AssignmentController
     resources "/quizzes", QuizController
     resources "/questions", QuestionController
     resources "/answers", AnswerController
     resources "/assignments_to_groupsets", Assignment_to_groupsetController
+    resources "/assignments_to_groups", AssignmentToGroupController
+    resources "/assignments_to_users", AssignmentToUserController
     
 
     resources "/posts", PostController, except: [:new, :edit] 

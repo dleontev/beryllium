@@ -49,7 +49,6 @@ class PostCard extends React.Component {
     });
   }
 
-  ///////////////////MODAL STUFF////////////////////////////////
   handleModal() {
     this.setState({
       modalState:
@@ -218,7 +217,10 @@ class PostCard extends React.Component {
             <div className="loading" /> <br />{" "}
           </div>
         ) : (
-          <div className={this.props.box ? "box" : ""}>
+          <div
+            className={this.props.box ? "box" : ""}
+            style={{ marginBottom: "10px" }}
+          >
             <article className="media">
               <figure className="media-left">
                 <p className="image is-64x64">
@@ -266,8 +268,7 @@ class PostCard extends React.Component {
                               }
                               onClick={this.handleEdit}
                             >
-                              {" "}
-                              Edit{" "}
+                              Edit
                             </a>
                           </p>
                         ) : (

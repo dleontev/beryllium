@@ -6,8 +6,7 @@ class GroupSelectionCard extends React.Component{
 		super();
 		this.state = {
 			data: [],
-			loading: true,
-			selected: []
+			loading: true
 		}
 	}
 
@@ -54,7 +53,7 @@ class GroupSelectionCard extends React.Component{
 				:
 				<div className="control">
 					<label className="label">Groups</label>
-					<div className="select is-multiple">
+					<div className={`select is-multiple ${this.props.selected === false ? "" : "is-danger"}`}>
 						<select multiple size="4" id="GroupSelectionCard" onChange={this.handleChange.bind(this)} defaultValue={[]}>
 							{this.displayGroups()}
 						</select>

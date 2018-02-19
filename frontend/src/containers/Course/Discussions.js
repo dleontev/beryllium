@@ -20,21 +20,8 @@ class Discussions extends React.Component {
       });
   }
 
-  getDiscussionTable() {
-    if (!this.state.discussions) return <div className="loading" />;
-
-    if (this.state.discussions.length === 0)
-      return "There are no discussions to show in this section.";
-
-    return (
-      <div className="column is-fullhd">
-        <div className="content">{this.getDiscussions()} </div>
-      </div>
-    );
-  }
-
-  getDiscussions() {
-    return this.state.discussions.map((discussion, index) => (
+  getDiscussions(discussions) {
+    return discussions.map((discussion, index) => (
       <DiscussionTableCard
         key={index}
         id={discussion.id}
@@ -57,6 +44,69 @@ class Discussions extends React.Component {
     ));
   }
 
+  getDiscussionSection(name, discussions) {
+    var discussionData =
+      discussions.length > 0
+        ? this.getDiscussions(discussions)
+        : <center>There are no discussions in this section.</center>;
+
+    return (
+      <div className="panel">
+        <div className="panel-heading">
+          <nav className="level">
+            <div className="level-left">
+              <div className="level-item">{name}</div>
+            </div>
+
+            <div className="level-right">
+              <p />
+            </div>
+          </nav>
+        </div>
+
+        <div className="panel-block" style={{ display: "block" }}>
+          {discussionData}
+        </div>
+      </div>
+    );
+  }
+
+  getPinnedDiscussions() {
+    var discussions = this.state.discussions.filter(
+      d => d.is_pinned && !d.is_locked
+    );
+
+    if (discussions.length > 0) {
+      return this.getDiscussionSection("Pinned Discussions", discussions);
+    }
+  }
+
+  getStandardDiscussions() {
+    return this.getDiscussionSection(
+      "Discussions",
+      this.state.discussions.filter(d => !d.is_pinned && !d.is_locked)
+    );
+  }
+
+  getLockedDiscussions() {
+    return this.getDiscussionSection(
+      "Closed for Comments",
+      this.state.discussions.filter(d => d.is_locked)
+    );
+  }
+
+  getDiscussionData() {
+    if (!this.state.discussions) return <div className="loading" />;
+
+    return (
+      <div>
+        {this.getPinnedDiscussions()}
+        {this.getStandardDiscussions()}
+        {this.getLockedDiscussions()}
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -67,20 +117,29 @@ class Discussions extends React.Component {
           <div className="navbar-menu" />
 
           <div className="navbar-end">
-            <div className="control">
-              <Link to="discussions/new">
-                <button className="button is-link" data-tooltip="Tooltip Text">
+            <div className="field is-grouped">
+              <div className="control">
+                <Link to="discussions/new">
+                  <button className="button is-link">
+                    <span className="icon">
+                      <i className="fa fa-plus-circle" />
+                    </span>
+                    <span>Discussion</span>
+                  </button>
+                </Link>
+              </div>
+              <div className="control">
+                <button className="button is-link">
                   <span className="icon">
-                    <i className="fa fa-plus-circle" />
+                    <i className="fa fa-cog" />
                   </span>
-                  <span>Discussion</span>
                 </button>
-              </Link>
+              </div>
             </div>
           </div>
         </nav>
 
-        {this.getDiscussionTable()}
+        {this.getDiscussionData()}
       </div>
     );
   }

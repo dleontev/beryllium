@@ -2,7 +2,13 @@ import React from "react";
 
 class UserListCard extends React.Component {
   render() {
-    return <li>{this.props.name}</li>;
+    return (
+      <div className="control">
+        <div className="tags has-addons">
+          <span className="tag is-medium">{this.props.name}</span>
+        </div>
+      </div>
+    );
   }
 }
 

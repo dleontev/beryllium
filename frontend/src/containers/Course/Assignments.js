@@ -1,21 +1,28 @@
 import React from "react";
-//import api from "../../api/Api";
+import api from "../../api/Api";
+import AssignmentCard from "../../components/AssignmentCard";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 class Assignments extends React.Component {
   constructor() {
     super();
-    this.state = { assignments: null };
+    this.state = { 
+      assignments: null 
+    };
   }
 
   componentWillMount() {
-    // api
-    //   .get(`/assignments/sections/${this.props.section_id}`)
-    //   .then(response => {
-    //     if (typeof response !== "undefined") {
-    //       this.setState({ assignments: response.data.data });
-    //     }
-    //   });
+    api
+      .get(`/assignments/sections/${this.props.section_id}`)
+      .then(response => {
+        if (typeof response !== "undefined") {
+          this.setState({ assignments: response.data.data });
+        }
+      })
+      .catch((error) =>{
+        console.log(`Assignments.js: ${error}`);
+      });
   }
 
   getAssignmentTable() {
@@ -29,8 +36,9 @@ class Assignments extends React.Component {
       <table className="table is-fullwidth is-striped is-hoverable">
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Due Date</th>
           </tr>
         </thead>
         <tbody>{this.getAssignments()}</tbody>
@@ -39,7 +47,20 @@ class Assignments extends React.Component {
   }
 
   getAssignments() {
-    // TODO: Get assignment list.
+    return this.state.assignments.map((value, index) => (
+      <AssignmentCard
+        key={value.id}
+        id={value.id}
+        name={value.title}
+        content={
+          value.content.length > 100
+          ? value.content.substring(0, 100) + "[...]"
+          : value.content
+        }
+        type={value.type}
+        due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
+      />
+    ));
   }
 
   getAddAssignmentButton() {

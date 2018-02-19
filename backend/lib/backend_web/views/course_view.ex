@@ -28,7 +28,7 @@ defmodule BackendWeb.CourseView do
       start_date: course.start_date,
       end_date: course.end_date,
       published: course.published,
-      role_name: course.role_name
+      role_name: String.capitalize(course.role_name)
     }
   end
 end

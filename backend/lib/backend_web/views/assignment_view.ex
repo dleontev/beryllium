@@ -26,7 +26,8 @@ defmodule BackendWeb.AssignmentView do
       content: assignment.content,
       is_published: assignment.is_published,
       points_possible: assignment.points_possible,
-      title: assignment.title
+      title: assignment.title,
+      group_id: assignment.group_id
     }
   end
 end

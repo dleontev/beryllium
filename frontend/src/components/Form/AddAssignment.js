@@ -42,7 +42,8 @@ class AddAssignment extends React.Component {
       groupData: [],
       noGroupsSelected: false,
       noUsersSelected: false,
-      m: moment()
+      m: moment(),
+      filename: ""
     }
   }
   
@@ -354,6 +355,11 @@ class AddAssignment extends React.Component {
     });
   }
 
+  handleFile(e){
+    console.log(e.target.files[0]);
+    this.setState({filename: e.target.files[0].name});
+  }
+
   render() {
     if(this.state.redirect === true){
       return <Redirect to={`/courses/${this.props.match.params.id}/assignments`}/>
@@ -400,7 +406,23 @@ class AddAssignment extends React.Component {
             />
           </div>
         </div>
-
+        {this.state.data.type === 2 ?
+        <div className="file has-name">
+          <label className="file-label">
+            <input className="file-input" type="file" name="quiz" onChange={this.handleFile.bind(this)}/>
+            <span className="file-cta">
+              <span className="file-icon">
+                <i className="fa fa-upload"></i>
+              </span>
+              <span className="file-label">
+                Import CSV
+              </span>
+            </span>
+            <span className="file-name">
+              {this.state.filename === "" ? "*.csv" : this.state.filename}
+            </span>
+          </label>
+        </div> : ""}
         <div className="field is-grouped">
             <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
             <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups} selected={this.state.noGroupsSelected}/>

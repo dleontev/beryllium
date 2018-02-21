@@ -39,6 +39,7 @@ class Assignments extends React.Component {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Scope</th>
           </tr>
         </thead>
         <tbody>{this.getAssignments()}</tbody>
@@ -58,6 +59,7 @@ class Assignments extends React.Component {
           : value.content
         }
         type={value.type}
+        group_id={value.group_id}
         due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
       />
     ));

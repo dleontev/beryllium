@@ -2113,6 +2113,20 @@ defmodule Backend.Auth do
     end
   end
 
+  def parse_bulk_questions(quiz_id, [head | tail], accumulator) do
+    result = 
+    if(head["question"] != "" && head["a1"] != "" && head["a2"] != "") do
+      [%{id: Ecto.UUID.generate(), quiz_id: quiz_id, question: head["question"], a1: head["a1"], a2: head["a2"], a3: head["a3"], a4: head["a4"], a5: head["a5"], correct_answer: head["correct_answer"]} | accumulator]
+    else
+      accumulator
+    end
+    if length(tail) != 0 do
+      parse_bulk_questions(quiz_id, tail, result)
+    else
+      result
+    end
+  end
+
   @doc """
   Updates a assignment_to_group.
 

@@ -1447,7 +1447,15 @@ defmodule Backend.Auth do
       if(head == "teacher") do
         from a in Assignment,
         where: a.section_id == ^section_id,
-        select: [:id, :due_at, :type, :content, :points_possible, :title, :is_published]
+        left_join: au in AssignmentToUser,
+        on: a.id == au.assignment_id,
+        left_join: ag in AssignmentToGroup,
+        on: a.id == ag.assignment_id,
+        left_join: m in Membership,
+        on: m.group_id == ag.group_id,
+        #where: not is_nil(ag.user_id) or not is_nil(au.user_id),
+        distinct: [a.id],
+        select: %{id: a.id, due_at: a.due_at, type: a.type, content: a.content, points_possible: a.points_possible, title: a.title, is_published: a.is_published, group_id: ag.group_id}
       else
         from a in Assignment,
         where: a.section_id == ^section_id,
@@ -1458,7 +1466,7 @@ defmodule Backend.Auth do
         left_join: m in Membership,
         on: m.group_id == ag.group_id and m.user_id == ^user_id,
         where: not is_nil(m.user_id) or au.user_id == ^user_id,
-        select: %{id: a.id, due_at: a.due_at, type: a.type, content: a.content, points_possible: a.points_possible, title: a.title, is_published: a.is_published}
+        select: %{id: a.id, due_at: a.due_at, type: a.type, content: a.content, points_possible: a.points_possible, title: a.title, is_published: a.is_published, group_id: ag.group_id}
       end
     result = Repo.all(query)
     IO.inspect(result)
@@ -2100,6 +2108,20 @@ defmodule Backend.Auth do
 
     if length(tail) != 0 do
       parse_bulk_group(assignment_id, tail, result)
+    else
+      result
+    end
+  end
+
+  def parse_bulk_questions(quiz_id, [head | tail], accumulator) do
+    result = 
+    if(head["question"] != "" && head["a1"] != "" && head["a2"] != "") do
+      [%{id: Ecto.UUID.generate(), quiz_id: quiz_id, question: head["question"], a1: head["a1"], a2: head["a2"], a3: head["a3"], a4: head["a4"], a5: head["a5"], correct_answer: head["correct_answer"]} | accumulator]
+    else
+      accumulator
+    end
+    if length(tail) != 0 do
+      parse_bulk_questions(quiz_id, tail, result)
     else
       result
     end

@@ -5,6 +5,7 @@ defmodule BackendWeb.AssignmentController do
   alias Backend.Repo
   alias Backend.Auth.AssignmentToGroup
   alias Backend.Auth.AssignmentToUser
+  alias Backend.Auth.Question
   alias Backend.Auth.Assignment
 
   action_fallback BackendWeb.FallbackController
@@ -14,14 +15,22 @@ defmodule BackendWeb.AssignmentController do
     render(conn, "index.json", assignments: assignments)
   end
 
-  def create(conn, %{"assignment" => assignment_params}) do
-    with {:ok, %Assignment{} = assignment} <- Auth.create_assignment(assignment_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", assignment_path(conn, :show, assignment))
-      |> render("show.json", assignment: assignment)
-    end
-  end
+  #def create(conn, %{"assignment" => assignment_params}) do
+  #  with {:ok, %Assignment{} = assignment} <- Auth.create_assignment(assignment_params) do
+  #    conn
+  #    |> put_status(:created)
+  #    |> put_resp_header("location", assignment_path(conn, :show, assignment))
+  #    |> render("show.json", assignment: assignment)
+  #  end
+  #end
+  @doc """
+  
+  max_attempts: 1,
+        show_answers: false,
+        keep_highest: false,
+        questions: []
+        
+  """
 
   def create(conn, 
   %{
@@ -33,7 +42,11 @@ defmodule BackendWeb.AssignmentController do
     "points_possible" => points_possible,
     "section_id" => section_id,
     "title" => title,
-    "type" => type
+    "type" => type,
+    "max_attempts" => max_attempts,
+    "show_answers" => show_answers,
+    "keep_highest" => keep_highest,
+    "questions" => questions
   }) do
     id = Ecto.UUID.generate()
     assignment_params = %{
@@ -53,6 +66,15 @@ defmodule BackendWeb.AssignmentController do
       else
         bulk_insert = Auth.parse_bulk_user(id, assigned_to, [])
         Repo.insert_all(AssignmentToUser, bulk_insert)
+      end
+      if(type == 2) do
+        quiz_id = Ecto.UUID.generate()
+        quiz_params = %{id: quiz_id, assignment_id: id, max_attempts: max_attempts, show_answers: show_answers, keep_highest: keep_highest}
+        Auth.create_quiz(quiz_params)
+        bulk_questions = Auth.parse_bulk_questions(quiz_id, questions, [])
+        IO.puts("//////////////////////////////////////////////////////////////////////////")
+        IO.inspect(bulk_questions)
+        Repo.insert_all(Question, bulk_questions)
       end
       conn
       |> put_status(:created)

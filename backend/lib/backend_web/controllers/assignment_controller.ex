@@ -95,7 +95,6 @@ defmodule BackendWeb.AssignmentController do
 
   def update(conn, %{"id" => id, "assignment" => assignment_params}) do
     assignment = Auth.get_assignment!(id)
-
     with {:ok, %Assignment{} = assignment} <- Auth.update_assignment(assignment, assignment_params) do
       render(conn, "show.json", assignment: assignment)
     end

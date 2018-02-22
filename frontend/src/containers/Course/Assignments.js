@@ -1,6 +1,6 @@
 import React from "react";
 import api from "../../api/Api";
-import AssignmentCard from "../../components/AssignmentCard";
+import AssignmentTableCard from "../../components/AssignmentTableCard";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -49,7 +49,7 @@ class Assignments extends React.Component {
 
   getAssignments() {
     return this.state.assignments.map((value, index) => (
-      <AssignmentCard
+      <AssignmentTableCard
         key={value.id}
         id={value.id}
         name={value.title}
@@ -61,6 +61,7 @@ class Assignments extends React.Component {
         type={value.type}
         group_id={value.group_id}
         due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
+        section_id = {this.props.section_id}
       />
     ));
   }

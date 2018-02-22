@@ -1,6 +1,10 @@
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 @import "bulma.css";
 
+.assignment_footer {
+  padding: 5px;
+}
+
 .random {
   padding: 10px;
   padding-top: 0px;

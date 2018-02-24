@@ -31,13 +31,6 @@ function collect(connect, monitor) {
 }
 
 class DropGroupCard extends React.Component {
-  static propTypes = {
-    connectDropTarget: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired,
-    handleMove: PropTypes.func.isRequired
-  };
-
   constructor() {
     super();
     this.state = {
@@ -54,13 +47,12 @@ class DropGroupCard extends React.Component {
   getMemberList() {
     return this.props.members
       .filter(m => m.name.toLowerCase().includes(this.state.nameFilter))
-      .map((member, index) => (
+      .map(member => (
         <GroupMemberCard
           handleMove={this.handleMove}
-          key={member.id}
-          name={member.name}
-          id={member.id}
           group_id={this.props.id}
+          key={member.id}
+          {...member}
         />
       ));
   }
@@ -200,6 +192,20 @@ class DropGroupCard extends React.Component {
     );
   }
 }
+
+DropGroupCard.propTypes = {
+  connectDropTarget: PropTypes.func.isRequired,
+  isOver: PropTypes.bool.isRequired,
+  canDrop: PropTypes.bool.isRequired,
+  handleMove: PropTypes.func.isRequired,
+  members: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  isUnassigned: PropTypes.bool.isRequired,
+  max_members: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  handleGroupDelete: PropTypes.func.isRequired,
+  handleGroupEdit: PropTypes.func.isRequired
+};
 
 export default DropTarget("membercard", memberCardTarget, collect)(
   DropGroupCard

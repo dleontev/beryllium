@@ -1,6 +1,6 @@
 import React from "react";
 import socket from "../api/Socket";
-
+import PropTypes from "prop-types";
 class DiscussionTableCard extends React.Component {
   constructor() {
     super();
@@ -21,7 +21,7 @@ class DiscussionTableCard extends React.Component {
     socket.leaveChannel(this.sock.channel, this.sock.socket);
   }
 
-  afterJoin(msg) {
+  afterJoin() {
     socket.pushChannel(
       this.sock.channel,
       "get_responses",
@@ -66,5 +66,11 @@ class DiscussionTableCard extends React.Component {
     );
   }
 }
+
+DiscussionTableCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired
+};
 
 export default DiscussionTableCard;

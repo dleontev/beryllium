@@ -1,9 +1,5 @@
 import React from "react";
-//import profile_image from "../images/blank-profile.png";
-//import api from "../api/Api";
-//import ReplyCard from "./ReplyCard";
-//import ConfirmCard from "./ConfirmCard";
-//import {Socket} from "phoenix";
+import PropTypes from "prop-types";
 
 class EditCommentCard extends React.Component {
   constructor(props) {
@@ -19,13 +15,12 @@ class EditCommentCard extends React.Component {
     });
   }
 
-  handleSubmit(event) {
-	if(this.state.data.length === 0) {
-		// TODO: Display an error message: "Message can not be empty".
-	}
-	else{
-		this.props.handleEdited(this.state.data);
-	}
+  handleSubmit() {
+    if (this.state.data.length === 0) {
+      alert("Message cannot be empty");
+    } else {
+      this.props.handleEdited(this.state.data);
+    }
   }
 
   render() {
@@ -67,5 +62,11 @@ class EditCommentCard extends React.Component {
     );
   }
 }
+
+EditCommentCard.propTypes = {
+  content: PropTypes.string.isRequired,
+  handleEdited: PropTypes.func.isRequired,
+  handleCancelEdit: PropTypes.func.isRequired
+};
 
 export default EditCommentCard;

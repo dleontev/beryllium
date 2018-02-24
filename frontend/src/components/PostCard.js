@@ -5,7 +5,7 @@ import ReplyCard from "./ReplyCard";
 import ConfirmCard from "./ConfirmCard";
 import EditCommentCard from "./EditCommentCard";
 import socket from "../api/Socket";
-
+import PropTypes from "prop-types";
 class PostCard extends React.Component {
   constructor() {
     super();
@@ -31,7 +31,7 @@ class PostCard extends React.Component {
     };
   }
 
-  handleClick(event) {
+  handleClick() {
     if (!this.state.comments === true) {
       this.getReplies();
     } else {
@@ -42,7 +42,7 @@ class PostCard extends React.Component {
     }
   }
 
-  handleReply(event) {
+  handleReply() {
     this.setState({
       reply: !this.state.reply
     });
@@ -59,7 +59,7 @@ class PostCard extends React.Component {
             this.setState({ isPressed: false, modalState: false });
           })
           .catch(error => {
-            console.log(error);
+            console.error(error);
           });
       }
     }
@@ -77,7 +77,7 @@ class PostCard extends React.Component {
             this.setState({ isPressed: false });
           })
           .catch(error => {
-            console.log(error);
+            console.error(error);
           });
       }
     }
@@ -94,10 +94,10 @@ class PostCard extends React.Component {
         this.setState({
           data: result.data.data
         });
-        console.log(`GOT RESPONSE ${this.state.data.is_deleted}`);
+        console.warn(`GOT RESPONSE ${this.state.data.is_deleted}`);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -146,7 +146,7 @@ class PostCard extends React.Component {
         return true;
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
         return false;
       });
     this.setState({
@@ -176,16 +176,12 @@ class PostCard extends React.Component {
       .filter(function(post) {
         return post.parent_id !== null;
       })
-      .map((post, index) => (
+      .map(post => (
         <PostCard
           key={post.id}
-          id={post.id}
-          author_name={post.author_name}
-          user_id={post.user_id}
-          is_deleted={post.is_deleted}
+          {...post}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
-          content={post.content}
           box={false}
           discussion_id={this.props.discussion_id}
           section_id={this.props.section_id}
@@ -243,7 +239,8 @@ class PostCard extends React.Component {
 
                     <div className="level-left">
                       <div className="field is-grouped">
-                        {(!this.props.isLocked || (this.props.isLocked && this.props.isTeacher)) && (
+                        {(!this.props.isLocked ||
+                          (this.props.isLocked && this.props.isTeacher)) && (
                           <p className="control">
                             <a
                               className="button is-info is-small"
@@ -335,5 +332,21 @@ class PostCard extends React.Component {
     );
   }
 }
+
+PostCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  author_name: PropTypes.string.isRequired,
+  user_id: PropTypes.string.isRequired,
+  updated_at: PropTypes.string.isRequired,
+  inserted_at: PropTypes.string.isRequired,
+  discussion_id: PropTypes.string.isRequired,
+  section_id: PropTypes.string.isRequired,
+  is_deleted: PropTypes.bool.isRequired,
+  content: PropTypes.string.isRequired,
+  box: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  isLocked: PropTypes.bool.isRequired,
+  isTeacher: PropTypes.bool.isRequired
+};
 
 export default PostCard;

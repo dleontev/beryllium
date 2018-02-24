@@ -5,7 +5,7 @@ import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
 //import aws from "../api/Aws";
 
-class Profile extends React.Component {
+class Account extends React.Component {
   constructor() {
     super();
     this.state = { user: null, courses: null };
@@ -96,4 +96,8 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+Account.propTypes = {
+  history: ReactRouterPropTypes.history.isRequired
+};
+
+export default Account;

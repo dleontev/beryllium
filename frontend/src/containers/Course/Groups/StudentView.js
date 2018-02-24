@@ -2,13 +2,12 @@ import React from "react";
 import api from "../../../api/Api";
 import GroupCard from "../../../components/GroupCard";
 import UserListCard from "../../../components/UserListCard";
-import NewGroupDialog from "../../../components/Form/NewEditGroupCard";
+import NewGroupDialog from "../../../components/Form/NewGroupDialog";
 import $ from "jquery";
 
 class StudentView extends React.Component {
   constructor(props) {
     super(props);
-    
     this.state = {
       members: null,
       groups: null,
@@ -17,7 +16,12 @@ class StudentView extends React.Component {
     };
   }
 
-  createGroup(id, name, maxMembers) {
+  createGroup(name, joinLevel) {
+    // TODO: Create a new group.
+    console.log("Creating group....");
+    console.log("Name:" + name);
+    console.log("Joinlevel:" + joinLevel);
+
     // TODO: Api post to create a group and join the user.
   }
 
@@ -167,7 +171,7 @@ class StudentView extends React.Component {
           groupset_id={group.groupset_id}
           members={this.getMembersList(group.members)}
           current_members={group.members.length}
-          max_members={group.max_members}
+          max_members={group.max_members > 0 ? `/${group.max_members}` : null}
           allowedToLeave={allowedToLeave}
           allowedToJoin={allowedToJoin}
           allowedToSwitch={allowedToSwitch}
@@ -184,13 +188,13 @@ class StudentView extends React.Component {
   render() {
     return (
       <div>
-        {this.state.isNewGroupDialogActive && (
-          <NewGroupDialog
-            title="New Student Group"
-            closeDialog={() => this.closeDialog()}
-            createGroup={this.createGroup}
-          />
-        )}
+        <NewGroupDialog
+          modalToggle={
+            this.state.isNewGroupDialogActive ? "modal is-active" : "modal"
+          }
+          closeDialog={() => this.closeDialog()}
+          createGroup={this.createGroup}
+        />
 
         <nav className="navbar is-transparent">
           <div className="navbar-brand">

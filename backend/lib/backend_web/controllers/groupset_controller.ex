@@ -27,7 +27,8 @@ defmodule BackendWeb.GroupsetController do
 
   def show_by_section(conn, %{"section_id" => section_id}) do
     groupsets = Auth.get_groupsets_by_section_id(section_id)
-    render(conn, "index.json", groupsets: groupsets)
+    IO.inspect(groupsets)
+    render(conn, "show_by_section.json", groupsets: groupsets)
   end
 
   def update(conn, %{"id" => id, "groupset" => groupset_params}) do

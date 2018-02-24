@@ -399,6 +399,10 @@ class AddAssignment extends React.Component {
     });
   }
 
+  handleRedirect(event){
+    this.setState({redirect: true});
+  }
+
   render() {
     if(this.state.redirect === true){
       return <Redirect to={`/courses/${this.props.match.params.id}/assignments`}/>
@@ -426,7 +430,7 @@ class AddAssignment extends React.Component {
             <label className="label">Type</label>
             <div className="select" onChange={this.handleType.bind(this)}>
               <select>
-                <option>Short answer</option>
+                <option>Text Submission</option>
                 <option>File upload</option>
                 <option>Quiz</option>
               </select>
@@ -523,7 +527,7 @@ class AddAssignment extends React.Component {
             <button className="button is-link" onClick={this.handleCreate.bind(this)}>Create</button>
           </div>
           <div className="control">
-            <button className="button is-text">Cancel</button>
+            <button className="button is-text" onClick={this.handleRedirect.bind(this)}>Cancel</button>
           </div>
         </div>
         {this.state.noGroupsSelected ? <p class="help is-danger">Please select at least one group...</p> : ""}

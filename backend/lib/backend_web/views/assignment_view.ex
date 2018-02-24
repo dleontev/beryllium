@@ -15,7 +15,15 @@ defmodule BackendWeb.AssignmentView do
   end
 
   def render("assignment.json", %{assignment: assignment}) do
-    %{id: assignment.id}
+    %{
+      id: assignment.id, 
+      due_at: assignment.due_at,
+      type: assignment.type,
+      content: assignment.content,
+      is_published: assignment.is_published,
+      points_possible: assignment.points_possible,
+      title: assignment.title
+    }
   end
 
   def render("assignment_by_section.json", %{assignment: assignment}) do

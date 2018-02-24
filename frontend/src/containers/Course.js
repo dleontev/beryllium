@@ -21,6 +21,7 @@ import Users from "./Course/Users";
 import Groups from "./Course/Groups/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
+import AssignmentCard from "../components/AssignmentCard";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -124,6 +125,11 @@ class Dashboard extends React.Component {
                     exact
                     path="/courses/:id/assignments/new"
                     component={AddAssignment}
+                  />
+
+                  <Route
+                    exact path="/courses/:id/assignments/:assignment_id"
+                    component={AssignmentCard}
                   />
 
                   <Route

@@ -7,6 +7,7 @@ import InputMoment from "input-moment";
 import moment from "moment";
 import "../../../node_modules/input-moment/dist/input-moment.css";
 import api from "../../api/Api";
+import Papa from "papaparse";
 
 class AddAssignment extends React.Component {
   constructor(props){
@@ -25,7 +26,12 @@ class AddAssignment extends React.Component {
         is_published: false,
         is_groups: false,
         points_possible: "",
-        assigned_to: []
+        assigned_to: [],
+        max_attempts: 1,
+        show_answers: false,
+        keep_highest: false,
+        questions: []
+
       },
       type: {
         "Short answer": 0,
@@ -355,9 +361,46 @@ class AddAssignment extends React.Component {
     });
   }
 
-  handleFile(e){
-    console.log(e.target.files[0]);
-    this.setState({filename: e.target.files[0].name});
+  handleFile(event){
+    if(event.target.files[0] !== undefined){
+      Papa.parse(event.target.files[0], {
+        complete: (results) =>{
+          var data = Object.assign({}, this.state.data);
+          data.questions = results.data;
+          this.setState({data});
+        },
+        header: true
+      });
+      this.setState({filename: event.target.files[0].name});
+    }
+  }
+
+  handleKeepHighest(event){
+    var data = Object.assign({}, this.state.data);
+    data.keep_highest = !data.keep_highest;
+    this.setState({
+      data
+    });
+  }
+
+  handleShowAnswers(event){
+    var data = Object.assign({}, this.state.data);
+    data.show_answers = !data.show_answers;
+    this.setState({
+      data
+    });
+  }
+
+  handleMaxAttempts(event){
+    var data = Object.assign({}, this.state.data);
+    data.max_attempts = event.target.value;
+    this.setState({
+      data
+    });
+  }
+
+  handleRedirect(event){
+    this.setState({redirect: true});
   }
 
   render() {
@@ -387,7 +430,7 @@ class AddAssignment extends React.Component {
             <label className="label">Type</label>
             <div className="select" onChange={this.handleType.bind(this)}>
               <select>
-                <option>Short answer</option>
+                <option>Text Submission</option>
                 <option>File upload</option>
                 <option>Quiz</option>
               </select>
@@ -407,21 +450,49 @@ class AddAssignment extends React.Component {
           </div>
         </div>
         {this.state.data.type === 2 ?
-        <div className="file has-name">
-          <label className="file-label">
-            <input className="file-input" type="file" name="quiz" onChange={this.handleFile.bind(this)}/>
-            <span className="file-cta">
-              <span className="file-icon">
-                <i className="fa fa-upload"></i>
+        <div className="box">
+          <div className="field is-grouped">
+            <div className="control">
+              <label className="label">Maximum attempts</label>
+              <input
+                className="input"
+                type="number"
+                min="0"
+                text="0"
+                name="pointsPossible"
+                placeholder="0"
+                onChange={this.handleMaxAttempts.bind(this)}
+              />
+            </div>
+            <div className="control">
+              <label className="checkbox">
+                <input type="checkbox" onChange={this.handleShowAnswers.bind(this)}/>
+                Show answers
+              </label>
+            </div>
+            <div className="control">
+              <label className="checkbox">
+                <input type="checkbox" onChange={this.handleKeepHighest.bind(this)}/>
+                Keep highest score
+              </label>
+            </div>
+          </div>
+          <div className="file has-name">
+            <label className="file-label">
+              <input className="file-input" type="file" name="quiz" onChange={this.handleFile.bind(this)}/>
+              <span className="file-cta">
+                <span className="file-icon">
+                  <i className="fa fa-upload"></i>
+                </span>
+                <span className="file-label">
+                  Import CSV
+                </span>
               </span>
-              <span className="file-label">
-                Import CSV
+              <span className="file-name">
+                {this.state.filename === "" ? "*.csv" : this.state.filename}
               </span>
-            </span>
-            <span className="file-name">
-              {this.state.filename === "" ? "*.csv" : this.state.filename}
-            </span>
-          </label>
+            </label>
+          </div>
         </div> : ""}
         <div className="field is-grouped">
             <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
@@ -456,7 +527,7 @@ class AddAssignment extends React.Component {
             <button className="button is-link" onClick={this.handleCreate.bind(this)}>Create</button>
           </div>
           <div className="control">
-            <button className="button is-text">Cancel</button>
+            <button className="button is-text" onClick={this.handleRedirect.bind(this)}>Cancel</button>
           </div>
         </div>
         {this.state.noGroupsSelected ? <p class="help is-danger">Please select at least one group...</p> : ""}

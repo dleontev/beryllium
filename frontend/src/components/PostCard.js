@@ -24,7 +24,7 @@ class PostCard extends React.Component {
       length: 0,
       comments: true,
       reply: false,
-      modalState: false,
+      modalState: "modal",
       data: null,
       isLoading: true,
       isPressed: false,
@@ -49,7 +49,15 @@ class PostCard extends React.Component {
     });
   }
 
+  handleModal() {
+    this.setState({
+      modalState:
+        this.state.modalState === "modal" ? "modal is-active" : "modal"
+    });
+  }
+
   handleDelete() {
+    this.handleModal();
     this.setState({ isPressed: true });
     if (!this.state.isPressed) {
       if (!this.getDeleted()) {
@@ -57,7 +65,7 @@ class PostCard extends React.Component {
           .put(`/posts/${this.props.id}`, { post: { is_deleted: true } })
           .then(() => {
             this.handleRefresh();
-            this.setState({ isPressed: false, modalState: false });
+            this.setState({ isPressed: false });
           })
           .catch(error => {
             console.log(error);
@@ -199,17 +207,14 @@ class PostCard extends React.Component {
   render() {
     return (
       <div>
-        {this.state.modalState && (
-          <ConfirmCard
-            onClick={() => this.handleDelete()}
-            onCancel={() => {
-              this.setState({ modalState: false });
-            }}
-          />
-        )}
+        <ConfirmCard
+          modalToggle={this.state.modalState}
+          onClick={() => this.handleDelete()}
+          onCancel={() => this.handleModal()}
+        />
         {this.props.isLoading ? (
           <div>
-            <div className="loading" /> <br />
+            <div className="loading" /> <br />{" "}
           </div>
         ) : (
           <div
@@ -228,9 +233,10 @@ class PostCard extends React.Component {
                     <div className="content">
                       <div>
                         <strong>
+                          {" "}
                           {this.getDeleted()
                             ? "[DELETED]"
-                            : this.props.author_name}
+                            : this.props.author_name}{" "}
                         </strong>
                         <div className="timestamp">
                           {this.props.inserted_at}

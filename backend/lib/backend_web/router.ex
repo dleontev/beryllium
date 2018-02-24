@@ -41,8 +41,6 @@ defmodule BackendWeb.Router do
     resources "/posts", PostController, except: [:new, :edit] 
     resources "/users", UserController, except: [:new, :edit, :show] 
 
-    delete "/groupsets", GroupsetController, :delete
-
     resources "/memberships", MembershipController 
     delete "/memberships/", MembershipController, :delete
     get "/memberships/sections/:section_id", MembershipController, :show_by_section

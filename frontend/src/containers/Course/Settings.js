@@ -9,8 +9,7 @@ class Settings extends React.Component {
   componentWillMount() {}
 
   getSettings() {
-    if (!this.state.settings) return "This feature is currently not available."
-    //return <div className="loading" />;
+    if (!this.state.settings) return <div className="loading" />;
   }
 
   render() {

@@ -18,8 +18,9 @@ class Pages extends React.Component {
 
   getPages() {
     // TODO: Remove placeholder.
-    if (!this.state.pages) return "This feature is currently not available.";
-    //return <div className="loading" />;
+    return "This feature is currently not available.";
+
+    if (!this.state.pages) return <div className="loading" />;
 
     if (this.state.pages.length === 0) {
       return "There are no pages to show.";
@@ -63,8 +64,8 @@ class Pages extends React.Component {
           </div>
           <div className="navbar-menu" />
 
-          <div className="navbar-end">
-            {this.props.isTeacher && this.getAddPageButton()}
+          <div className="navbar-end" >
+          {this.props.isTeacher && this.getAddPageButton()}
           </div>
         </nav>
 

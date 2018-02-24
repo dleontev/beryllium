@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ConfirmCard from "./ConfirmCard";
 import api from "../api/Api";
+import PropTypes from "prop-types";
 
 class AnnouncementCard extends React.Component {
   constructor(props) {
@@ -12,15 +13,10 @@ class AnnouncementCard extends React.Component {
   }
 
   handleDelete() {
-    api
-      .delete(`/discussions/${this.props.id}`)
-      .then(() => {
-        this.setState({ modalState: false });
-        this.props.refresh();
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    api.delete(`/discussions/${this.props.id}`).then(() => {
+      this.setState({ modalState: false });
+      this.props.refresh();
+    });
   }
 
   handleLock() {
@@ -121,5 +117,18 @@ class AnnouncementCard extends React.Component {
     );
   }
 }
+
+AnnouncementCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  refresh: PropTypes.func.isRequired,
+  section_id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  inserted_at: PropTypes.string.isRequired,
+  updated_at: PropTypes.string.isRequired,
+  is_locked: PropTypes.bool.isRequired,
+  showControls: PropTypes.bool.isRequired
+};
 
 export default AnnouncementCard;

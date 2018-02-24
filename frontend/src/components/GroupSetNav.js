@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class GroupSetNav extends React.Component {
   render() {
     return (
@@ -11,5 +11,11 @@ class GroupSetNav extends React.Component {
     );
   }
 }
+
+GroupSetNav.propTypes = {
+  name: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired
+};
 
 export default GroupSetNav;

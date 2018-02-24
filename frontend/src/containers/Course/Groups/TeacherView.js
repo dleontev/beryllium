@@ -5,7 +5,7 @@ import EditGroupSetDialog from "../../../components/Form/EditGroupSetDialog";
 import GroupSetCard from "../../../components/GroupSetCard";
 import ConfirmCard from "../../../components/ConfirmCard";
 import GroupSetNav from "../../../components/GroupSetNav";
-
+import PropTypes from "prop-types";
 class TeacherView extends React.Component {
   constructor(props) {
     super(props);
@@ -53,7 +53,7 @@ class TeacherView extends React.Component {
 
             for (var i = 1; i <= groupCount; i++) {
               groups.push({
-                name: name + " " + i,
+                name: `${name} ${i}`,
                 max_members: maxMembers,
                 groupset_id: response.data.data.id,
                 section_id: this.props.sectionId
@@ -61,19 +61,17 @@ class TeacherView extends React.Component {
             }
 
             if (autoAssign && !allowSelfSignup) {
-              var users = this.state.members
-                .map(m => m.id)
-                .filter((x, i, a) => a.indexOf(x) === i);
+              //var users = this.state.members
+              //  .map(m => m.id)
+              //  .filter((x, i, a) => a.indexOf(x) === i);
 
-              var membersPerGroup = Math.floor(users.length / groupCount);
+              //var membersPerGroup = Math.floor(users.length / groupCount);
 
-              console.log(users.length);
-              console.log(membersPerGroup);
+              // TODO: Split users into groups.
             }
 
             this.retrieveGroupsets();
             this.setState({ activeGroupsetId: response.data.data.id });
-
           } else {
             this.retrieveGroupsets();
             this.setState({ activeGroupsetId: response.data.data.id });
@@ -314,5 +312,9 @@ class TeacherView extends React.Component {
     );
   }
 }
+
+TeacherView.propTypes = {
+  sectionId: PropTypes.string
+};
 
 export default TeacherView;

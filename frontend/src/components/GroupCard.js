@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class GroupCard extends React.Component {
   getActionButton() {
     if (this.props.allowedToLeave) {
@@ -71,5 +71,20 @@ class GroupCard extends React.Component {
     );
   }
 }
+
+GroupCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  groupset_name: PropTypes.string.isRequired,
+  groupset_id: PropTypes.string.isRequired,
+  max_members: PropTypes.number.isRequired,
+  members: PropTypes.array.isRequired,
+  current_members: PropTypes.number.isRequired,
+  allowedToLeave: PropTypes.bool.isRequired,
+  allowedToJoin: PropTypes.bool.isRequired,
+  allowedToSwitch: PropTypes.bool.isRequired,
+  handleLeave: PropTypes.func.isRequired,
+  handleJoin: PropTypes.func.isRequired,
+  handleSwitchTo: PropTypes.func.isRequired
+};
 
 export default GroupCard;

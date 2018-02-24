@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class EditGroupSetDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +25,7 @@ class EditGroupSetDialog extends React.Component {
 
   handleCancel(e) {
     e.preventDefault();
-    
+
     this.props.closeDialog(e);
   }
 
@@ -111,5 +111,12 @@ class EditGroupSetDialog extends React.Component {
     );
   }
 }
+
+EditGroupSetDialog.propTypes = {
+  name: PropTypes.string.isRequired,
+  allowSelfSignup: PropTypes.bool.isRequired,
+  closeDialog: PropTypes.func.isRequired,
+  editGroupSet: PropTypes.func.isRequired
+};
 
 export default EditGroupSetDialog;

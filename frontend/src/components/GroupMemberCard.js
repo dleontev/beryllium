@@ -29,11 +29,6 @@ function collect(connect, monitor) {
 }
 
 class GroupMemberCard extends React.Component {
-  static propTypes = {
-    isDragging: PropTypes.bool.isRequired,
-    connectDragSource: PropTypes.func.isRequired
-  };
-
   getContextMenu() {
     return (
       <div className="dropdown-content">
@@ -76,6 +71,12 @@ class GroupMemberCard extends React.Component {
     );
   }
 }
+
+GroupMemberCard.propTypes = {
+  isDragging: PropTypes.bool.isRequired,
+  connectDragSource: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired
+};
 
 export default DragSource("membercard", memberCardSource, collect)(
   GroupMemberCard

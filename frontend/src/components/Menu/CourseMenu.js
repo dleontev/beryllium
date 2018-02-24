@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class CourseMenu extends React.Component {
   getSettingsNav() {
@@ -90,5 +91,10 @@ class CourseMenu extends React.Component {
     );
   }
 }
+
+CourseMenu.propTypes = {
+  isTeacher: PropTypes.bool,
+  id: PropTypes.string.isRequired
+};
 
 export default CourseMenu;

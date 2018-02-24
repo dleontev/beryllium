@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class DashboardTile extends React.Component {
   render() {
@@ -18,5 +19,10 @@ class DashboardTile extends React.Component {
     );
   }
 }
+
+DashboardTile.propTypes = {
+  course_code: PropTypes.string.isRequired,
+  course_name: PropTypes.string.isRequired
+};
 
 export default DashboardTile;

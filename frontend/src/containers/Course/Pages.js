@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 //import api from "../../api/Api";
 
 class Pages extends React.Component {
@@ -73,5 +74,9 @@ class Pages extends React.Component {
     );
   }
 }
+
+Pages.propTypes = {
+  isTeacher: PropTypes.bool
+};
 
 export default Pages;

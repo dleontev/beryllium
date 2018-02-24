@@ -14,7 +14,6 @@ AWS.config.update({
 
 AWS.config.credentials.get(function(err) {
   if (err) alert(err);
-  console.log(AWS.config.credentials);
 });
 
 var s3 = new AWS.S3({

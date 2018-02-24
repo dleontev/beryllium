@@ -1,7 +1,7 @@
 import React from "react";
 import profile_image from "../images/blank-profile.png";
 import api from "../api/Api";
-
+import PropTypes from "prop-types";
 class ReplyCard extends React.Component {
   constructor(props) {
     super(props);
@@ -15,18 +15,16 @@ class ReplyCard extends React.Component {
     };
   }
 
-  handleSubmit(event) {
-    //console.log("SUBMITTED");
+  handleSubmit() {
     if (!this.state.submitted) {
       this.setState({ submitted: true });
       api
         .post(`/posts/`, this.state.data)
-        .then(response => {
-          //console.log("posted");
+        .then(() => {
           this.props.handleSubmit();
         })
         .catch(error => {
-          console.log(error);
+          alert(error);
         });
       this.props.closeReplyBox();
     }
@@ -75,5 +73,12 @@ class ReplyCard extends React.Component {
     );
   }
 }
+
+ReplyCard.propTypes = {
+  discussion_id: PropTypes.string.isRequired,
+  parent_id: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  closeReplyBox: PropTypes.func.isRequired
+};
 
 export default ReplyCard;

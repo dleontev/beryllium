@@ -2,6 +2,8 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import api from "../api/Api";
 
+import ReactRouterPropTypes from "react-router-prop-types";
+
 // Small components.
 import CourseMenu from "../components/Menu/CourseMenu";
 import AddPost from "../components/Form/AddPost";
@@ -23,7 +25,7 @@ import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
 import AssignmentCard from "../components/AssignmentCard";
 
-class Dashboard extends React.Component {
+class Course extends React.Component {
   constructor() {
     super();
     this.state = { course: [], isTeacher: null };
@@ -50,7 +52,7 @@ class Dashboard extends React.Component {
       return "undefined";
     }
 
-    return this.state.course.code + ": " + this.state.course.name;
+    return `${this.state.course.code} : ${this.state.course.name}`;
   }
 
   getCourseId() {
@@ -87,6 +89,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/announcements"
                     render={props => (
                       <Announcements
+                        {...props}
                         section_id={this.props.match.params.id}
                         isTeacher={this.state.isTeacher}
                       />
@@ -98,6 +101,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/announcements/new"
                     render={props => (
                       <AddPost
+                        {...props}
                         section_id={this.props.match.params.id}
                         is_discussion={false}
                       />
@@ -121,6 +125,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/discussions/new"
                     render={props => (
                       <AddPost
+                        {...props}
                         section_id={this.props.match.params.id}
                         is_discussion={true}
                       />
@@ -150,6 +155,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/assignments"
                     render={props => (
                       <Assignments
+                        {...props}
                         section_id={this.props.match.params.id}
                         isTeacher={this.state.isTeacher}
                       />
@@ -185,6 +191,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/groups"
                     render={props => (
                       <Groups
+                        {...props}
                         isTeacher={this.state.isTeacher}
                         section_id={this.props.match.params.id}
                       />
@@ -196,6 +203,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/pages"
                     render={props => (
                       <Pages
+                        {...props}
                         section_id={this.props.match.params.id}
                         isTeacher={this.state.isTeacher}
                       />
@@ -215,6 +223,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/files"
                     render={props => (
                       <Files
+                        {...props}
                         section_id={this.props.match.params.id}
                         isTeacher={this.state.isTeacher}
                       />
@@ -226,6 +235,7 @@ class Dashboard extends React.Component {
                     path="/courses/:id/"
                     render={props => (
                       <CourseHome
+                        {...props}
                         section_id={this.props.match.params.id}
                         isTeacher={this.state.isTeacher}
                       />
@@ -243,4 +253,8 @@ class Dashboard extends React.Component {
   }
 }
 
-export default Dashboard;
+Course.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired
+};
+
+export default Course;

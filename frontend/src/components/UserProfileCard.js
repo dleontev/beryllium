@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class UserProfileCard extends React.Component {
   render() {
@@ -14,9 +15,7 @@ class UserProfileCard extends React.Component {
           </figure>
           <br />
           <div className="container">
-            <h1 className="title">
-              {this.props.name}
-            </h1>
+            <h1 className="title">{this.props.name}</h1>
           </div>
         </div>
         <br />
@@ -33,5 +32,12 @@ class UserProfileCard extends React.Component {
     );
   }
 }
+
+UserProfileCard.propTypes = {
+  email: PropTypes.string.isRequired,
+  profile_image: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  courses: PropTypes.array.isRequired
+};
 
 export default UserProfileCard;

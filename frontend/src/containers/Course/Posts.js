@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import api from "../../api/Api";
 import PostCard from "../../components/PostCard";
 import TopAnnouncement from "../../components/TopAnnouncement";
-
-class Discussion extends Component {
+import ReactRouterPropTypes from 'react-router-prop-types';
+import PropTypes from "prop-types";
+class Posts extends Component {
   constructor(props) {
     super(props);
     this.handleViewReplies = this.handleViewReplies.bind(this);
@@ -51,7 +52,7 @@ class Discussion extends Component {
         return true;
       })
       .catch(error => {
-        console.log(error);
+        alert(error)
         return false;
       });
     this.setState({
@@ -107,16 +108,12 @@ class Discussion extends Component {
       .filter(function(post) {
         return post.parent_id !== null;
       })
-      .map((post, index) => (
+      .map(post => (
         <PostCard
           key={post.id}
-          id={post.id}
-          author_name={post.author_name}
-          user_id={post.user_id}
-          is_deleted={post.is_deleted}
+          {...post}
           updated_at={new Date(post.updated_at).toLocaleDateString()}
           inserted_at={new Date(post.inserted_at).toLocaleDateString()}
-          content={post.content}
           box={true}
           discussion_id={this.props.match.params.discussion_id}
           section_id={this.props.match.params.id}
@@ -137,4 +134,9 @@ class Discussion extends Component {
   }
 }
 
-export default Discussion;
+Posts.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired,
+  isTeacher: PropTypes.bool
+};
+
+export default Posts;

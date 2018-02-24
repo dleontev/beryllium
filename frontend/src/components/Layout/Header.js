@@ -31,11 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
 class Header extends React.Component {
  
   getMainMenu() {
-    ///////////////////////// FAKE AUTH CHECK /////////////
     if (localStorage.getItem("token") === null) {
       return null;
     }
-    //////////////////////////////////////////////////////
 
     return <MainMenu />;
   }

@@ -56,9 +56,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      ////////////////////// FAKE AUTH CHECK////////////////////
       localStorage.getItem("token") !== null ? (
-     //////////////////////////////////////////////////////////
         <Component {...props} />
       ) : (
         <Redirect

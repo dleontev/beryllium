@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class CourseTableCard extends React.Component {
   render() {
     return (
@@ -13,5 +13,13 @@ class CourseTableCard extends React.Component {
     );
   }
 }
+
+CourseTableCard.propTypes = {
+  course_link: PropTypes.object.isRequired,
+  start_date: PropTypes.string.isRequired,
+  end_date: PropTypes.string.isRequired,
+  role_name: PropTypes.string.isRequired,
+  published: PropTypes.string.isRequired
+};
 
 export default CourseTableCard;

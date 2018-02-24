@@ -1,8 +1,7 @@
 import React from "react";
 import api from "../../api/Api";
-import { Link } from "react-router-dom";
 import UserTableCard from "../../components/UserTableCard";
-
+import ReactRouterPropTypes from "react-router-prop-types";
 class Users extends React.Component {
   constructor() {
     super();
@@ -43,15 +42,7 @@ class Users extends React.Component {
   getCourseUsers() {
     return this.state.users
       .filter(m => m.name.toLowerCase().includes(this.state.nameFilter))
-      .map((user, index) => (
-        <UserTableCard
-          key={index}
-          name={<Link to={"users/" + user.user_id}>{user.name}</Link>}
-          course_code={user.course_code}
-          section_name={user.section_name}
-          role_name={user.role_name}
-        />
-      ));
+      .map(user => <UserTableCard key={user.user_id} {...user} />);
   }
 
   render() {
@@ -77,11 +68,15 @@ class Users extends React.Component {
             </span>
           </div>
         </span>
-        <br/>
+        <br />
         <div>{this.getUsersTable()}</div>
       </div>
     );
   }
 }
+
+Users.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired
+};
 
 export default Users;

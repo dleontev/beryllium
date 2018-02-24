@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class UserListCard extends React.Component {
   render() {
     return (
@@ -11,5 +11,9 @@ class UserListCard extends React.Component {
     );
   }
 }
+
+UserListCard.propTypes = {
+  name: PropTypes.string.isRequired
+};
 
 export default UserListCard;

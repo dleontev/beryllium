@@ -48,7 +48,7 @@ class Groups extends React.Component {
               {group.group_name}
             </Link>
           }
-          course_name={group.course_code + ": " + group.course_name}
+          course_name={`${group.course_code} : ${group.course_name}`}
           section_id={group.section_id}
         />
       );

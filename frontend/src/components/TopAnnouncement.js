@@ -1,9 +1,7 @@
 import React from "react";
 import ReplyCard from "./ReplyCard";
 import socket from "../api/Socket";
-//import {Socket} from "phoenix";
-//import api from "../api/Api";
-
+import PropTypes from "prop-types";
 class TopAnnouncement extends React.Component {
   constructor() {
     super();
@@ -126,5 +124,21 @@ class TopAnnouncement extends React.Component {
     );
   }
 }
+
+TopAnnouncement.propTypes = {
+  id: PropTypes.string.isRequired,
+  author_name: PropTypes.string.isRequired,
+  updated_at: PropTypes.string.isRequired,
+  inserted_at: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  discussion_id: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  handleViewReplies: PropTypes.func.isRequired,
+  hasPosts: PropTypes.bool.isRequired,
+  retrieveChildren: PropTypes.func.isRequired,
+  isLocked: PropTypes.bool.isRequired,
+  isTeacher: PropTypes.bool.isRequired
+};
 
 export default TopAnnouncement;

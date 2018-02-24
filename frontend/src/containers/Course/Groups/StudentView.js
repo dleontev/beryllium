@@ -4,11 +4,12 @@ import GroupCard from "../../../components/GroupCard";
 import UserListCard from "../../../components/UserListCard";
 import NewGroupDialog from "../../../components/Form/NewEditGroupCard";
 import $ from "jquery";
+import PropTypes from "prop-types";
 
 class StudentView extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       members: null,
       groups: null,
@@ -18,6 +19,7 @@ class StudentView extends React.Component {
   }
 
   createGroup(id, name, maxMembers) {
+    alert(`id: ${id}, name: ${name}, maxMembers: ${maxMembers}`);
     // TODO: Api post to create a group and join the user.
   }
 
@@ -95,9 +97,7 @@ class StudentView extends React.Component {
       return;
     }
 
-    return members.map((member, index) => (
-      <UserListCard key={member.id} name={member.name} />
-    ));
+    return members.map(member => <UserListCard key={member.id} {...member} />);
   }
 
   getGroupSets() {
@@ -131,7 +131,7 @@ class StudentView extends React.Component {
       return currentUserGroups.includes(group.id);
     });
 
-    return groups.map((group, index) => {
+    return groups.map(group => {
       const allowedToLeave =
         group.members.find(x => x.id === currentUserId) !== undefined &&
         group.is_selfsignup;
@@ -165,9 +165,9 @@ class StudentView extends React.Component {
           name={group.name}
           groupset_name={group.groupset_name}
           groupset_id={group.groupset_id}
+          max_members={group.max_members}
           members={this.getMembersList(group.members)}
           current_members={group.members.length}
-          max_members={group.max_members}
           allowedToLeave={allowedToLeave}
           allowedToJoin={allowedToJoin}
           allowedToSwitch={allowedToSwitch}
@@ -219,5 +219,9 @@ class StudentView extends React.Component {
     );
   }
 }
+
+StudentView.propTypes = {
+  sectionId: PropTypes.string
+};
 
 export default StudentView;

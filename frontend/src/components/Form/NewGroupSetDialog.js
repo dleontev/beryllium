@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class NewGroupSetDialog extends React.Component {
   constructor(props) {
@@ -137,8 +138,8 @@ class NewGroupSetDialog extends React.Component {
                       value="false"
                       checked={this.state.autoAssign === "false"}
                       onChange={this.handleChange.bind(this)}
-                    />{" "}
-                    I'll create groups manually
+                    />
+                    I will create groups manually.
                   </label>
                 </div>
               )}
@@ -207,5 +208,10 @@ class NewGroupSetDialog extends React.Component {
     );
   }
 }
+
+NewGroupSetDialog.propTypes = {
+  closeDialog: PropTypes.func.isRequired,
+  createGroupSet: PropTypes.func.isRequired
+};
 
 export default NewGroupSetDialog;

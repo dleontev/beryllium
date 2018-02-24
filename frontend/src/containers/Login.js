@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import api from "../api/Api";
+import ReactRouterPropTypes from "react-router-prop-types";
 
 class Login extends React.Component {
   constructor() {
@@ -80,6 +81,7 @@ class Login extends React.Component {
                 placeholder="Email"
                 name="email"
                 onChange={this.handleChange.bind(this)}
+                required
               />
               <span className="icon is-medium is-left">
                 <i className="fa fa-envelope-o" aria-hidden="true" />
@@ -95,6 +97,7 @@ class Login extends React.Component {
                 placeholder="Password"
                 name="entered_password"
                 onChange={this.handleChange.bind(this)}
+                required
               />
               <span className="icon is-medium is-left">
                 <i className="fa fa-lock" aria-hidden="true" />
@@ -126,5 +129,9 @@ class Login extends React.Component {
     );
   }
 }
+
+Login.propTypes = {
+  location: ReactRouterPropTypes.location.isRequired
+};
 
 export default Login;

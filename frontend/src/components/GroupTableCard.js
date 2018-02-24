@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class GroupTableCard extends React.Component {
   render() {
     return (
@@ -10,5 +10,10 @@ class GroupTableCard extends React.Component {
     );
   }
 }
+
+GroupTableCard.propTypes = {
+  group_link: PropTypes.string.isRequired,
+  course_name: PropTypes.string.isRequired
+};
 
 export default GroupTableCard;

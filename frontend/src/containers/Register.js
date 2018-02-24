@@ -15,6 +15,9 @@ class CreateUser extends React.Component {
     };
   }
 
+  /**
+   * @param  {} event
+   */
   handleChange(event) {
     const { name, value } = event.target;
 
@@ -23,6 +26,9 @@ class CreateUser extends React.Component {
     }));
   }
 
+  /**
+   * @param  {} event
+   */
   handleFilename(event) {
     var files = event.target.files;
 
@@ -34,6 +40,9 @@ class CreateUser extends React.Component {
     this.setState({ filename: files[0].name, filedata: event.target.files });
   }
 
+  /**
+   * @param  {} event
+   */
   handleSubmit(event) {
     event.preventDefault();
 

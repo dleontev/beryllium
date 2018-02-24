@@ -2,8 +2,7 @@ import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import DiscussionTableCard from "../../components/DiscussionTableCard";
-//import 'bulma-tooltip';
-
+import ReactRouterPropTypes from "react-router-prop-types";
 class Discussions extends React.Component {
   constructor() {
     super();
@@ -46,9 +45,11 @@ class Discussions extends React.Component {
 
   getDiscussionSection(name, discussions) {
     var discussionData =
-      discussions.length > 0
-        ? this.getDiscussions(discussions)
-        : <center>There are no discussions in this section.</center>;
+      discussions.length > 0 ? (
+        this.getDiscussions(discussions)
+      ) : (
+        <center>There are no discussions in this section.</center>
+      );
 
     return (
       <div className="panel">
@@ -144,5 +145,9 @@ class Discussions extends React.Component {
     );
   }
 }
+
+Discussions.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired
+};
 
 export default Discussions;

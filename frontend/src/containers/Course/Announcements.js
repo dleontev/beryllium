@@ -2,6 +2,7 @@ import React from "react";
 import api from "../../api/Api";
 import { Link } from "react-router-dom";
 import AnnouncementCard from "../../components/AnnouncementCard";
+import PropTypes from "prop-types";
 
 class Announcements extends React.Component {
   constructor(props) {
@@ -51,18 +52,19 @@ class Announcements extends React.Component {
     if (this.state.announcements.length === 0)
       return "There are no announcements to show.";
 
-    return this.state.announcements.map((announcement, index) => (
+    return this.state.announcements.map(announcement => (
       <AnnouncementCard
         refresh={this.refreshAnnouncements}
         section_id={this.props.section_id}
-        key={index}
+        key={announcement.id}
         title={announcement.title}
         id={announcement.id}
         author={announcement.author_name}
-        inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
-        updated_at={new Date(announcement.updated_at).toLocaleDateString()}
         content={announcement.content}
         is_locked={announcement.is_locked}
+        {...announcement}
+        inserted_at={new Date(announcement.inserted_at).toLocaleDateString()}
+        updated_at={new Date(announcement.updated_at).toLocaleDateString()}
         showControls={this.props.isTeacher}
       />
     ));
@@ -87,5 +89,10 @@ class Announcements extends React.Component {
     );
   }
 }
+
+Announcements.propTypes = {
+  isTeacher: PropTypes.bool,
+  section_id: PropTypes.string.isRequired
+};
 
 export default Announcements;

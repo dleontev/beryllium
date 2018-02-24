@@ -2,6 +2,7 @@ import React from "react";
 import UserProfileCard from "../../components/UserProfileCard";
 import api from "../../api/Api";
 import profile_image from "../../images/blank-profile.png";
+import ReactRouterPropTypes from "react-router-prop-types";
 
 class Profile extends React.Component {
   constructor() {
@@ -37,5 +38,9 @@ class Profile extends React.Component {
     return this.getUserCard();
   }
 }
+
+Profile.propTypes = {
+  match: ReactRouterPropTypes.match.isRequired
+};
 
 export default Profile;

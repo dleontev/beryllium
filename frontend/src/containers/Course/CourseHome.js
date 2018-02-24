@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../../api/Api";
+import PropTypes from "prop-types";
 
 class CourseHome extends React.Component {
   constructor() {
@@ -19,7 +20,7 @@ class CourseHome extends React.Component {
     if (this.state.page === null) return <div className="loading" />;
 
     if (this.state.page === "")
-      return <div>This course doesn't have a main page setup.</div>;
+      return "This course doesn't have a main page setup.";
 
     return this.state.page;
   }
@@ -61,5 +62,10 @@ class CourseHome extends React.Component {
     );
   }
 }
+
+CourseHome.propTypes = {
+  isTeacher: PropTypes.bool,
+  section_id: PropTypes.string.isRequired
+};
 
 export default CourseHome;

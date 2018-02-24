@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-class ConfirmDeleteCard extends React.Component {
+class ConfirmCard extends React.Component {
   render() {
     return (
       <div className="modal is-active">
@@ -32,4 +33,10 @@ class ConfirmDeleteCard extends React.Component {
     );
   }
 }
-export default ConfirmDeleteCard;
+
+ConfirmCard.propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
+export default ConfirmCard;

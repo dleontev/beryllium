@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../../api/Api";
 import { Redirect } from "react-router-dom";
-
+import PropTypes from "prop-types";
 class AddPost extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class AddPost extends React.Component {
       return;
     }
 
-    api.post(`/posts/`, this.state.data).then(response => {
+    api.post(`/posts/`, this.state.data).then(() => {
       this.setState({ finish: true });
     });
   }
@@ -123,5 +123,11 @@ class AddPost extends React.Component {
     );
   }
 }
+
+AddPost.propTypes = {
+  section_id: PropTypes.string.isRequired,
+  isTeacher: PropTypes.bool.isRequired,
+  is_discussion: PropTypes.bool.isRequired
+};
 
 export default AddPost;

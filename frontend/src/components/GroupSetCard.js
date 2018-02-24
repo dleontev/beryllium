@@ -4,6 +4,7 @@ import { DragDropContextProvider } from "react-dnd";
 import api from "../api/Api";
 import NewEditGroupCard from "../components/Form/NewEditGroupCard";
 import HTML5Backend from "react-dnd-html5-backend";
+import PropTypes from "prop-types";
 
 class GroupSetCard extends React.Component {
   constructor(props) {
@@ -53,11 +54,10 @@ class GroupSetCard extends React.Component {
   }
 
   editGroup(groupId, name, maxMembers) {
-
-    console.log(maxMembers);
     if (
       this.props.groups[this.state.activeEditGroupIndex].name !== name ||
-      this.props.groups[this.state.activeEditGroupIndex].max_members !== maxMembers
+      this.props.groups[this.state.activeEditGroupIndex].max_members !==
+        maxMembers
     ) {
       api.put(`/groups/${groupId}`, {
         group: {
@@ -112,12 +112,12 @@ class GroupSetCard extends React.Component {
       return "There are currently no groups in this group set. Add a group to get started.";
     }
 
-    return this.props.groups.map((group, index) => (
+    return this.props.groups.map(group => (
       <DropGroupCard
         key={group.id}
         name={group.name}
-        handleMove={this.handleMove}
         id={group.id}
+        handleMove={this.handleMove}
         members={this.props.members.filter(function(member) {
           return member.group_id === group.id;
         })}
@@ -293,5 +293,16 @@ class GroupSetCard extends React.Component {
     );
   }
 }
+
+GroupSetCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  groups: PropTypes.array.isRequired,
+  members: PropTypes.array.isRequired,
+  id: PropTypes.string.isRequired,
+  sectionId: PropTypes.string.isRequired,
+  handleGroupsetDelete: PropTypes.func.isRequired,
+  handleGroupsetEdit: PropTypes.func.isRequired,
+  isSelfSignup: PropTypes.bool.isRequired
+};
 
 export default GroupSetCard;

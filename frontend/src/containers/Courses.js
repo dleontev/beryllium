@@ -46,14 +46,14 @@ class Courses extends React.Component {
         <CourseTableCard
           key={index}
           id={course.id}
-          course_title={course.course_code + ": " + course.course_name}
+          course_title={`${course.course_code} : ${course.course_name}`}
           course_link={
             course.published ? (
               <Link to={`/courses/${course.section_id}`}>
-                {course.course_code + ": " + course.course_name}
+                {`${course.course_code} : ${course.course_name}`}
               </Link>
             ) : (
-              course.course_code + ": " + course.course_name
+              `${course.course_code} : ${course.course_name}`
             )
           }
           role_name={course.role_name}

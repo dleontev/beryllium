@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 class NewEditGroupCard extends React.Component {
   constructor(props) {
     super(props);
@@ -118,5 +118,14 @@ class NewEditGroupCard extends React.Component {
     );
   }
 }
+
+NewEditGroupCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  maxMembers: PropTypes.number.isRequired,
+  handleAction: PropTypes.func.isRequired,
+  closeDialog: PropTypes.func.isRequired
+};
 
 export default NewEditGroupCard;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import PropTypes from "prop-types";
 class Files extends React.Component {
   constructor() {
     super();
@@ -49,5 +49,9 @@ class Files extends React.Component {
     );
   }
 }
+
+Files.propTypes = {
+  isTeacher: PropTypes.bool
+};
 
 export default Files;

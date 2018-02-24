@@ -6,7 +6,7 @@ import UserTableCard from "../../components/UserTableCard";
 class Users extends React.Component {
   constructor() {
     super();
-    this.state = { users: null };
+    this.state = { users: null, nameFilter: "" };
   }
 
   componentWillMount() {
@@ -15,6 +15,10 @@ class Users extends React.Component {
         this.setState({ users: response.data.data });
       }
     });
+  }
+
+  handleChange(event) {
+    this.setState({ nameFilter: event.target.value.toLowerCase() });
   }
 
   getUsersTable() {
@@ -37,15 +41,17 @@ class Users extends React.Component {
   }
 
   getCourseUsers() {
-    return this.state.users.map((user, index) => (
-      <UserTableCard
-        key={index}
-        name={<Link to={"users/" + user.user_id}>{user.name}</Link>}
-        course_code={user.course_code}
-        section_name={user.section_name}
-        role_name={user.role_name}
-      />
-    ));
+    return this.state.users
+      .filter(m => m.name.toLowerCase().includes(this.state.nameFilter))
+      .map((user, index) => (
+        <UserTableCard
+          key={index}
+          name={<Link to={"users/" + user.user_id}>{user.name}</Link>}
+          course_code={user.course_code}
+          section_name={user.section_name}
+          role_name={user.role_name}
+        />
+      ));
   }
 
   render() {
@@ -55,11 +61,23 @@ class Users extends React.Component {
           <div className="navbar-brand">
             <h1 className="is-size-4">People</h1>
           </div>
-          <div className="navbar-menu" />
-
-          <div className="navbar-end" />
         </nav>
-
+        <span>
+          <div className="control has-icons-left">
+            <input
+              className="input"
+              type="text"
+              value={this.state.nameFilter}
+              placeholder="Search people"
+              onChange={this.handleChange.bind(this)}
+              autoFocus
+            />
+            <span className="icon is-small is-left">
+              <i className="fa fa-search" />
+            </span>
+          </div>
+        </span>
+        <br/>
         <div>{this.getUsersTable()}</div>
       </div>
     );

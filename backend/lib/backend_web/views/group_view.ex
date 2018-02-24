@@ -22,7 +22,9 @@ defmodule BackendWeb.GroupView do
     %{
       id: group.id,
       name: group.name,
-      groupset_id: group.groupset_id
+      groupset_id: group.groupset_id,
+      max_members: group.max_members,
+      section_id: group.section_id
     }
   end
 

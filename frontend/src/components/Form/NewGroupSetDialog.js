@@ -7,8 +7,8 @@ class NewGroupSetDialog extends React.Component {
       name: "",
       allowSelfSignup: false,
       groupCount: 0,
-      autoGenerateGroups: null,
-      sectionId: this.props.sectionId
+      maxMembers: 0,
+      autoAssign: null
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -34,26 +34,30 @@ class NewGroupSetDialog extends React.Component {
     if (this.state.name.length === 0) {
       alert("Please, enter a valid group set name.");
     } else if (
-      this.state.autoGenerateGroups === true &&
+      this.state.autoGenerate === true &&
       this.state.groupCount === 0
     ) {
       alert("Please, enter a valid number of members per group.");
+    } else if (this.allowSelfSignup && this.state.autoAssign === null) {
+      alert("Select whether or not to create groups automatically.");
     } else {
-      this.props.createGroupSet(
+      var ok = this.props.createGroupSet(
         this.state.name,
         this.state.allowSelfSignup,
         this.state.groupCount,
-        this.state.autoGenerateGroups,
-        this.state.sectionId
+        this.state.maxMembers,
+        this.state.autoAssign
       );
 
-      this.props.closeDialog(e);
+      if (ok) {
+        this.props.closeDialog(e);
+      }
     }
   }
 
   render() {
     return (
-      <div className={this.props.modalToggle}>
+      <div className="modal is-active">
         <div className="modal-background" />
         <div className="modal-card">
           <header className="modal-card-head">
@@ -76,6 +80,7 @@ class NewGroupSetDialog extends React.Component {
                   placeholder="ex. Project Groups"
                   value={this.state.name}
                   onChange={this.handleChange}
+                  autoFocus
                 />
               </div>
               <hr />
@@ -98,41 +103,89 @@ class NewGroupSetDialog extends React.Component {
 
               <span className="label">Group Structure</span>
 
-              <div className="field">
-                <label className="radio">
-                  <input
-                    type="radio"
-                    name="autoGenerateGroups"
-                    value="true"
-                    checked={this.state.autoGenerateGroups === "true"}
-                    onChange={this.handleChange.bind(this)}
-                  />{" "}
-                  Split students into{" "}
-                  <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    text="0"
-                    name="groupCount"
-                    placeholder="0"
-                    onChange={this.handleChange}
-                  />{" "}
-                  groups
-                </label>
-              </div>
+              {!this.state.allowSelfSignup && (
+                <div className="field">
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="autoAssign"
+                      value="true"
+                      checked={this.state.autoAssign === "true"}
+                      onChange={this.handleChange.bind(this)}
+                    />{" "}
+                    Split students into{" "}
+                    <input
+                      type="number"
+                      min="0"
+                      max="100"
+                      text="0"
+                      name="groupCount"
+                      placeholder="0"
+                      onChange={this.handleChange}
+                    />{" "}
+                    groups
+                  </label>
+                </div>
+              )}
 
-              <div className="field is-grouped">
-                <label className="radio">
-                  <input
-                    type="radio"
-                    name="autoGenerateGroups"
-                    value="false"
-                    checked={this.state.autoGenerateGroups === "false"}
-                    onChange={this.handleChange.bind(this)}
-                  />{" "}
-                  I'll create groups manually
-                </label>
-              </div>
+              {!this.state.allowSelfSignup && (
+                <div className="field is-grouped">
+                  <label className="radio">
+                    <input
+                      type="radio"
+                      name="autoAssign"
+                      value="false"
+                      checked={this.state.autoAssign === "false"}
+                      onChange={this.handleChange.bind(this)}
+                    />{" "}
+                    I'll create groups manually
+                  </label>
+                </div>
+              )}
+
+              {this.state.allowSelfSignup && (
+                <div className="field is-grouped">
+                  <div className="control">
+                    <label>Create</label>
+                  </div>
+                  <div className="control">
+                    <input
+                      type="number"
+                      min="0"
+                      max="99999"
+                      text="0"
+                      name="groupCount"
+                      placeholder="0"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="control">
+                    <label>groups now</label>
+                  </div>
+                </div>
+              )}
+
+              {this.state.allowSelfSignup && (
+                <div className="field is-grouped">
+                  <div className="control">
+                    <label>Limit groups to</label>
+                  </div>
+                  <div className="control">
+                    <input
+                      type="number"
+                      min="2"
+                      max="99999"
+                      name="maxMembers"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                  <div className="control">
+                    <label>
+                      members <small>(Leave blank for no limit)</small>
+                    </label>
+                  </div>
+                </div>
+              )}
             </section>
 
             <footer className="modal-card-foot">

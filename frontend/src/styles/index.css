@@ -1,6 +1,3 @@
-@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
-@import "bulma.css";
-
 .assignment_footer {
   padding: 5px;
 }
@@ -124,4 +121,20 @@ article.post:last-child {
     rgba(255, 255, 255, 0),
     rgba(255, 255, 255, 1) 75%
   );
+}
+
+.label-info{
+  background-color: #3a87ad;
+  border-radius: 3px;
+  display: inline-block;
+  padding: 2px 4px;
+  font-size: 11.844px;
+  font-size: .74025rem;
+  font-weight: bold;
+  line-height: 14px;
+  color: #fff;
+  vertical-align: baseline;
+  white-space: nowrap;
+  text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+  background-color: #73818C;
 }

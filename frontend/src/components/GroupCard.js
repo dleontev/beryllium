@@ -17,6 +17,30 @@ class GroupCard extends React.Component {
     return <i className="fa fa-lock" />;
   }
 
+  getFullStatus() {
+    var memberCount =
+      this.props.members !== undefined ? this.props.members.length : 0;
+
+    return memberCount === this.props.max_members &&
+      this.props.max_members > 0 ? (
+      <span className="label-info">Full</span>
+    ) : (
+      ""
+    );
+  }
+
+  getMemberCount() {
+    var memberCount =
+      this.props.members !== undefined ? this.props.members.length : 0;
+
+    return (
+      <span className="label-info">
+        {memberCount}
+        {this.props.max_members > 0 ? "/" + this.props.max_members : ""} members
+      </span>
+    );
+  }
+
   render() {
     return (
       <div className="panel">
@@ -31,6 +55,8 @@ class GroupCard extends React.Component {
             </div>
 
             <div className="level-right">
+              <p className="level-item">{this.getFullStatus()}</p>
+              <p className="level-item">{this.getMemberCount()}</p>
               <p className="level-item">{this.getActionButton()}</p>
             </div>
           </nav>

@@ -87,6 +87,7 @@ class AddPost extends React.Component {
                 className="input"
                 type="text"
                 onChange={this.handleTitle.bind(this)}
+                autoFocus
               />
             </div>
           </div>

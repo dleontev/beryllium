@@ -22,7 +22,6 @@ class Discussion extends Component {
       .get(`/posts/${this.props.match.params.discussion_id}`)
       .then(response => {
         if (typeof response !== "undefined") {
-          console.log(response.data.data);
           this.setState({ top: response.data.data });
         }
       })
@@ -35,9 +34,6 @@ class Discussion extends Component {
     api
       .get(`/posts/discussions/children/${this.state.top.id}`)
       .then(response => {
-        console.log("---------------------------");
-        console.log(response);
-        console.log("---------------------------");
         this.setState({
           posts: response.data.data,
           isLoading: false

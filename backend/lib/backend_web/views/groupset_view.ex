@@ -6,25 +6,15 @@ defmodule BackendWeb.GroupsetView do
     %{data: render_many(groupsets, GroupsetView, "groupset.json")}
   end
 
-  def render("show_by_section.json", %{groupsets: groupsets}) do
-    %{data: render_many(groupsets, GroupsetView, "groupset_by_section.json")}
-  end
-
   def render("show.json", %{groupset: groupset}) do
     %{data: render_one(groupset, GroupsetView, "groupset.json")}
-  end
-
-  def render("groupset_by_section.json", %{groupset: groupset}) do
-    %{
-      id: groupset.id, 
-      name: groupset.name
-    }
   end
 
   def render("groupset.json", %{groupset: groupset}) do
     %{
       id: groupset.id, 
-      name: groupset.name
+      name: groupset.name,
+      is_selfsignup: groupset.is_selfsignup
     }
   end
 end

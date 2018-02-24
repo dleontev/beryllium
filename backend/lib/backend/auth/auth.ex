@@ -643,7 +643,8 @@ defmodule Backend.Auth do
       from(
         g in Groupset,
         where: g.section_id == ^section_id,
-        select: [:id, :name]
+        order_by: g.name,
+        select: [:id, :name, :is_selfsignup]
       )
 
     Repo.all(query)

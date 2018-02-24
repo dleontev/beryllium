@@ -1,11 +1,18 @@
 import React from "react";
 import GroupMemberCard from "./GroupMemberCard";
 import PropTypes from "prop-types";
+
 import { DropTarget } from "react-dnd";
 
 const memberCardTarget = {
   canDrop(props, monitor) {
-    return monitor.getItem().group_id !== props.id;
+    var item = monitor.getItem();
+
+    return (
+      item.group_id !== props.id &&
+      (props.max_members === 0 ||
+        (props.max_members > 0 && props.max_members !== props.members.length))
+    );
   },
 
   drop({ id }) {
@@ -71,7 +78,6 @@ class DropGroupCard extends React.Component {
   }
 
   handleMove(userId, sourceGroup, targetGroup) {
-    console.log("reached handlemove #1.");
     this.props.handleMove(userId, sourceGroup, targetGroup);
   }
 
@@ -107,19 +113,55 @@ class DropGroupCard extends React.Component {
     if (this.props.isUnassigned) {
       return (
         <div className="panel-block">
-                <div className="control has-icons-left ">
-              <input
-                className="input"
-                type="text"
-                value={this.state.nameFilter}
-                placeholder="Search users"
-                onChange={this.handleChange.bind(this)}
-              />
-              <span className="icon is-small is-left">
-                <i className="fa fa-search" />
-              </span>
+          <div className="control has-icons-left ">
+            <input
+              className="input"
+              type="text"
+              value={this.state.nameFilter}
+              placeholder="Search users"
+              onChange={this.handleChange.bind(this)}
+              autoFocus
+            />
+            <span className="icon is-small is-left">
+              <i className="fa fa-search" />
+            </span>
           </div>
         </div>
+      );
+    }
+  }
+
+  getEditButton() {
+    if (!this.props.isUnassigned) {
+      return <a onClick={() => this.props.handleGroupEdit()}>Edit</a>;
+    }
+  }
+
+  getDeleteButton() {
+    if (!this.props.isUnassigned) {
+      return <a onClick={() => this.props.handleGroupDelete()}>Delete</a>;
+    }
+  }
+
+  getFullStatus() {
+    if (!this.props.isUnassigned) {
+      return this.props.members.length === this.props.max_members &&
+        this.props.max_members > 0 ? (
+        <span className="label-info">Full</span>
+      ) : (
+        ""
+      );
+    }
+  }
+
+  getMemberCount() {
+    if (!this.props.isUnassigned) {
+      return (
+        <span className="label-info">
+          {this.props.members.length}{" "}
+          {this.props.max_members > 0 ? "/ " + this.props.max_members : ""}{" "}
+          members
+        </span>
       );
     }
   }
@@ -129,14 +171,27 @@ class DropGroupCard extends React.Component {
 
     const isActive = canDrop && isOver;
 
-    let className = "panel";
+    let className = this.props.isUnassigned ? "panel fixed" : "panel";
     if (isActive) {
       className = "panel is-over";
     }
 
     return connectDropTarget(
       <div className={className}>
-        <p className="panel-heading">{this.props.name}</p>
+        <div className="panel-heading">
+          <nav className="level">
+            <div className="level-left">
+              <div className="level-item">{this.props.name}</div>
+            </div>
+
+            <div className="level-right">
+              <p className="level-item">{this.getFullStatus()}</p>
+              <p className="level-item">{this.getMemberCount()}</p>
+              <p className="level-item">{this.getEditButton()}</p>
+              <p className="level-item">{this.getDeleteButton()}</p>
+            </div>
+          </nav>
+        </div>
 
         {this.getSearchBar()}
 

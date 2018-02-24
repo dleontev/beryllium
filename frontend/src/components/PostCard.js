@@ -12,7 +12,6 @@ class PostCard extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.initSocket = this.initSocket.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
-    this.handleModal = this.handleModal.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.closeReplyBox = this.closeReplyBox.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
@@ -139,7 +138,6 @@ class PostCard extends React.Component {
     api
       .get(`/posts/discussions/children/${this.props.id}`)
       .then(response => {
-        console.log(response.data.data);
         this.setState({
           posts: response.data.data,
           length: response.data.data.length,
@@ -192,6 +190,8 @@ class PostCard extends React.Component {
           discussion_id={this.props.discussion_id}
           section_id={this.props.section_id}
           isLoading={this.state.isLoading}
+          isLocked={this.props.isLocked}
+          isTeacher={this.props.isTeacher}
         />
       ));
   }
@@ -243,16 +243,20 @@ class PostCard extends React.Component {
 
                     <div className="level-left">
                       <div className="field is-grouped">
-                        <p className="control">
-                          <a
-                            className="button is-info is-small"
-                            onClick={this.handleReply.bind(this)}
-                          >
-                            Reply
-                          </a>
-                        </p>
+                        {(!this.props.isLocked || (this.props.isLocked && this.props.isTeacher)) && (
+                          <p className="control">
+                            <a
+                              className="button is-info is-small"
+                              onClick={this.handleReply.bind(this)}
+                            >
+                              Reply
+                            </a>
+                          </p>
+                        )}
 
-                        {this.props.user_id === api.getUserId() ? (
+                        {((this.props.user_id === api.getUserId() &&
+                          !this.props.isLocked) ||
+                          this.props.isTeacher) && (
                           <p className="control">
                             <a
                               className={
@@ -265,10 +269,10 @@ class PostCard extends React.Component {
                               Edit
                             </a>
                           </p>
-                        ) : (
-                          ""
                         )}
-                        {this.props.user_id === api.getUserId() ? (
+                        {((this.props.user_id === api.getUserId() &&
+                          !this.props.isLocked) ||
+                          this.props.isTeacher) && (
                           <p className="control">
                             <a
                               className={
@@ -276,32 +280,30 @@ class PostCard extends React.Component {
                                   ? "button is-danger is-small is-static"
                                   : "button is-danger is-small"
                               }
-                              onClick={this.handleModal}
+                              onClick={() => {
+                                this.setState({ modalState: true });
+                              }}
                             >
                               Delete
                             </a>
                           </p>
-                        ) : (
-                          ""
                         )}
 
                         <div className="control">
-                          <div
-                            className={
-                              this.state.length === 0
-                                ? "button is-primary is-small is-static"
-                                : "button is-primary is-small"
-                            }
-                            onClick={this.handleClick.bind(this)}
-                          >
-                            <span>
-                              {this.state.comments ? "Collapse" : "Expand"}
-                            </span>
-                            <span className="icon">
-                              <i className="fa fa-reply" />
-                            </span>
-                            <span>{this.state.length}</span>
-                          </div>
+                          {this.state.length > 0 && (
+                            <div
+                              className="button is-primary is-small"
+                              onClick={this.handleClick.bind(this)}
+                            >
+                              <span>
+                                {this.state.comments ? "Collapse" : "Expand"}
+                              </span>
+                              <span className="icon">
+                                <i className="fa fa-reply" />
+                              </span>
+                              <span>{this.state.length}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                       <br />

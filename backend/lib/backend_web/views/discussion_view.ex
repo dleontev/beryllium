@@ -11,7 +11,7 @@ defmodule BackendWeb.DiscussionView do
   end
 
   def render("discussion.json", %{discussion: discussion}) do
-    %{id: discussion.id}
+    %{id: discussion.id, is_locked: discussion.is_locked, title: discussion.title}
   end
 
   def render("show_all.json", %{discussions: discussions}) do
@@ -20,15 +20,15 @@ defmodule BackendWeb.DiscussionView do
 
   def render("discussions_all.json", %{discussion: discussion}) do
     %{
-      id: discussion.id, 
-      title: discussion.title, 
-      content: discussion.content, 
-      inserted_at: discussion.inserted_at, 
+      id: discussion.id,
+      title: discussion.title,
+      content: discussion.content,
+      inserted_at: discussion.inserted_at,
       is_locked: discussion.is_locked,
       is_pinned: discussion.is_pinned,
-      updated_at: discussion.updated_at, 
+      updated_at: discussion.updated_at,
       author_name: discussion.author_name,
       author_id: discussion.author_id
     }
-  end  
+  end
 end

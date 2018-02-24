@@ -9,21 +9,13 @@ class AnnouncementCard extends React.Component {
     this.state = {
       modalState: false
     };
-
-    this.handleModal = this.handleModal.bind(this);
-  }
-
-  handleModal() {
-    this.setState({
-      modalState: !this.state.modalState
-    });
   }
 
   handleDelete() {
     api
       .delete(`/discussions/${this.props.id}`)
       .then(() => {
-        this.handleModal();
+        this.setState({ modalState: false });
         this.props.refresh();
       })
       .catch(error => {
@@ -52,7 +44,7 @@ class AnnouncementCard extends React.Component {
   }
 
   getLock() {
-    return <a onClick={() => this.handleModal()}>Delete</a>;
+    return <a onClick={() => this.setState({ modalState: true })}>Delete</a>;
   }
 
   render() {
@@ -61,7 +53,7 @@ class AnnouncementCard extends React.Component {
         {this.state.modalState && (
           <ConfirmCard
             onClick={() => this.handleDelete()}
-            onCancel={() => this.handleModal()}
+            onCancel={() => this.setState({ modalState: false })}
           />
         )}
 

@@ -4,8 +4,8 @@ import PostCard from "../../components/PostCard";
 import TopAnnouncement from "../../components/TopAnnouncement";
 
 class Discussion extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleViewReplies = this.handleViewReplies.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieveChildren = this.retrieveChildren.bind(this);
@@ -13,20 +13,30 @@ class Discussion extends Component {
       top: null,
       posts: [],
       replies: true,
-      isLoading: true
+      isLoading: true,
+      discussion: null
     };
   }
 
   componentWillMount() {
     api
-      .get(`/posts/${this.props.match.params.discussion_id}`)
+      .get(`/discussions/${this.props.match.params.discussion_id}`)
       .then(response => {
         if (typeof response !== "undefined") {
-          this.setState({ top: response.data.data });
+          this.setState({ discussion: response.data.data });
         }
       })
       .then(() => {
-        this.retrieveChildren();
+        api
+          .get(`/posts/${this.props.match.params.discussion_id}`)
+          .then(response => {
+            if (typeof response !== "undefined") {
+              this.setState({ top: response.data.data });
+            }
+          })
+          .then(() => {
+            this.retrieveChildren();
+          });
       });
   }
 
@@ -83,6 +93,9 @@ class Discussion extends Component {
         hasPosts={this.state.posts.length === 0 ? false : true}
         discussion_id={this.props.match.params.discussion_id}
         retrieveChildren={this.retrieveChildren}
+        isLocked={this.state.discussion.is_locked}
+        title={this.state.discussion.title}
+        isTeacher={this.props.isTeacher}
       />
     );
   }
@@ -108,6 +121,8 @@ class Discussion extends Component {
           discussion_id={this.props.match.params.discussion_id}
           section_id={this.props.match.params.id}
           isLoading={this.state.isLoading}
+          isLocked={this.state.discussion.is_locked}
+          isTeacher={this.props.isTeacher}
         />
       ));
   }

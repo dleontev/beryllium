@@ -61,7 +61,14 @@ class TopAnnouncement extends React.Component {
     return (
       <div className="card">
         <header className="card-header">
-          <p className="card-header-title">discussion_title</p>
+          <p className="card-header-title">{this.props.title}</p>
+          <div className="card-header-icon">
+            {this.props.isLocked && (
+              <span className="icon">
+                <i className="fa fa-lock" aria-hidden="true" />
+              </span>
+            )}
+          </div>
         </header>
         <div className="card-content">
           <strong>{this.props.author_name}</strong>
@@ -70,17 +77,22 @@ class TopAnnouncement extends React.Component {
           {this.props.content}
         </div>
         <footer className="card-footer">
-          <p className="card-footer-item">
-            <span>
-              <button className="button" onClick={this.handleReply.bind(this)}>
-                <span className="icon">
-                  <i className="fa fa-reply" />
-                </span>
-                <span>Reply</span>
-              </button>
-            </span>
-          </p>
-          {this.props.hasPosts === true ? (
+          {(!this.props.isLocked || this.props.isTeacher) && (
+            <p className="card-footer-item">
+              <span>
+                <button
+                  className="button"
+                  onClick={this.handleReply.bind(this)}
+                >
+                  <span className="icon">
+                    <i className="fa fa-reply" />
+                  </span>
+                  <span>Reply</span>
+                </button>
+              </span>
+            </p>
+          )}
+          {this.props.hasPosts === true && (
             <p className="card-footer-item">
               <span>
                 <button
@@ -98,7 +110,7 @@ class TopAnnouncement extends React.Component {
                 </button>
               </span>
             </p>
-          ) : null}
+          )}
         </footer>
         {this.state.reply && (
           <div className="random">

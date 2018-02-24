@@ -107,7 +107,13 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/announcements/:discussion_id"
-                    component={Posts}
+                    render={props => (
+                      <Posts
+                        {...props}
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
                   />
 
                   <Route
@@ -128,7 +134,8 @@ class Dashboard extends React.Component {
                   />
 
                   <Route
-                    exact path="/courses/:id/assignments/:assignment_id"
+                    exact
+                    path="/courses/:id/assignments/:assignment_id"
                     component={AssignmentCard}
                   />
 
@@ -158,7 +165,13 @@ class Dashboard extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/discussions/:discussion_id"
-                    component={Posts}
+                    render={props => (
+                      <Posts
+                        {...props}
+                        section_id={this.props.match.params.id}
+                        isTeacher={this.state.isTeacher}
+                      />
+                    )}
                   />
 
                   <Route

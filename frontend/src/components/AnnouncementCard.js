@@ -7,7 +7,7 @@ class AnnouncementCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalState: "modal"
+      modalState: false
     };
 
     this.handleModal = this.handleModal.bind(this);
@@ -15,8 +15,7 @@ class AnnouncementCard extends React.Component {
 
   handleModal() {
     this.setState({
-      modalState:
-        this.state.modalState === "modal" ? "modal is-active" : "modal"
+      modalState: !this.state.modalState
     });
   }
 
@@ -59,11 +58,12 @@ class AnnouncementCard extends React.Component {
   render() {
     return (
       <div>
-        <ConfirmCard
-          modalToggle={this.state.modalState}
-          onClick={() => this.handleDelete()}
-          onCancel={() => this.handleModal()}
-        />
+        {this.state.modalState && (
+          <ConfirmCard
+            onClick={() => this.handleDelete()}
+            onCancel={() => this.handleModal()}
+          />
+        )}
 
         <div className="panel" style={{ marginBottom: "15px" }}>
           <div className="panel-heading">

@@ -3,7 +3,7 @@ import React from "react";
 class ConfirmDeleteCard extends React.Component {
   render() {
     return (
-      <div className={this.props.modalToggle}>
+      <div className="modal is-active">
         <div className="modal-background" />
         <div className="modal-content">
           <div className="box">

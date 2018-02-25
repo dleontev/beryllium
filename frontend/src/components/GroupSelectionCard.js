@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../api/Api";
+import PropTypes from "prop-types";
 
 class GroupSelectionCard extends React.Component{
 	constructor(){
@@ -26,7 +27,7 @@ class GroupSelectionCard extends React.Component{
 
 
 	displayGroups(){
-		return this.state.data.map((group, index) => (
+		return this.state.data.map((group) => (
 			<option key={group.id} id={group.id}>
 				{group.name}
 			</option>
@@ -65,5 +66,11 @@ class GroupSelectionCard extends React.Component{
 	}
 }
 
+GroupSelectionCard.propTypes = {
+	section_id: PropTypes.string.isRequired,
+	handleStoreGroups: PropTypes.func.isRequired,
+	handleSelect: PropTypes.func.isRequired,
+	selected: PropTypes.bool.isRequired
+}
 
 export default GroupSelectionCard;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ConfirmCard from "./ConfirmCard";
 import api from "../api/Api";
 import PropTypes from "prop-types";
+import htmlToText from "html-to-text";
 
 class AnnouncementCard extends React.Component {
   constructor(props) {
@@ -105,7 +106,7 @@ class AnnouncementCard extends React.Component {
                 <tr>
                   <td colSpan="2">
                     <div className="announcement fade">
-                      <p>{this.props.content}</p>
+                      <p>{htmlToText.fromString(this.props.content)}</p>
                     </div>
                   </td>
                 </tr>

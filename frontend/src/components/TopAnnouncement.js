@@ -55,6 +55,14 @@ class TopAnnouncement extends React.Component {
     this.props.handleSubmit();
   }
 
+  createMarkup() {
+    return {__html: this.props.content};
+  }
+
+  getContent(){
+    return <div className="content" dangerouslySetInnerHTML={this.createMarkup()}/>
+  }
+
   render() {
     return (
       <div className="card">
@@ -72,7 +80,8 @@ class TopAnnouncement extends React.Component {
           <strong>{this.props.author_name}</strong>
           <div className="timestamp">{this.props.inserted_at}</div>
           <br />
-          {this.props.content}
+          <br />
+          {this.getContent()}
         </div>
         <footer className="card-footer">
           {(!this.props.isLocked || this.props.isTeacher) && (

@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../api/Api";
+import PropTypes from "prop-types";
 
 class GroupsetSelectionCard extends React.Component{
 	constructor(){
@@ -25,7 +26,7 @@ class GroupsetSelectionCard extends React.Component{
 
 
 	displayGroupSets(){
-		return this.state.data.map((groupset, index) => (
+		return this.state.data.map((groupset) => (
 			<option key={groupset.id} id={groupset.id}>
 				{groupset.name}
 			</option>
@@ -64,5 +65,9 @@ class GroupsetSelectionCard extends React.Component{
 	}
 }
 
+GroupsetSelectionCard.propTypes = {
+	handleSelect: PropTypes.func.isRequired,
+	section_id: PropTypes.string.isRequired
+}
 
 export default GroupsetSelectionCard;

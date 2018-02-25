@@ -8,6 +8,7 @@ import moment from "moment";
 import "../../../node_modules/input-moment/dist/input-moment.css";
 import api from "../../api/Api";
 import Papa from "papaparse";
+import PropTypes from "prop-types";
 
 class AddAssignment extends React.Component {
   constructor(props){
@@ -66,7 +67,7 @@ class AddAssignment extends React.Component {
 
   postAssignment(){
     api.post("/assignments/", this.state.data)
-      .then((response)=>{
+      .then(()=>{
         this.setState({redirect: true});
       })
       .catch((error)=>{
@@ -92,7 +93,7 @@ class AddAssignment extends React.Component {
     });
   }
 
-  handlePublish(event){
+  handlePublish(){
     var data = Object.assign({}, this.state.data);
     data.is_published = !data.is_published;
     this.setState({ 
@@ -101,7 +102,7 @@ class AddAssignment extends React.Component {
     console.log(`Published: ${data.is_published}`);
   }
 
-  handleAssignToGroups(event){
+  handleAssignToGroups(){
     var data = Object.assign({}, this.state.data);
     data.is_groups = !data.is_groups;
     this.setState({ 
@@ -172,7 +173,8 @@ class AddAssignment extends React.Component {
     }
   }
 
-  handleSelectGroupset(values){
+  handleSelectGroupset(){
+    this.uncheckAssignAll();
     console.log(this.state.groupData);
     console.log(`hit handleSelectGroup`);
     var selectGroupset = document.getElementById("GroupsetSelectionCard");
@@ -212,6 +214,7 @@ class AddAssignment extends React.Component {
 
 
   handleSelectGroup(values){
+    this.uncheckAssignAll();
     this.clearGroupsets();
     this.matchGroupsWithUsers();
     if(values.length > 0 && this.state.noGroupsSelected === true){
@@ -222,6 +225,7 @@ class AddAssignment extends React.Component {
   }
 
   handleSelectUser(values){
+    this.uncheckAssignAll();
     this.clearGroupsets();
     this.clearGroups();
     if(values.length > 0 && this.state.noUsersSelected === true){
@@ -315,7 +319,7 @@ class AddAssignment extends React.Component {
     
   }
   
-  handleCreate(event){
+  handleCreate(){
     var temp;
     var noGroupsSelected;
     var noUsersSelected;
@@ -375,7 +379,7 @@ class AddAssignment extends React.Component {
     }
   }
 
-  handleKeepHighest(event){
+  handleKeepHighest(){
     var data = Object.assign({}, this.state.data);
     data.keep_highest = !data.keep_highest;
     this.setState({
@@ -383,7 +387,7 @@ class AddAssignment extends React.Component {
     });
   }
 
-  handleShowAnswers(event){
+  handleShowAnswers(){
     var data = Object.assign({}, this.state.data);
     data.show_answers = !data.show_answers;
     this.setState({
@@ -399,8 +403,42 @@ class AddAssignment extends React.Component {
     });
   }
 
-  handleRedirect(event){
+  handleRedirect(){
     this.setState({redirect: true});
+  }
+
+
+  handleAssignToAll(event){
+    this.clearGroupsets();
+    this.clearGroups();
+    if(event.target.checked === true){
+      this.assignToAll();
+    }else{
+      this.unassignAll();
+    }
+  }
+
+  assignToAll(){
+    this.clearGroupsets();
+    this.clearGroups();
+    var select = document.getElementById('UserSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      select.options[i].selected = 'selected';
+    }
+  }
+
+  unassignAll(){
+    this.clearGroupsets();
+    this.clearGroups();
+    var select = document.getElementById('UserSelectionCard');
+    for(let i = 0, l = select.options.length; i < l; ++i){
+      select.options[i].selected = false;
+    }
+  }
+  
+  uncheckAssignAll(){
+    var checkbox = document.getElementById("AssignToAll");
+    checkbox.checked = false;
   }
 
   render() {
@@ -495,9 +533,15 @@ class AddAssignment extends React.Component {
           </div>
         </div> : ""}
         <div className="field is-grouped">
-            <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
-            <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups} selected={this.state.noGroupsSelected}/>
-            <UserSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectUser} is_groups={this.state.data.is_groups} selected={this.state.noUsersSelected}/>
+          <GroupsetSelectionCard section_id = {this.props.match.params.id} handleSelect={this.handleSelectGroupset}/>
+          <GroupSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectGroup} handleStoreGroups={this.handleStoreGroups} selected={this.state.noGroupsSelected}/>
+          <UserSelectionCard section_id = {this.props.match.params.id} handleSelect = {this.handleSelectUser} is_groups={this.state.data.is_groups} selected={this.state.noUsersSelected}/>
+          <div className="control">
+            <label className="checkbox">
+              <input type="checkbox" onChange={this.handleAssignToAll.bind(this)} id="AssignToAll"/>
+              Assign to all students
+            </label>
+          </div>
         </div>
         
         <div className="field">
@@ -530,11 +574,15 @@ class AddAssignment extends React.Component {
             <button className="button is-text" onClick={this.handleRedirect.bind(this)}>Cancel</button>
           </div>
         </div>
-        {this.state.noGroupsSelected ? <p class="help is-danger">Please select at least one group...</p> : ""}
-        {this.state.noUsersSelected ?   <p class="help is-danger">Please select at least one user...</p> : ""}
+        {this.state.noGroupsSelected ? <p className="help is-danger">Please select at least one group...</p> : ""}
+        {this.state.noUsersSelected ?   <p className="help is-danger">Please select at least one user...</p> : ""}
       </div>
     );
   }
+}
+
+AddAssignment.propTypes = {
+  match: PropTypes.object.isRequired
 }
 
 export default AddAssignment;

@@ -3,6 +3,7 @@ import api from "../../api/Api";
 import AssignmentTableCard from "../../components/AssignmentTableCard";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 class Assignments extends React.Component {
   constructor() {
@@ -48,7 +49,7 @@ class Assignments extends React.Component {
   }
 
   getAssignments() {
-    return this.state.assignments.map((value, index) => (
+    return this.state.assignments.map((value) => (
       <AssignmentTableCard
         key={value.id}
         id={value.id}
@@ -100,5 +101,10 @@ class Assignments extends React.Component {
     );
   }
 }
+
+Assignments.propTypes = {
+  section_id: PropTypes.string.isRequired,
+  isTeacher: PropTypes.bool.isRequired
+};
 
 export default Assignments;

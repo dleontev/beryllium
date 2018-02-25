@@ -2,6 +2,7 @@ import React from "react";
 import api from "../api/Api";
 import moment from "moment";
 import Submission from "./Form/Submission";
+import PropTypes from "prop-types";
 
 class AssignmentCard extends React.Component {
 	constructor(){
@@ -15,13 +16,12 @@ class AssignmentCard extends React.Component {
 
 	getType(){
 		if(this.state.data !== undefined){
-			console.log(this.state.data.type)
 			switch(this.state.data.type){
 				case 0:
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-align-left"></i>
+								<i className="fa fa-align-left"></i>
 							</span>
 							<span>Submit Text</span>
 						</span>
@@ -30,7 +30,7 @@ class AssignmentCard extends React.Component {
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-upload"></i>
+								<i className="fa fa-upload"></i>
 							</span>
 							<span>Submit File</span>
 						</span>
@@ -39,9 +39,15 @@ class AssignmentCard extends React.Component {
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-question-circle"></i>
+								<i className="fa fa-question-circle"></i>
 							</span>
 							<span>Take Quiz</span>
+						</span>
+					);
+				default:
+					return (
+						<span>
+							<span>INVALID TYPE</span>
 						</span>
 					);
 			}
@@ -60,7 +66,7 @@ class AssignmentCard extends React.Component {
 			})
 	}
 	
-	handleClick(event){
+	handleClick(){
 		this.setState({isPressed: !this.state.isPressed});
 	}
 	render(){
@@ -88,9 +94,13 @@ class AssignmentCard extends React.Component {
 					</div>
 				</div>
 				<br/>
-				{this.state.isPressed === true ? <Submission section_id={this.props.id} assignment_id={this.props.assignment_id}/> : ""} 
+				{this.state.isPressed === true ? <Submission section_id={this.props.match.params.id} assignment_id={this.props.match.params.assignment_id}/> : ""} 
 			</div>
 		);
 	}
+}
+
+AssignmentCard.propTypes = {
+	match: PropTypes.object.isRequired
 }
 export default AssignmentCard;

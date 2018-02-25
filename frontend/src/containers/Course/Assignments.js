@@ -49,7 +49,7 @@ class Assignments extends React.Component {
   }
 
   getAssignments() {
-    return this.state.assignments.map((value, index) => (
+    return this.state.assignments.map((value) => (
       <AssignmentTableCard
         key={value.id}
         id={value.id}
@@ -103,8 +103,8 @@ class Assignments extends React.Component {
 }
 
 Assignments.propTypes = {
-  section_id: PropTypes.string,
-  isTeacher: PropTypes.bool
+  section_id: PropTypes.string.isRequired,
+  isTeacher: PropTypes.bool.isRequired
 };
 
 export default Assignments;

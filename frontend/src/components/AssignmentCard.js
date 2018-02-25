@@ -2,6 +2,7 @@ import React from "react";
 import api from "../api/Api";
 import moment from "moment";
 import Submission from "./Form/Submission";
+import PropTypes from "prop-types";
 
 class AssignmentCard extends React.Component {
 	constructor(){
@@ -21,7 +22,7 @@ class AssignmentCard extends React.Component {
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-align-left"></i>
+								<i className="fa fa-align-left"></i>
 							</span>
 							<span>Submit Text</span>
 						</span>
@@ -30,7 +31,7 @@ class AssignmentCard extends React.Component {
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-upload"></i>
+								<i className="fa fa-upload"></i>
 							</span>
 							<span>Submit File</span>
 						</span>
@@ -39,7 +40,7 @@ class AssignmentCard extends React.Component {
 					return (
 						<span>
 							<span className="icon">
-								<i class="fa fa-question-circle"></i>
+								<i className="fa fa-question-circle"></i>
 							</span>
 							<span>Take Quiz</span>
 						</span>
@@ -92,5 +93,11 @@ class AssignmentCard extends React.Component {
 			</div>
 		);
 	}
+}
+
+AssignmentCard.propTypes = {
+	match: PropTypes.object.isRequired,
+	id: PropTypes.string.isRequired,
+	assignment_id: PropTypes.string.isRequired
 }
 export default AssignmentCard;

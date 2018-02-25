@@ -69,8 +69,8 @@ class DiscussionTableCard extends React.Component {
 
 DiscussionTableCard.propTypes = {
   id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired
+  title: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired
 };
 
 export default DiscussionTableCard;

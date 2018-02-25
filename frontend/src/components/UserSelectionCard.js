@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../api/Api";
+import PropTypes from "prop-types";
 
 class UserSelectionCard extends React.Component{
 	constructor(){
@@ -25,7 +26,7 @@ class UserSelectionCard extends React.Component{
 
 
 	displayUsers(){
-		return this.state.data.map((user, index) => (
+		return this.state.data.map((user) => (
 			<option key={user.user_id} id={user.user_id}>
 				{user.name}
 			</option>
@@ -64,5 +65,11 @@ class UserSelectionCard extends React.Component{
 	}
 }
 
+UserSelectionCard.propTypes = {
+	selected: PropTypes.bool.isRequired,
+	is_groups: PropTypes.bool.isRequired,
+	handleSelect: PropTypes.func.isRequired,
+	section_id: PropTypes.string.isRequired
+}
 
 export default UserSelectionCard;

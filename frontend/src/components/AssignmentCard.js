@@ -61,7 +61,7 @@ class AssignmentCard extends React.Component {
 			})
 	}
 	
-	handleClick(event){
+	handleClick(){
 		this.setState({isPressed: !this.state.isPressed});
 	}
 	render(){
@@ -89,15 +89,13 @@ class AssignmentCard extends React.Component {
 					</div>
 				</div>
 				<br/>
-				{this.state.isPressed === true ? <Submission section_id={this.props.id} assignment_id={this.props.assignment_id}/> : ""} 
+				{this.state.isPressed === true ? <Submission section_id={this.props.match.params.id} assignment_id={this.props.match.params.assignment_id}/> : ""} 
 			</div>
 		);
 	}
 }
 
 AssignmentCard.propTypes = {
-	match: PropTypes.object.isRequired,
-	id: PropTypes.string.isRequired,
-	assignment_id: PropTypes.string.isRequired
+	match: PropTypes.object.isRequired
 }
 export default AssignmentCard;

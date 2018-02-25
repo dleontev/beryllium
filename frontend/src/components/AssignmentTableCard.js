@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 class AssignmentTableCard extends React.Component {
   render() {
     return (
@@ -12,5 +13,15 @@ class AssignmentTableCard extends React.Component {
     );
   }
 }
+
+AssignmentTableCard.propTypes = {
+  section_id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  due_at: PropTypes.string.isRequired,
+  group_id: PropTypes.string
+}
+
 
 export default AssignmentTableCard;

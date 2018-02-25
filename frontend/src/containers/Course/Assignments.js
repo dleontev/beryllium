@@ -3,6 +3,7 @@ import api from "../../api/Api";
 import AssignmentTableCard from "../../components/AssignmentTableCard";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import PropTypes from "prop-types";
 
 class Assignments extends React.Component {
   constructor() {
@@ -100,5 +101,10 @@ class Assignments extends React.Component {
     );
   }
 }
+
+Assignments.propTypes = {
+  section_id: PropTypes.string,
+  isTeacher: PropTypes.bool
+};
 
 export default Assignments;

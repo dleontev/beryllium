@@ -2,6 +2,9 @@ import React from "react";
 import api from "../../api/Api";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 class AddPost extends React.Component {
   constructor(props) {
     super(props);
@@ -38,9 +41,9 @@ class AddPost extends React.Component {
     this.setState({ data });
   }
 
-  handleMessage(event) {
+  handleMessage(value) {
     var data = Object.assign({}, this.state.data);
-    data.message = event.target.value;
+    data.message = value;
     this.setState({ data });
   }
 
@@ -93,11 +96,17 @@ class AddPost extends React.Component {
           </div>
           <div className="field">
             <div className="control">
+              <ReactQuill 
+					      value={this.state.data.message}
+                onChange={this.handleMessage.bind(this)}
+				      />
+              {/*
               <textarea
                 placeholder="Message"
                 className="textarea"
                 onChange={this.handleMessage.bind(this)}
               />
+              */}
             </div>
           </div>
           <div className="level-right">

@@ -1,5 +1,6 @@
 defmodule BackendWeb.PostController do
   use BackendWeb, :controller
+  use PhoenixHtmlSanitizer, :basic_html
 
   alias Backend.Auth
   alias Backend.Auth.Post
@@ -30,9 +31,9 @@ defmodule BackendWeb.PostController do
     }
 
     Auth.create_discussion(discussion_params)
-
+    {_, result} = sanitize(message, :basic_html)
     post_params = %{
-      content: message,
+      content: result,
       user_id: user_id,
       discussion_id: discussion_id
     }

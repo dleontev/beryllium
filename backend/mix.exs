@@ -42,7 +42,8 @@ defmodule Backend.Mixfile do
       {:cors_plug, "~> 1.2"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
-	  {:guardian, "~> 0.14"}
+	    {:guardian, "~> 0.14"},
+      {:phoenix_html_sanitizer, "~> 1.0.0"}
     ]
   end
 

@@ -16,7 +16,6 @@ class AssignmentCard extends React.Component {
 
 	getType(){
 		if(this.state.data !== undefined){
-			console.log(this.state.data.type)
 			switch(this.state.data.type){
 				case 0:
 					return (
@@ -43,6 +42,12 @@ class AssignmentCard extends React.Component {
 								<i className="fa fa-question-circle"></i>
 							</span>
 							<span>Take Quiz</span>
+						</span>
+					);
+				default:
+					return (
+						<span>
+							<span>INVALID TYPE</span>
 						</span>
 					);
 			}

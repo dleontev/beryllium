@@ -2,6 +2,7 @@ import React from "react";
 import UserProfileCard from "../components/UserProfileCard";
 import CourseListCard from "../components/CourseListCard";
 import profile_image from "../images/blank-profile.png";
+import ReactRouterPropTypes from "react-router-prop-types";
 import api from "../api/Api";
 //import aws from "../api/Aws";
 

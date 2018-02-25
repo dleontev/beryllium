@@ -1,5 +1,6 @@
 import React from "react";
 import api from "../../api/Api";
+import PropTypes from "prop-types";
 
 class Submission extends React.Component {
 	constructor(props){
@@ -8,12 +9,11 @@ class Submission extends React.Component {
 				data: {
 					assignment_id: this.props.assignment_id,
 					text_entry: "",
-
 				}
 			}
 	}
 
-	componentWillMount(){
+	submitAssignment(){
 		api.post("/submissions", this.state.data)
 			.then((response) => {
 				console.log(response.data.data);
@@ -34,6 +34,10 @@ class Submission extends React.Component {
 			</div>
 		);
 	}
+}
+
+Submission.propTypes = {
+	assignment_id: PropTypes.string.isRequired
 }
 
 export default Submission;

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 class CreateUser extends React.Component {
   constructor() {
     super();
+
     this.state = {
       name: "",
       password: "",
@@ -16,8 +17,9 @@ class CreateUser extends React.Component {
   }
 
   /**
-   * @param  {} event
+   * Updates the current state when a user makes changes to their input.
    */
+
   handleChange(event) {
     const { name, value } = event.target;
 
@@ -27,8 +29,9 @@ class CreateUser extends React.Component {
   }
 
   /**
-   * @param  {} event
+   * Stores the given file name and file data in the current state.
    */
+
   handleFilename(event) {
     var files = event.target.files;
 
@@ -41,8 +44,9 @@ class CreateUser extends React.Component {
   }
 
   /**
-   * @param  {} event
+   * Submits the post request to create a new user,
    */
+  
   handleSubmit(event) {
     event.preventDefault();
 

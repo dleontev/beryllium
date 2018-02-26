@@ -9,8 +9,15 @@ import api from "../api/Api";
 class Account extends React.Component {
   constructor() {
     super();
-    this.state = { user: null, courses: null };
+    this.state = {
+      user: null,
+      courses: null
+    };
   }
+
+  /**
+   * Retrieves the user account data.
+   */
 
   componentWillMount() {
     api.get("/account").then(response => {
@@ -25,6 +32,10 @@ class Account extends React.Component {
       }
     });
   }
+
+  /**
+   * Generates a list of courses the current user enrolled in.
+   */
 
   getUserCourses() {
     if (this.state.courses.length === 0) return <li>No enrollments found.</li>;
@@ -41,6 +52,10 @@ class Account extends React.Component {
     ));
   }
 
+  /**
+   * Generates the profile card for the current user.
+   */
+
   getUserCard() {
     if (!this.state.user || !this.state.courses)
       return <div className="loading" />;
@@ -55,6 +70,10 @@ class Account extends React.Component {
       />
     );
   }
+
+  /**
+   * Logs the current user out by removing his session data.
+   */
 
   handleLogout(event) {
     event.preventDefault();

@@ -31,6 +31,11 @@ class Course extends React.Component {
     this.state = { course: [], isTeacher: null };
   }
 
+  /**
+   * Retrieves the role of the current user for the current corse,
+   * and the course date.
+   */
+
   componentWillMount() {
     if (this.state.isTeacher === null) {
       api.isTeacher(this.props.match.params.id).then(response => {
@@ -47,6 +52,10 @@ class Course extends React.Component {
       });
   }
 
+  /**
+   * Returns the current course title, or undefined.
+   */
+
   getCourseTitle() {
     if (this.state.course === null || this.state.course.length === 0) {
       return "undefined";
@@ -54,6 +63,10 @@ class Course extends React.Component {
 
     return `${this.state.course.code} : ${this.state.course.name}`;
   }
+
+  /**
+   * Returns the current course id, or undefined.
+   */
 
   getCourseId() {
     if (this.state.course === null || this.state.course.length === 0) {

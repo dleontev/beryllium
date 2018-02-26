@@ -295,7 +295,7 @@ class GroupSetCard extends React.Component {
 }
 
 GroupSetCard.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   groups: PropTypes.array.isRequired,
   members: PropTypes.array.isRequired,
   id: PropTypes.string.isRequired,

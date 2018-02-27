@@ -12,12 +12,16 @@ defmodule BackendWeb.GroupsetController do
   end
 
   def create(conn, %{"groupset" => groupset_params}) do
-    with {:ok, %Groupset{} = groupset} <- Auth.create_groupset(groupset_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", groupset_path(conn, :show, groupset))
-      |> render("show.json", groupset: groupset)
-    end
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    [head | tail] = Auth.check_if_teacher(groupset_params.section_id, conn, user_id)
+    if(head == "teacher") do
+      with {:ok, %Groupset{} = groupset} <- Auth.create_groupset(groupset_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", groupset_path(conn, :show, groupset))
+        |> render("show.json", groupset: groupset)
+      end
+   end
   end
 
   def show(conn, %{"id" => id}) do

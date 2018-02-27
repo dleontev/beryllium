@@ -19,30 +19,32 @@ defmodule BackendWeb.PostController do
         "message" => message
       }) do
     %{id: user_id} = Guardian.Plug.current_resource(conn)
+    [head | tail] = Auth.check_if_teacher(section_id, conn, user_id)
+    if((is_discussion == false && head == "teacher") || is_discussion == true) do
+      discussion_id = Ecto.UUID.generate()
 
-    discussion_id = Ecto.UUID.generate()
+      discussion_params = %{
+        id: discussion_id,
+        section_id: section_id,
+        title: title,
+        is_discussion: is_discussion,
+        is_locked: false
+      }
 
-    discussion_params = %{
-      id: discussion_id,
-      section_id: section_id,
-      title: title,
-      is_discussion: is_discussion,
-      is_locked: false
-    }
+      Auth.create_discussion(discussion_params)
+      {_, result} = sanitize(message, :basic_html)
+      post_params = %{
+        content: result,
+        user_id: user_id,
+        discussion_id: discussion_id
+      }
 
-    Auth.create_discussion(discussion_params)
-    {_, result} = sanitize(message, :basic_html)
-    post_params = %{
-      content: result,
-      user_id: user_id,
-      discussion_id: discussion_id
-    }
-
-    with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", post_path(conn, :show, post))
-      |> render("show_base.json", post: post)
+      with {:ok, %Post{} = post} <- Auth.create_post(post_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", post_path(conn, :show, post))
+        |> render("show_base.json", post: post)
+      end
     end
   end
 

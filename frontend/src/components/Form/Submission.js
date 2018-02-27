@@ -38,8 +38,10 @@ class Submission extends React.Component {
 			<div>
 				{//<textarea className="textarea" placeholder="Enter submission"></textarea>
 				}
-				<ReactQuill value={this.state.text}
-                  onChange={this.handleChange.bind(this)} />
+				<ReactQuill 
+					value={this.state.text}
+          onChange={this.handleChange.bind(this)} 
+				/>
 					<br/>
 					<button className="button is-info">
 						<span> Submit </span>

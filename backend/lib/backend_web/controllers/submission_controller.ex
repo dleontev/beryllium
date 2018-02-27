@@ -1,5 +1,6 @@
 defmodule BackendWeb.SubmissionController do
   use BackendWeb, :controller
+  use PhoenixHtmlSanitizer, :basic_html
 
   alias Backend.Auth
   alias Backend.Auth.Submission
@@ -11,12 +12,18 @@ defmodule BackendWeb.SubmissionController do
     render(conn, "index.json", submissions: submissions)
   end
 
-  def create(conn, %{"submission" => submission_params}) do
-    with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", submission_path(conn, :show, submission))
-      |> render("show.json", submission: submission)
+  def create(conn, %{"submission" => payload}) do
+    if(payload["type"] == 0) do
+      {_, result} = sanitize(payload["text_entry"], :basic_html)
+      %{id: user_id} = Guardian.Plug.current_resource(conn)
+      id = Ecto.UUID.generate()
+      submission_params = %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], file_id: payload["file_id"], text_entry: result}
+      with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", submission_path(conn, :show, submission))
+        |> render("show.json", submission: submission)
+      end
     end
   end
 

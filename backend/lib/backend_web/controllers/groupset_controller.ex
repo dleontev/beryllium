@@ -13,7 +13,7 @@ defmodule BackendWeb.GroupsetController do
 
   def create(conn, %{"groupset" => groupset_params}) do
     %{id: user_id} = Guardian.Plug.current_resource(conn)
-    [head | tail] = Auth.check_if_teacher(section_id, conn, user_id)
+    [head | tail] = Auth.check_if_teacher(groupset_params.section_id, conn, user_id)
     if(head == "teacher") do
       with {:ok, %Groupset{} = groupset} <- Auth.create_groupset(groupset_params) do
         conn

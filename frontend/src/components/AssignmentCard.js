@@ -19,30 +19,41 @@ class AssignmentCard extends React.Component {
 			switch(this.state.data.type){
 				case 0:
 					return (
-						<span>
-							<span className="icon">
-								<i className="fa fa-align-left"></i>
+						<button className="button" onClick={this.handleClick.bind(this)}>
+							<span>
+								<span className="icon">
+									<i className="fa fa-align-left"></i>
+								</span>
+								<span>Submit Text</span>
 							</span>
-							<span>Submit Text</span>
-						</span>
+						</button>
 					);
 				case 1:
 					return (
-						<span>
-							<span className="icon">
-								<i className="fa fa-upload"></i>
-							</span>
-							<span>Submit File</span>
-						</span>
+						<div className="file">
+							<label className="file-label">
+								<input className="file-input" type="file"/>
+								<span className="file-cta">
+									<span className="file-icon">
+										<i className="fa fa-upload"></i>
+									</span>
+									<span className="file-label">
+										Submit File
+									</span>
+								</span>
+							</label>
+						</div>
 					);
 				case 2:
 					return (
-						<span>
-							<span className="icon">
-								<i className="fa fa-question-circle"></i>
+						<button className="button" onClick={this.handleClick.bind(this)}>
+							<span>
+								<span className="icon">
+									<i className="fa fa-question-circle"></i>
+								</span>
+								<span>Take Quiz</span>
 							</span>
-							<span>Take Quiz</span>
-						</span>
+						</button>
 					);
 				default:
 					return (
@@ -87,14 +98,12 @@ class AssignmentCard extends React.Component {
 					</div>
 					<div className="card-footer">
 						<div className="card-footer-item">
-							<button className="button" onClick={this.handleClick.bind(this)}>
-								{this.getType()}
-							</button>
+							{this.getType()}
 						</div>
 					</div>
 				</div>
 				<br/>
-				{this.state.isPressed === true ? <Submission section_id={this.props.match.params.id} assignment_id={this.props.match.params.assignment_id}/> : ""} 
+				{this.state.isPressed === true ? <Submission section_id={this.props.match.params.id} assignment_id={this.props.match.params.assignment_id} type={this.state.data.type}/> : ""} 
 			</div>
 		);
 	}

@@ -74,6 +74,9 @@ defmodule BackendWeb.Router do
     delete "/sessions", SessionController, :delete
     post "/sessions/refresh", SessionController, :refresh
 
+    #get "/submissions/assignments/:assignment_id", SubmissionController, :show_submissions_by_assignment
+    get "/quizzes/assignments/:assignment_id", QuizController, :show_quiz_by_assignment
+
     get "/assignments/sections/:section_id", AssignmentController, :assignments_by_section
   end
   

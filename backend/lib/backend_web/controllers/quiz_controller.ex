@@ -25,6 +25,13 @@ defmodule BackendWeb.QuizController do
     render(conn, "show.json", quiz: quiz)
   end
 
+  def show_quiz_by_assignment(conn, %{"assignment_id" => assignment_id}) do
+    quiz = Auth.get_quiz_by_assignment(assignment_id)
+    questions = Auth.get_question_by_quiz(quiz.quiz_id)
+    parameters = %{quiz: quiz, questions: questions}
+    render(conn, "show_by_assignment.json", quiz: parameters)
+  end
+
   def update(conn, %{"id" => id, "quiz" => quiz_params}) do
     quiz = Auth.get_quiz!(id)
 

@@ -67,13 +67,20 @@ class QuizCard extends React.Component{
       <div key={`${this.props.question_id}${value.answer_field}`}>
         <div className="radio">
           <label className="radio">
-            <input type="radio" name={`${this.props.question_id}`} id={value.answer_field}/>
+            <input type="radio" name={`${this.props.question_id}`} id={value.answer_field} onChange={this.handleChange.bind(this)}/>
             {value.answer_content}
           </label>
         </div>
         <br/>
       </div>
     ));
+  }
+
+
+  handleChange(event){
+    this.props.handleUpdateAnswers({question_id: event.target.name, selected_field: event.target.id});
+    //console.log(event.target.id);
+    //console.log(event.target.name);
   }
 
   render(){
@@ -106,7 +113,8 @@ QuizCard.propTypes = {
   a3: PropTypes.string.isRequired,
   a4: PropTypes.string.isRequired,
   a5: PropTypes.string.isRequired,
-  question_id: PropTypes.string.isRequired
+  question_id: PropTypes.string.isRequired,
+  handleUpdateAnswers: PropTypes.func.isRequired
 }
 
 export default QuizCard;

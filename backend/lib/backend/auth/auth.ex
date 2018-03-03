@@ -2166,6 +2166,19 @@ defmodule Backend.Auth do
     end
   end
 
+
+  def parse_bulk_answers(submission_id, [head | tail], accumulator) do
+    result = 
+      [
+        %{id: Ecto.UUID.generate(), question_id: head["question_id"], submission_id: submission_id, selected_field: head["selected_field"]} | accumulator
+      ]
+    if(length(tail) != 0) do
+      parse_bulk_answers(submission_id, tail, result)
+    else
+      result
+    end
+  end
+
   @doc """
   Updates a assignment_to_group.
 

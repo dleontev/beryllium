@@ -1770,6 +1770,44 @@ defmodule Backend.Auth do
     Repo.all(Quiz)
   end
 
+
+  def get_quiz_by_assignment(assignment_id) do
+    query = 
+      from a in Assignment,
+      where: a.id == ^assignment_id,
+      join: q in Quiz,
+      on: a.id == q.assignment_id,
+      select: %{
+                quiz_id: q.id,
+                max_attempts: q.max_attempts,
+                current_attempts: q.current_attempts,
+                show_answers: q.show_answers,
+                keep_highest: q.keep_highest
+              }
+    [head | tail] = Repo.all(query)
+    head
+  end
+
+
+  def get_question_by_quiz(quiz_id) do
+    query = 
+      from q in Quiz,
+      where: q.id == ^quiz_id,
+      join: quest in Question,
+      on: q.id == quest.quiz_id,
+      select: %{
+                question_id: quest.id,
+                question: quest.question,
+                a1: quest.a1,
+                a2: quest.a2,
+                a3: quest.a3,
+                a4: quest.a4,
+                a5: quest.a5,
+                correct_answer: quest.correct_answer
+              }
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single quiz.
 
@@ -2123,6 +2161,19 @@ defmodule Backend.Auth do
     end
     if length(tail) != 0 do
       parse_bulk_questions(quiz_id, tail, result)
+    else
+      result
+    end
+  end
+
+
+  def parse_bulk_answers(submission_id, [head | tail], accumulator) do
+    result = 
+      [
+        %{id: Ecto.UUID.generate(), question_id: head["question_id"], submission_id: submission_id, selected_field: head["selected_field"]} | accumulator
+      ]
+    if(length(tail) != 0) do
+      parse_bulk_answers(submission_id, tail, result)
     else
       result
     end

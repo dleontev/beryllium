@@ -4,6 +4,7 @@ defmodule BackendWeb.SubmissionController do
 
   alias Backend.Auth
   alias Backend.Auth.Submission
+  alias Backend.Auth.Answer
 
   action_fallback BackendWeb.FallbackController
 
@@ -13,18 +14,42 @@ defmodule BackendWeb.SubmissionController do
   end
 
   def create(conn, %{"submission" => payload}) do
-    if(payload["type"] == 0) do
-      {_, result} = sanitize(payload["text_entry"], :basic_html)
-      %{id: user_id} = Guardian.Plug.current_resource(conn)
-      id = Ecto.UUID.generate()
-      submission_params = %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], file_id: payload["file_id"], text_entry: result}
-      with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    id = Ecto.UUID.generate()
+    submission_params = 
+      case payload["type"] do
+        0 -> 
+          {_, result} = sanitize(payload["text_entry"], :basic_html)
+          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], text_entry: result}
+        2 ->
+          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"]}
+        _ -> nil
+      end
+    with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
+      if(payload["type"] == 0) do
         conn
         |> put_status(:created)
         |> put_resp_header("location", submission_path(conn, :show, submission))
         |> render("show.json", submission: submission)
+      else
+        answer_params = Auth.parse_bulk_answers(id, payload["quiz_answers"], [])
+        Backend.Repo.insert_all(Answer, answer_params)
+        IO.inspect(answer_params)
       end
     end
+
+    #if(payload["type"] == 0) do
+    #  {_, result} = sanitize(payload["text_entry"], :basic_html)
+    #  %{id: user_id} = Guardian.Plug.current_resource(conn)
+    #  id = Ecto.UUID.generate()
+    #  submission_params = %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], file_id: payload["file_id"], text_entry: result}
+    #  with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
+    #    conn
+    #   |> put_status(:created)
+    #    |> put_resp_header("location", submission_path(conn, :show, submission))
+    #    |> render("show.json", submission: submission)
+    #  end
+    #end
   end
 
   def show(conn, %{"id" => id}) do

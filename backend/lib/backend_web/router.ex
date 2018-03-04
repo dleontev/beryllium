@@ -36,6 +36,7 @@ defmodule BackendWeb.Router do
     resources "/assignments_to_groups", AssignmentToGroupController
     resources "/assignments_to_users", AssignmentToUserController
     resources "/submissions", SubmissionController
+    resources "/grades", GradeController
     
 
     resources "/posts", PostController, except: [:new, :edit] 

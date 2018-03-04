@@ -1393,4 +1393,62 @@ defmodule Backend.AuthTest do
       assert %Ecto.Changeset{} = Auth.change_submission(submission)
     end
   end
+
+  describe "grades" do
+    alias Backend.Auth.Grade
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def grade_fixture(attrs \\ %{}) do
+      {:ok, grade} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Auth.create_grade()
+
+      grade
+    end
+
+    test "list_grades/0 returns all grades" do
+      grade = grade_fixture()
+      assert Auth.list_grades() == [grade]
+    end
+
+    test "get_grade!/1 returns the grade with given id" do
+      grade = grade_fixture()
+      assert Auth.get_grade!(grade.id) == grade
+    end
+
+    test "create_grade/1 with valid data creates a grade" do
+      assert {:ok, %Grade{} = grade} = Auth.create_grade(@valid_attrs)
+    end
+
+    test "create_grade/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Auth.create_grade(@invalid_attrs)
+    end
+
+    test "update_grade/2 with valid data updates the grade" do
+      grade = grade_fixture()
+      assert {:ok, grade} = Auth.update_grade(grade, @update_attrs)
+      assert %Grade{} = grade
+    end
+
+    test "update_grade/2 with invalid data returns error changeset" do
+      grade = grade_fixture()
+      assert {:error, %Ecto.Changeset{}} = Auth.update_grade(grade, @invalid_attrs)
+      assert grade == Auth.get_grade!(grade.id)
+    end
+
+    test "delete_grade/1 deletes the grade" do
+      grade = grade_fixture()
+      assert {:ok, %Grade{}} = Auth.delete_grade(grade)
+      assert_raise Ecto.NoResultsError, fn -> Auth.get_grade!(grade.id) end
+    end
+
+    test "change_grade/1 returns a grade changeset" do
+      grade = grade_fixture()
+      assert %Ecto.Changeset{} = Auth.change_grade(grade)
+    end
+  end
 end

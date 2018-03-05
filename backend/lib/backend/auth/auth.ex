@@ -2418,6 +2418,53 @@ defmodule Backend.Auth do
 
   alias Backend.Auth.Grade
 
+  def grade_quiz(quiz_info) do
+    points_per_question = quiz_info.points_possible / length(quiz_info.questions)
+    calculate_sum(points_per_question, quiz_info.questions, 0)
+  end
+
+  def calculate_sum(ppq, [head | tail], sum) do
+    result = 
+      if(head.correct_answer == head.selected_field) do
+        sum + ppq
+      else
+        sum
+      end
+    if(length(tail) > 0) do
+      calculate_sum(ppq, tail, result)
+    else
+      result
+    end
+  end
+
+  def gather_quiz_info(quiz_id, submission_id) do
+    quiz = get_quiz!(quiz_id)
+    questions = get_questions_and_answers(quiz_id, submission_id)
+    [points_possible | _] = get_points_possible(quiz_id)
+    %{quiz: quiz, questions: questions, points_possible: points_possible}
+  end
+
+  def get_questions_and_answers(quiz_id, submission_id) do
+    query = 
+      from q in Question,
+      where: q.quiz_id == ^quiz_id,
+      left_join: a in Answer,
+      on: q.id == a.question_id,
+      where: a.submission_id == ^submission_id,
+      select: %{question_id: q.id, correct_answer: q.correct_answer, answer_id: a.id, selected_field: a.selected_field}
+    Repo.all(query)
+  end
+
+  def get_points_possible(quiz_id) do
+    query = 
+      from q in Quiz,
+      where: q.id == ^quiz_id,
+      join: a in Assignment,
+      on: q.assignment_id == a.id,
+      select: a.points_possible
+    Repo.all(query)
+  end
+
   @doc """
   Returns the list of grades.
 

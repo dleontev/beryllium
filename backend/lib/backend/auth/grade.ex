@@ -6,13 +6,13 @@ defmodule Backend.Auth.Grade do
   @primary_key {:id, :binary_id, autogenerate: true}
   schema "grades" do
     field(:submission_id, :binary_id, null: false)
-    field(:earned_points, :float, null: false)
+    field(:points_earned, :float, null: false)
   end
 
   @doc false
   def changeset(%Grade{} = grade, attrs) do
     grade
-    |> cast(attrs, [:id, :submission_id, :binary_id])
+    |> cast(attrs, [:id, :submission_id, :points_earned])
     |> validate_required([:id, :submission_id])
   end
 end

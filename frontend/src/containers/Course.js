@@ -75,10 +75,14 @@ class Course extends React.Component {
         <div className="columns">
           <div className="column is-narrow">
             <div className="box" style={{ width: "200px" }}>
+              {this.getCourseId() === "undefined" ?
+              <div className="loading">
+              </div> :
               <CourseMenu
                 id={this.getCourseId()}
                 isTeacher={this.state.isTeacher}
               />
+              }
             </div>
           </div>
           <div className="column">

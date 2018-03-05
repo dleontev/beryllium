@@ -24,6 +24,7 @@ import Groups from "./Course/Groups/Groups";
 import Settings from "./Course/Settings";
 import NotFound from "./NotFound";
 import AssignmentCard from "../components/AssignmentCard";
+import SubmissionCard from "../components/SubmissionCard";
 
 class Course extends React.Component {
   constructor() {
@@ -74,10 +75,14 @@ class Course extends React.Component {
         <div className="columns">
           <div className="column is-narrow">
             <div className="box" style={{ width: "200px" }}>
+              {this.getCourseId() === "undefined" ?
+              <div className="loading">
+              </div> :
               <CourseMenu
                 id={this.getCourseId()}
                 isTeacher={this.state.isTeacher}
               />
+              }
             </div>
           </div>
           <div className="column">
@@ -240,6 +245,12 @@ class Course extends React.Component {
                         isTeacher={this.state.isTeacher}
                       />
                     )}
+                  />
+
+                  <Route
+                    exact
+                    path="/courses/:id/submissions/:submission_id"
+                    component={SubmissionCard}
                   />
 
                   <Route component={NotFound} />

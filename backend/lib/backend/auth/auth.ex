@@ -2415,4 +2415,147 @@ defmodule Backend.Auth do
   def change_submission(%Submission{} = submission) do
     Submission.changeset(submission, %{})
   end
+
+  alias Backend.Auth.Grade
+
+  def grade_quiz(quiz_info) do
+    points_per_question = quiz_info.points_possible / length(quiz_info.questions)
+    calculate_sum(points_per_question, quiz_info.questions, 0)
+  end
+
+  def calculate_sum(ppq, [head | tail], sum) do
+    result = 
+      if(head.correct_answer == head.selected_field) do
+        sum + ppq
+      else
+        sum
+      end
+    if(length(tail) > 0) do
+      calculate_sum(ppq, tail, result)
+    else
+      result
+    end
+  end
+
+  def gather_quiz_info(quiz_id, submission_id) do
+    quiz = get_quiz!(quiz_id)
+    questions = get_questions_and_answers(quiz_id, submission_id)
+    [points_possible | _] = get_points_possible(quiz_id)
+    %{quiz: quiz, questions: questions, points_possible: points_possible}
+  end
+
+  def get_questions_and_answers(quiz_id, submission_id) do
+    query = 
+      from q in Question,
+      where: q.quiz_id == ^quiz_id,
+      left_join: a in Answer,
+      on: q.id == a.question_id,
+      where: a.submission_id == ^submission_id,
+      select: %{question_id: q.id, correct_answer: q.correct_answer, answer_id: a.id, selected_field: a.selected_field}
+    Repo.all(query)
+  end
+
+  def get_points_possible(quiz_id) do
+    query = 
+      from q in Quiz,
+      where: q.id == ^quiz_id,
+      join: a in Assignment,
+      on: q.assignment_id == a.id,
+      select: a.points_possible
+    Repo.all(query)
+  end
+
+  @doc """
+  Returns the list of grades.
+
+  ## Examples
+
+      iex> list_grades()
+      [%Grade{}, ...]
+
+  """
+  def list_grades do
+    Repo.all(Grade)
+  end
+
+  @doc """
+  Gets a single grade.
+
+  Raises `Ecto.NoResultsError` if the Grade does not exist.
+
+  ## Examples
+
+      iex> get_grade!(123)
+      %Grade{}
+
+      iex> get_grade!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_grade!(id), do: Repo.get!(Grade, id)
+
+  @doc """
+  Creates a grade.
+
+  ## Examples
+
+      iex> create_grade(%{field: value})
+      {:ok, %Grade{}}
+
+      iex> create_grade(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_grade(attrs \\ %{}) do
+    %Grade{}
+    |> Grade.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a grade.
+
+  ## Examples
+
+      iex> update_grade(grade, %{field: new_value})
+      {:ok, %Grade{}}
+
+      iex> update_grade(grade, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_grade(%Grade{} = grade, attrs) do
+    grade
+    |> Grade.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Grade.
+
+  ## Examples
+
+      iex> delete_grade(grade)
+      {:ok, %Grade{}}
+
+      iex> delete_grade(grade)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_grade(%Grade{} = grade) do
+    Repo.delete(grade)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking grade changes.
+
+  ## Examples
+
+      iex> change_grade(grade)
+      %Ecto.Changeset{source: %Grade{}}
+
+  """
+  def change_grade(%Grade{} = grade) do
+    Grade.changeset(grade, %{})
+  end
 end

@@ -15,6 +15,7 @@ class Submission extends React.Component {
 					file_id: "",
 					text_entry: "",
 					quiz_answers: [],
+					quiz_id: null,
 					type: this.props.type
 				},
 				text: "",
@@ -64,6 +65,7 @@ class Submission extends React.Component {
 					data.quiz_answers.push(this.state.answer_submissions[this.state.quiz_data.questions[i].question_id]);
 				}
 			}
+			data.quiz_id = this.state.quiz_data.quiz.quiz_id;
 			this.setState({data}, () => {this.submitAssignment()});
 		}else{
 			this.submitAssignment();

@@ -34,7 +34,15 @@ defmodule BackendWeb.SubmissionController do
       else
         answer_params = Auth.parse_bulk_answers(id, payload["quiz_answers"], [])
         Backend.Repo.insert_all(Answer, answer_params)
-        IO.inspect(answer_params)
+        
+        quiz_info = Backend.Auth.gather_quiz_info(payload["quiz_id"], id)
+        grade = Backend.Auth.grade_quiz(quiz_info)
+        grade_params = %{id: Ecto.UUID.generate(), submission_id: id, points_earned: grade}
+        Auth.create_grade(grade_params)
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", submission_path(conn, :show, submission))
+        |> render("show.json", submission: submission)
       end
     end
 

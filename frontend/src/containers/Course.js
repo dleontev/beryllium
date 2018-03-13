@@ -69,7 +69,11 @@ class Course extends React.Component {
       <div>
         <nav className="level">
           <div className="level-left">
-            <p className="title is-5">{this.getCourseTitle()}</p>
+          {this.getCourseTitle() === "undefined" ?
+          <div className="loading">
+          </div> :
+          <p className="title is-5">{this.getCourseTitle()}</p>
+          }
           </div>
         </nav>
         <div className="columns">

@@ -7,6 +7,7 @@ defmodule Backend.Auth.Submission do
   schema "submissions" do
     field(:assignment_id, :binary_id, null: false)
     field(:user_id, :binary_id, null: false)
+    field(:group_id, :binary_id)
     field(:file_id, :binary_id)
     field(:text_entry, :string)
   end
@@ -14,7 +15,7 @@ defmodule Backend.Auth.Submission do
   @doc false
   def changeset(%Submission{} = submission, attrs) do
     submission
-    |> cast(attrs, [:id, :assignment_id, :user_id, :file_id, :text_entry])
+    |> cast(attrs, [:id, :assignment_id, :user_id, :group_id, :file_id, :text_entry])
     |> validate_required([:id, :assignment_id, :user_id])
   end
 end

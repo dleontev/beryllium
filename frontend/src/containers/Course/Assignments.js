@@ -40,6 +40,7 @@ class Assignments extends React.Component {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
+            {this.props.isTeacher === true ? <th> Submissions </th> : ""}
             <th>Scope</th>
           </tr>
         </thead>
@@ -63,6 +64,7 @@ class Assignments extends React.Component {
         group_id={value.group_id}
         due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
         section_id = {this.props.section_id}
+        isTeacher = {this.props.isTeacher}
       />
     ));
   }

@@ -10,7 +10,9 @@ class AssignmentCard extends React.Component {
 		this.state = {
 				data: {},
 				isPressed: false,
-				isLoading: true
+				isLoading: true,
+				isTeacher: null,
+				group_id: null
 		}
 	}
 
@@ -77,10 +79,47 @@ class AssignmentCard extends React.Component {
 			.catch((error)=>{
 				console.log(`AssignmentCard.js: ${error}`);
 			})
+		api.isTeacher(this.props.match.params.id)
+			.then((result) =>{
+				this.setState({isTeacher: result});
+			});
+		if(this.props.location.state.group_id !== undefined){
+			this.setState({group_id: this.props.location.state.group_id});
+		}
+
 	}
 	
 	handleClick(){
 		this.setState({isPressed: !this.state.isPressed});
+	}
+
+	getButton(){
+		if(this.state.isTeacher === true && this.state.data.type !== 2){
+			return "";
+		}else if(this.state.isTeacher === true && this.state.data.type === 2){
+			return (
+				<div className="card-footer">
+					<div className="card-footer-item">
+						<button className="button" onClick={this.handleClick.bind(this)}>
+							<span>
+								<span className="icon">
+									<i className="fa fa-question-circle"></i>
+								</span>
+								<span>View Questions</span>
+							</span>
+						</button>
+					</div>
+				</div>
+			);
+		}else{
+			return (
+				<div className="card-footer">
+					<div className="card-footer-item">
+						{this.getType()}
+					</div>
+				</div>
+			);
+		}
 	}
 	render(){
 		if(this.state.isLoading === true){
@@ -104,18 +143,16 @@ class AssignmentCard extends React.Component {
 						Due,
 						{new moment(this.state.data.due_at).format("llll")}
 					</div>
-					<div className="card-footer">
-						<div className="card-footer-item">
-							{this.getType()}
-						</div>
-					</div>
+					{this.state.isTeacher !== null ? this.getButton() : <div className="loading"> </div>}
 				</div>
 				<br/>
 				{this.state.isPressed === true ? 
 					<Submission 
 						section_id={this.props.match.params.id} 
 						assignment_id={this.props.match.params.assignment_id} 
-						type={this.state.data.type}/> : 
+						type={this.state.data.type}
+						isTeacher={this.state.isTeacher}
+						group_id={this.state.group_id}/> : 
 				""} 
 			</div>
 		);
@@ -123,6 +160,7 @@ class AssignmentCard extends React.Component {
 }
 
 AssignmentCard.propTypes = {
-	match: PropTypes.object.isRequired
+	match: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired
 }
 export default AssignmentCard;

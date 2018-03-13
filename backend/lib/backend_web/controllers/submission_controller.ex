@@ -16,13 +16,20 @@ defmodule BackendWeb.SubmissionController do
   def create(conn, %{"submission" => payload}) do
     %{id: user_id} = Guardian.Plug.current_resource(conn)
     id = Ecto.UUID.generate()
+    group_id = 
+      case String.length(payload["group_id"]) do
+        0 ->
+          nil
+        _ -> 
+          payload["group_id"]
+      end
     submission_params = 
       case payload["type"] do
         0 -> 
           {_, result} = sanitize(payload["text_entry"], :basic_html)
-          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], text_entry: result}
+          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], group_id: group_id, text_entry: result}
         2 ->
-          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"]}
+          %{id: id, user_id: user_id, assignment_id: payload["assignment_id"], group_id: group_id}
         _ -> nil
       end
     with {:ok, %Submission{} = submission} <- Auth.create_submission(submission_params) do
@@ -58,6 +65,11 @@ defmodule BackendWeb.SubmissionController do
     #    |> render("show.json", submission: submission)
     #  end
     #end
+  end
+
+  def count_submissions_by_assignment(conn, %{"assignment_id" => assignment_id}) do
+    count = Auth.count_submissions_by_assignment(assignment_id)
+    render(conn, "show_count.json", submission: count)
   end
 
   def show(conn, %{"id" => id}) do

@@ -79,6 +79,7 @@ defmodule BackendWeb.Router do
     get "/quizzes/assignments/:assignment_id", QuizController, :show_quiz_by_assignment
 
     get "/assignments/sections/:section_id", AssignmentController, :assignments_by_section
+    get "/submissions/assignments/:assignment_id/count", SubmissionController, :count_submissions_by_assignment
   end
   
 end

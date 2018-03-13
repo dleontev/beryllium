@@ -128,7 +128,7 @@ class Submission extends React.Component {
 				return (
 					<div>
 						{this.getQuestions()}
-						{this.getButton()}
+						{this.props.isTeacher === false ? this.getButton() : ""}
 					</div>
 				);
 			}
@@ -138,7 +138,8 @@ class Submission extends React.Component {
 
 Submission.propTypes = {
 	assignment_id: PropTypes.string.isRequired,
-	type: PropTypes.number.isRequired
+	type: PropTypes.number.isRequired,
+	isTeacher: PropTypes.bool.isRequired
 }
 
 export default Submission;

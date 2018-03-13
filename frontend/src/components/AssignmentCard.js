@@ -11,7 +11,8 @@ class AssignmentCard extends React.Component {
 				data: {},
 				isPressed: false,
 				isLoading: true,
-				isTeacher: null
+				isTeacher: null,
+				group_id: null
 		}
 	}
 
@@ -82,6 +83,10 @@ class AssignmentCard extends React.Component {
 			.then((result) =>{
 				this.setState({isTeacher: result});
 			});
+		if(this.props.location.state.group_id !== undefined){
+			this.setState({group_id: this.props.location.state.group_id});
+		}
+
 	}
 	
 	handleClick(){
@@ -146,7 +151,8 @@ class AssignmentCard extends React.Component {
 						section_id={this.props.match.params.id} 
 						assignment_id={this.props.match.params.assignment_id} 
 						type={this.state.data.type}
-						isTeacher={this.state.isTeacher}/> : 
+						isTeacher={this.state.isTeacher}
+						group_id={this.state.group_id}/> : 
 				""} 
 			</div>
 		);
@@ -154,6 +160,7 @@ class AssignmentCard extends React.Component {
 }
 
 AssignmentCard.propTypes = {
-	match: PropTypes.object.isRequired
+	match: PropTypes.object.isRequired,
+	location: PropTypes.object.isRequired
 }
 export default AssignmentCard;

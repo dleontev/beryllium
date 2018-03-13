@@ -107,7 +107,6 @@ class QuizCard extends React.Component{
 
 QuizCard.propTypes = {
   question: PropTypes.string.isRequired,
-  props: PropTypes.object.isRequired,
   a1: PropTypes.string.isRequired,
   a2: PropTypes.string.isRequired,
   a3: PropTypes.string.isRequired,

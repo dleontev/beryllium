@@ -2,6 +2,7 @@ import React from "react";
 import api from "../../api/Api";
 import PropTypes from "prop-types";
 import ReactQuill from 'react-quill';
+import { Redirect } from "react-router-dom";
 import 'react-quill/dist/quill.snow.css';
 import QuizCard from "../QuizCard";
 
@@ -14,13 +15,15 @@ class Submission extends React.Component {
 					assignment_id: this.props.assignment_id,
 					file_id: "",
 					text_entry: "",
+					group_id: "",
 					quiz_answers: [],
 					quiz_id: null,
 					type: this.props.type
 				},
 				text: "",
 				quiz_data: null,
-				answer_submissions: {}
+				answer_submissions: {},
+				submitted: false
 			}
 	}
 
@@ -37,6 +40,12 @@ class Submission extends React.Component {
 					console.log(`Submission.js: ${error}`);
 				});
 		}
+		if(this.props.group_id !== null){
+			console.log(this.props.group_id);
+			var data = Object.assign({}, this.state.data);
+			data.group_id = this.props.group_id;
+			this.setState({data});
+		}
 	}
 
 	handleChange(value){
@@ -49,8 +58,8 @@ class Submission extends React.Component {
 
 	submitAssignment(){
 		api.post("/submissions", {submission: this.state.data})
-			.then((response) => {
-				console.log(response.data.data);
+			.then(() => {
+				this.setState({submitted: true});
 			})
 			.catch((error) =>{
 				console.log(`Submission.js: ${error}`);
@@ -103,6 +112,11 @@ class Submission extends React.Component {
 	}
 
 	render(){
+		if(this.state.submitted === true){
+			return (
+				<Redirect to={`/courses/${this.props.section_id}/assignments`}/>
+			);
+		}
 		if(this.props.type === 0){
 			return (
 				<div>
@@ -139,7 +153,9 @@ class Submission extends React.Component {
 Submission.propTypes = {
 	assignment_id: PropTypes.string.isRequired,
 	type: PropTypes.number.isRequired,
-	isTeacher: PropTypes.bool.isRequired
+	isTeacher: PropTypes.bool.isRequired,
+	group_id: PropTypes.string,
+	section_id: PropTypes.string.isRequired
 }
 
 export default Submission;

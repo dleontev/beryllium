@@ -2,6 +2,7 @@ import React from "react";
 import api from "../api/Api";
 import moment from "moment";
 import Submission from "./Form/Submission";
+import Submissions from "../containers/Submissions"
 import PropTypes from "prop-types";
 
 class AssignmentCard extends React.Component {
@@ -12,7 +13,8 @@ class AssignmentCard extends React.Component {
 				isPressed: false,
 				isLoading: true,
 				isTeacher: null,
-				group_id: null
+				group_id: null,
+				tab: true
 		}
 	}
 
@@ -121,6 +123,14 @@ class AssignmentCard extends React.Component {
 			);
 		}
 	}
+	
+	handleTabAssignment(){
+		this.setState({tab: true});
+	}
+	handleTabSubmission(){
+		this.setState({tab: false});
+	}
+
 	render(){
 		if(this.state.isLoading === true){
 			return (
@@ -130,30 +140,46 @@ class AssignmentCard extends React.Component {
 		}
 		return (
 			<div>
-				<div className="card">
-					<header className="card-header">
-						<p className="card-header-title is-size-5">
-							{this.state.data.title}
-						</p>
-					</header>
-					<div className="card-content is-size-6">
-						{this.state.data.content}
-					</div>
-					<div className="assignment_footer is-size-7">
-						Due,
-						{new moment(this.state.data.due_at).format("llll")}
-					</div>
-					{this.state.isTeacher !== null ? this.getButton() : <div className="loading"> </div>}
+				<div className="tabs">
+					<ul>
+						<li className={this.state.tab === true ? "is-active" : ""} onClick={this.handleTabAssignment.bind(this)}><a>Assignment</a></li>
+						<li className={this.state.tab === true ? "" : "is-active"} onClick={this.handleTabSubmission.bind(this)}><a>Submissions</a></li>
+					</ul>
 				</div>
-				<br/>
-				{this.state.isPressed === true ? 
-					<Submission 
+				{this.state.tab === true ?
+				<div>
+					<div className="card">
+						<header className="card-header">
+							<p className="card-header-title is-size-5">
+								{this.state.data.title}
+							</p>
+						</header>
+						<div className="card-content is-size-6">
+							{this.state.data.content}
+						</div>
+						<div className="assignment_footer is-size-7">
+							Due,
+							{new moment(this.state.data.due_at).format("llll")}
+						</div>
+						{this.state.isTeacher !== null ? this.getButton() : <div className="loading"> </div>}
+					</div>
+					<br/>
+					{this.state.isPressed === true ? 
+						<Submission 
+							section_id={this.props.match.params.id} 
+							assignment_id={this.props.match.params.assignment_id} 
+							type={this.state.data.type}
+							isTeacher={this.state.isTeacher}
+							group_id={this.state.group_id}/> : 
+					""}
+				</div>
+				: <Submissions
 						section_id={this.props.match.params.id} 
 						assignment_id={this.props.match.params.assignment_id} 
 						type={this.state.data.type}
 						isTeacher={this.state.isTeacher}
-						group_id={this.state.group_id}/> : 
-				""} 
+						group_id={this.state.group_id}
+					/>}
 			</div>
 		);
 	}

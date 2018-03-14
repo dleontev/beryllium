@@ -10,6 +10,7 @@ defmodule Backend.Auth.Submission do
     field(:group_id, :binary_id)
     field(:file_id, :binary_id)
     field(:text_entry, :string)
+    timestamps()
   end
 
   @doc false

@@ -72,6 +72,18 @@ defmodule BackendWeb.SubmissionController do
     render(conn, "show_count.json", submission: count)
   end
 
+  def show_submissions_by_assignment(conn, %{"assignment_id" => assignment_id}) do
+    %{id: user_id} = Guardian.Plug.current_resource(conn)
+    submissions = Auth.get_submissions_by_assignment(assignment_id)
+    render(conn, "show_by_assignment.json", submissions: submissions)
+  end
+
+  def show_submissions_by_assignment_individual(conn, %{"assignment_id" => assignment_id}) do
+  %{id: user_id} = Guardian.Plug.current_resource(conn)
+    submissions = Auth.get_submissions_by_assignment_individual(assignment_id, user_id)
+    render(conn, "show_by_assignment.json", submissions: submissions)
+  end
+
   def show(conn, %{"id" => id}) do
     submission = Auth.get_submission!(id)
     render(conn, "show.json", submission: submission)

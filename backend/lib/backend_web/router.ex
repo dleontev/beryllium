@@ -80,6 +80,8 @@ defmodule BackendWeb.Router do
 
     get "/assignments/sections/:section_id", AssignmentController, :assignments_by_section
     get "/submissions/assignments/:assignment_id/count", SubmissionController, :count_submissions_by_assignment
+    get "/submissions/assignments/:assignment_id/all", SubmissionController, :show_submissions_by_assignment
+    get "/submissions/assignments/:assignment_id/individual", SubmissionController, :show_submissions_by_assignment_individual
   end
   
 end

@@ -21,6 +21,7 @@ defmodule Backend.Auth do
   alias Backend.Auth.Discussion
   alias Backend.Auth.AssignmentToUser
   alias Backend.Auth.AssignmentToGroup
+  alias Backend.Auth.Grade
 
   @doc """
   Returns the list of users.
@@ -2328,7 +2329,50 @@ defmodule Backend.Auth do
       where: a.id == ^assignment_id,
       join: s in Submission,
       on: a.id == s.assignment_id,
-      select: %{submission_id: s.id, user_id: s.user_id, group_id: s.group_id, file_id: s.file_id, text_entry: s.text_entry}
+      left_join: g in Grade,
+      on: s.id == g.submission_id,
+      left_join: u in User,
+      on: u.id == s.user_id,
+      select: 
+      %{
+          id: s.id,
+          user_name: u.name, 
+          user_id: s.user_id, 
+          group_id: s.group_id, 
+          file_id: s.file_id, 
+          text_entry: s.text_entry, 
+          inserted_at: s.inserted_at, 
+          updated_at: s.updated_at, 
+          points_possible: a.points_possible,
+          points_earned: g.points_earned
+        }
+    Repo.all(query)
+  end
+
+  def get_submissions_by_assignment_individual(assignment_id, user_id) do
+    query = 
+      from a in Assignment,
+      where: a.id == ^assignment_id,
+      join: s in Submission,
+      on: a.id == s.assignment_id,
+      where: s.user_id == ^user_id,
+      left_join: g in Grade,
+      on: s.id == g.submission_id,
+      left_join: u in User,
+      on: u.id == s.user_id,
+      select: 
+      %{
+          id: s.id,
+          user_name: u.name,
+          user_id: s.user_id, 
+          group_id: s.group_id, 
+          file_id: s.file_id, 
+          text_entry: s.text_entry, 
+          inserted_at: s.inserted_at, 
+          updated_at: s.updated_at, 
+          points_possible: a.points_possible,
+          points_earned: g.points_earned
+        }
     Repo.all(query)
   end
 
@@ -2435,8 +2479,6 @@ defmodule Backend.Auth do
   def change_submission(%Submission{} = submission) do
     Submission.changeset(submission, %{})
   end
-
-  alias Backend.Auth.Grade
 
   def grade_quiz(quiz_info) do
     points_per_question = quiz_info.points_possible / length(quiz_info.questions)

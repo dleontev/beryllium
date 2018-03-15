@@ -2386,6 +2386,17 @@ defmodule Backend.Auth do
     Repo.all(query)
   end
 
+  def count_submissions_by_assignment(assignment_id, user_id) do
+    query = 
+      from a in Assignment,
+      where: a.id == ^assignment_id,
+      join: s in Submission,
+      on: a.id == s.assignment_id,
+      where: s.user_id == ^user_id,
+      select: %{submission_count: count(s.id)}
+    Repo.all(query)
+  end
+
   @doc """
   Returns the list of submissions.
 

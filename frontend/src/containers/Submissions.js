@@ -2,6 +2,7 @@ import React from "react";
 import api from "../api/Api";
 import PropTypes from "prop-types";
 import SubmissionTableCard from "../components/SubmissionTableCard";
+import moment from "moment";
 
 class Submissions extends React.Component {
   constructor(){
@@ -9,7 +10,8 @@ class Submissions extends React.Component {
     this.state = {
       submissions: null,
       isLoading: true,
-      search: ""
+      search: "",
+      sorted: false
     }
   }
 
@@ -18,7 +20,13 @@ class Submissions extends React.Component {
     api.get(`/submissions/assignments/${this.props.assignment_id}/${submission_type}`)
       .then((response) =>{
         console.log(response.data.data);
-        this.setState({submissions: response.data.data});
+        this.setState({submissions: response.data.data}, ()=>{
+          var submissions = Object.assign([], this.state.submissions);
+          submissions.sort((a,b)=>{
+            return (new moment(b.inserted_at) - new moment(a.inserted_at));
+          });
+          this.setState({submissions: submissions, sorted: true});
+        });
       })
       .catch((error) =>{
         console.log(`Submissions.js: ${error}`);
@@ -33,6 +41,7 @@ class Submissions extends React.Component {
         <SubmissionTableCard
           key={value.id}
           {...value}
+          due_at={this.props.due_at}
         />
       ));
     }
@@ -70,6 +79,7 @@ class Submissions extends React.Component {
               <th>Text Entry</th>
               <th>File Upload</th>
               <th>Grade</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>{this.getSubmissions()}</tbody>
@@ -82,7 +92,8 @@ class Submissions extends React.Component {
 Submissions.propTypes = {
   isTeacher: PropTypes.bool.isRequired,
   assignment_id: PropTypes.string.isRequired,
-  search: PropTypes.string.isRequired
+  search: PropTypes.string.isRequired,
+  due_at: PropTypes.string.isRequired
 }
 
 export default Submissions;

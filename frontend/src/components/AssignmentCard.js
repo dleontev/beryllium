@@ -179,6 +179,7 @@ class AssignmentCard extends React.Component {
 						type={this.state.data.type}
 						isTeacher={this.state.isTeacher}
 						group_id={this.state.group_id}
+						due_at={this.state.data.due_at}
 					/>}
 			</div>
 		);

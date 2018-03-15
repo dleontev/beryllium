@@ -9,7 +9,8 @@ class Assignments extends React.Component {
   constructor() {
     super();
     this.state = { 
-      assignments: null 
+      assignments: null,
+      sorted: false
     };
   }
 
@@ -18,7 +19,13 @@ class Assignments extends React.Component {
       .get(`/assignments/sections/${this.props.section_id}`)
       .then(response => {
         if (typeof response !== "undefined") {
-          this.setState({ assignments: response.data.data });
+          this.setState({ assignments: response.data.data },()=>{
+            var assignments = Object.assign([], this.state.assignments);
+            assignments.sort((a,b)=>{
+              return ((new moment(a.due_at)) - (new moment(b.due_at)));
+            });
+            this.setState({assignments: assignments, sorted: true});
+          });
         }
       })
       .catch((error) =>{
@@ -40,7 +47,7 @@ class Assignments extends React.Component {
             <th>Title</th>
             <th>Description</th>
             <th>Due Date</th>
-            {this.props.isTeacher === true ? <th> Submissions </th> : ""}
+            {this.props.isTeacher === true ? <th>Submissions</th> : <th>Submitted</th>}
             <th>Scope</th>
           </tr>
         </thead>
@@ -50,23 +57,25 @@ class Assignments extends React.Component {
   }
 
   getAssignments() {
-    return this.state.assignments.map((value) => (
-      <AssignmentTableCard
-        key={value.id}
-        id={value.id}
-        name={value.title}
-        content={
-          value.content.length > 100
-          ? value.content.substring(0, 100) + "[...]"
-          : value.content
-        }
-        type={value.type}
-        group_id={value.group_id}
-        due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
-        section_id = {this.props.section_id}
-        isTeacher = {this.props.isTeacher}
-      />
-    ));
+    if(this.state.sorted === true){
+      return this.state.assignments.map((value) => (
+        <AssignmentTableCard
+          key={value.id}
+          id={value.id}
+          name={value.title}
+          content={
+            value.content.length > 100
+            ? value.content.substring(0, 100) + "[...]"
+            : value.content
+          }
+          type={value.type}
+          group_id={value.group_id}
+          due_at = {moment(value.due_at).format("dddd, MMMM Do YYYY, h:mm a")}
+          section_id = {this.props.section_id}
+          isTeacher = {this.props.isTeacher}
+        />
+      ));
+    } 
   }
 
   getAddAssignmentButton() {

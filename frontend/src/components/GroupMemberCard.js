@@ -29,17 +29,17 @@ function collect(connect, monitor) {
 }
 
 class GroupMemberCard extends React.Component {
-  getContextMenu() {
-    return (
-      <div className="dropdown-content">
-        <div className="dropdown-item">
-          <center>Add to group</center>
-        </div>
-        <hr className="dropdown-divider" />
-        <div className="dropdown-item">...Group list placeholder...</div>
-      </div>
-    );
-  }
+  // getContextMenu() {
+  //   return (
+  //     <div className="dropdown-content">
+  //       <div className="dropdown-item">
+  //         <center>Add to group</center>
+  //       </div>
+  //       <hr className="dropdown-divider" />
+  //       <div className="dropdown-item">...Group list placeholder...</div>
+  //     </div>
+  //   );
+  // }
 
   render() {
     const { connectDragSource } = this.props;
@@ -52,18 +52,20 @@ class GroupMemberCard extends React.Component {
               <div className="control">
                 <label>{this.props.name}</label>
               </div>
-              <div className="control">
+              {/* <div className="control">
                 <div className="dropdown is-hoverable">
                   <div className="dropdown-trigger">
-                    <span className="icon is-small">
-                      <i className="fa fa-angle-down" aria-hidden="true" />
-                    </span>
+                    <button className="button is-small">
+                      <span className="icon is-small">
+                        <i className="fa fa-plus" aria-hidden="true" />
+                      </span>
+                    </button>
                   </div>
                   <div className="dropdown-menu" id="dropdown-menu" role="menu">
                     {this.getContextMenu()}
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </span>
         </div>

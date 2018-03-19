@@ -160,7 +160,12 @@ class Course extends React.Component {
                   <Route
                     exact
                     path="/courses/:id/pages/new"
-                    component={AddPage}
+                    render={props => (
+                      <AddPage
+                        {...props}
+                        section_id={this.props.match.params.id}
+                      />
+                    )}
                   />
 
                   <Route

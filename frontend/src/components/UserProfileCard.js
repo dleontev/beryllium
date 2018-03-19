@@ -24,10 +24,12 @@ class UserProfileCard extends React.Component {
           <li>{this.props.email}</li>
         </div>
         <br />
-        <div className="container">
-          <h2 className="subtitle">Enrollments</h2>
-          {this.props.courses}
-        </div>
+        {this.props.showEnrollments && (
+          <div className="container">
+            <h2 className="subtitle">Enrollments</h2>
+            {this.props.courses}
+          </div>
+        )}
       </section>
     );
   }
@@ -37,7 +39,8 @@ UserProfileCard.propTypes = {
   email: PropTypes.string.isRequired,
   profile_image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  courses: PropTypes.array.isRequired
+  courses: PropTypes.object.isRequired,
+  showEnrollments: PropTypes.bool.isRequired
 };
 
 export default UserProfileCard;

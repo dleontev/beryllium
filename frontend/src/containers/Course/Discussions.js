@@ -129,13 +129,13 @@ class Discussions extends React.Component {
                   </button>
                 </Link>
               </div>
-              <div className="control">
+              {/* <div className="control">
                 <button className="button is-link">
                   <span className="icon">
                     <i className="fa fa-cog" />
                   </span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </nav>

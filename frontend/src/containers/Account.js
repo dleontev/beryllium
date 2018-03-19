@@ -66,6 +66,7 @@ class Account extends React.Component {
         name={this.state.user.name}
         profile_image={profile_image}
         email={this.state.user.email}
+        showEnrollments={true}
         courses={this.getUserCourses()}
       />
     );

@@ -32,7 +32,7 @@ defmodule BackendWeb.PageController do
       if section.homepage_id do
         Auth.get_page!(section.homepage_id)
       else
-        %{content: ""}
+        %{content: "", id: nil, title: nil}
       end
 
     render(conn, "show.json", page: page)

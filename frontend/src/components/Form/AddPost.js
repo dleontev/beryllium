@@ -2,8 +2,8 @@ import React from "react";
 import api from "../../api/Api";
 import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 class AddPost extends React.Component {
   constructor(props) {
@@ -75,11 +75,6 @@ class AddPost extends React.Component {
                 : "Add a new announcement"}
             </h1>
           </div>
-          <div className="navbar-menu" />
-
-          <div className="navbar-end">
-            {this.props.isTeacher && this.getEditControl()}
-          </div>
         </nav>
 
         <form onSubmit={this.handleSubmit.bind(this)}>
@@ -96,17 +91,15 @@ class AddPost extends React.Component {
           </div>
           <div className="field">
             <div className="control">
-              <ReactQuill 
-					      value={this.state.data.message}
-                onChange={this.handleMessage.bind(this)}
-				      />
-              {/*
-              <textarea
-                placeholder="Message"
-                className="textarea"
+              <ReactQuill
+                placeholder={
+                  this.props.is_discussion
+                    ? "Enter the discussion message here... "
+                    : "Enter the announcement message here... "
+                }
+                value={this.state.data.message}
                 onChange={this.handleMessage.bind(this)}
               />
-              */}
             </div>
           </div>
           <div className="level-right">
@@ -135,7 +128,6 @@ class AddPost extends React.Component {
 
 AddPost.propTypes = {
   section_id: PropTypes.string.isRequired,
-  isTeacher: PropTypes.bool.isRequired,
   is_discussion: PropTypes.bool.isRequired
 };
 

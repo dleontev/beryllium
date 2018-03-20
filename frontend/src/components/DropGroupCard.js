@@ -52,7 +52,8 @@ class DropGroupCard extends React.Component {
           handleMove={this.handleMove}
           group_id={this.props.id}
           key={member.id}
-          {...member}
+          name={member.name}
+          id={member.id}
         />
       ));
   }
@@ -203,8 +204,8 @@ DropGroupCard.propTypes = {
   isUnassigned: PropTypes.bool.isRequired,
   max_members: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  handleGroupDelete: PropTypes.func.isRequired,
-  handleGroupEdit: PropTypes.func.isRequired
+  handleGroupDelete: PropTypes.func,
+  handleGroupEdit: PropTypes.func
 };
 
 export default DropTarget("membercard", memberCardTarget, collect)(

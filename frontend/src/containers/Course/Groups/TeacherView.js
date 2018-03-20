@@ -64,9 +64,7 @@ class TeacherView extends React.Component {
               //var users = this.state.members
               //  .map(m => m.id)
               //  .filter((x, i, a) => a.indexOf(x) === i);
-
               //var membersPerGroup = Math.floor(users.length / groupCount);
-
               // TODO: Split users into groups.
             }
 

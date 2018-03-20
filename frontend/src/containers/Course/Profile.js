@@ -29,6 +29,7 @@ class Profile extends React.Component {
         profile_image={profile_image}
         name={this.state.user.name}
         email={this.state.user.email}
+        showEnrollments={false}
         courses={<li>Enrollment data is unavailable.</li>}
       />
     );

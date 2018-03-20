@@ -19,8 +19,7 @@ class Pages extends React.Component {
 
   getPages() {
     // TODO: Remove placeholder.
-    if (!this.state.pages) return "This feature is currently not available.";
-    //return <div className="loading" />;
+    if (!this.state.pages) return <div className="loading" />;
 
     if (this.state.pages.length === 0) {
       return "There are no pages to show.";

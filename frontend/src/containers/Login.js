@@ -13,6 +13,10 @@ class Login extends React.Component {
     };
   }
 
+  /**
+   * Updates the current state when a user inputs something.
+   */
+  
   handleChange(event) {
     const { name, value } = event.target;
 
@@ -20,6 +24,10 @@ class Login extends React.Component {
       [name]: value
     }));
   }
+
+  /**
+   * Submits the user input data via a post request.
+   */
 
   handleSubmit(event) {
     event.preventDefault();

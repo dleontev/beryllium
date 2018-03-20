@@ -6,9 +6,15 @@ import GroupTableCard from "../components/GroupTableCard";
 class Groups extends React.Component {
   constructor() {
     super();
-    this.state = { groups: null };
+    this.state = { 
+      groups: null 
+    };
   }
 
+  /**
+   * Retrieves a list of all the group the current user belongs to.
+   */
+  
   componentWillMount() {
     api.get(`/groups/user/all`).then(response => {
       if (typeof response !== "undefined") {
@@ -16,6 +22,10 @@ class Groups extends React.Component {
       }
     });
   }
+
+  /**
+   * Generates a table of groups that the current user belongs to.
+   */
 
   getUserGroupsTable() {
     if (this.state.groups === null) return <div className="loading" />;
@@ -37,6 +47,9 @@ class Groups extends React.Component {
     );
   }
 
+  /**
+   * Generates individual group rows using the GroupTableCard component.
+   */  
   getUserGroups() {
     return this.state.groups.map((group, index) => {
       return (

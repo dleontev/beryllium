@@ -11,6 +11,10 @@ class Courses extends React.Component {
     };
   }
 
+  /**
+   * Retrieves the list of courses.
+   */
+  
   componentWillMount() {
     api.get(`/courses/user/all`).then(response => {
       if (typeof response !== "undefined") {
@@ -18,6 +22,10 @@ class Courses extends React.Component {
       }
     });
   }
+
+  /**
+   * Creates a table that contains the courses the current user enrolled in.
+   */
 
   getCourseTable() {
     if (this.state.courses === null) return <div className="loading" />;
@@ -40,6 +48,9 @@ class Courses extends React.Component {
     );
   }
 
+  /**
+   * Generates individual course rows using the GroupTableCard component.
+   */
   getUserCourses() {
     return this.state.courses.map((course, index) => {
       return (
